@@ -27,3 +27,9 @@
 *.exe
 *.out
 *.app
+*.suo
+
+Debug
+bin
+packages
+*.user
