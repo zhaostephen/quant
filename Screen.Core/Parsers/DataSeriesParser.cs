@@ -36,7 +36,7 @@ namespace Screen.Parsers
             var data = lines
                 .Select(p =>
                 {
-                    var splits = p.Split(new[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    var splits = p.Split(new[] { '\t', ' ',',' }, StringSplitOptions.RemoveEmptyEntries);
                     var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d");
                     if (!isDate) return null;
 
@@ -56,28 +56,7 @@ namespace Screen.Parsers
             if (!data.Any())
                 return null;
 
-            for (var i = 1; i < data.Length; ++i)
-            {
-                var preClose = data[i - 1].Close;
-                data[i].PreClose = preClose;
-
-                data[i].NetChange = data[i].Close - preClose;
-                data[i].PctChange = Math.Round(((data[i].Close - preClose) / preClose) * 100, 2);
-
-                data[i].LowNetChange = data[i].Low - preClose;
-                data[i].LowPctChange = Math.Round(((data[i].Low - preClose) / preClose) * 100, 2);
-
-                data[i].HighNetChange = data[i].High - preClose;
-                data[i].HighPctChange = Math.Round(((data[i].High - preClose) / preClose) * 100, 2);
-
-                data[i].OpenNetChange = data[i].Open - preClose;
-                data[i].OpenPctChange = Math.Round(((data[i].Open - preClose) / preClose) * 100, 2);
-
-                data[i].HighLowNetChange = data[i].High - data[i].Low;
-                data[i].HighLowPctChange = Math.Round(((data[i].High - data[i].Low) / preClose) * 100, 2);
-            }
-            
-            return new StockData(name, new DataSeries(data).Section(dt));
+            return new StockData(name, new DataSeries(data.NetPctChange()).Section(dt));
         }
     }
 }

@@ -47,15 +47,74 @@ namespace Screen
 
             Console.WriteLine("**********START**********");
 
-            var d = DataSeriesParser.Parse(@"D:\screen\Data", DateTime.Today);
+            Console.WriteLine("Read daily");
+            var daily = DataSeriesParser.Parse(@"D:\screen\Data", DateTime.Today);
+
+            Console.WriteLine("Build weekly");
+            var weekly = BuildWeeklyTimeSeries(daily, @"D:\screen\Data\week");
+
+            Console.WriteLine("Build monthly");
+            var monthly = BuildMonthlyTimeSeries(daily, @"D:\screen\Data\month");
 
             Console.WriteLine("Calculate...");
-            var results = Analyze(d, new DateTime(2015,5,1));
+            var results = Analyze(daily, new DateTime(2015,5,1));
 
             Console.WriteLine("Save...");
             Save(results, "__results__.csv");
 
             Console.WriteLine("**********DONE**********");
+        }
+
+        private static IEnumerable<StockData> BuildMonthlyTimeSeries(IEnumerable<StockData> daily, string folder)
+        {
+            return BuildRangeTimeSeries(daily,
+                folder,
+                (d) => Tuple.Create(new DateTime(d.Year, d.Month, 1),
+                                    new DateTime(d.Year, d.Month, 1).AddMonths(1).AddDays(-1)));
+        }
+
+        private static IEnumerable<StockData> BuildWeeklyTimeSeries(IEnumerable<StockData> daily, string folder)
+        {
+            return BuildRangeTimeSeries(daily,
+                folder,
+                (d) => Tuple.Create(d.AddDays(DayOfWeek.Monday - d.DayOfWeek), d.AddDays(DayOfWeek.Friday - d.DayOfWeek)));
+        }
+
+        private static IEnumerable<StockData> BuildRangeTimeSeries(IEnumerable<StockData> daily, string folder, Func<DateTime, Tuple<DateTime, DateTime>> func)
+        {
+            var d = daily.AsParallel().Select(p =>
+            {
+                var data = p.Data;
+                var dateRanges = data.Select(p1 => func(p1.Date)).Distinct().ToArray();
+                var r = dateRanges.Select(p1 =>
+                                {
+                                    var range = data.Section(p1.Item2, p1.Item1);
+                                    if (!range.Any()) return null;
+
+                                    return new
+                                    {
+                                        Date = range.Last().Date,
+                                        Open = range.First().Open,
+                                        Close = range.Last().Close,
+                                        High = range.Max(p2 => p2.High),
+                                        Low = range.Max(p2 => p2.Low)
+                                    };
+                                })
+                                .Where(p1 => p1 != null)
+                                .ToArray();
+
+                Save(r, Path.Combine(folder, p.Name + ".csv"));
+
+                var points = r.Select(p1 => new DataPoint { Close = p1.Close, Date = p1.Date, Open = p1.Open, High = p1.High, Low = p1.Low })
+                              .ToArray()
+                              .NetPctChange();
+                var series = new DataSeries(points);
+
+                return new StockData(p.Name, series);
+            })
+            .ToArray();
+
+            return d;
         }
 
         private static IEnumerable<object> Analyze(IEnumerable<StockData> d, DateTime since)
@@ -71,7 +130,6 @@ namespace Screen
                 return new
                 {
                     Name = p.Name,
-                    Lowest = lowest,
                     Date = current.Date,
                     Open = current.Open,
                     Close = current.Close,
@@ -94,7 +152,8 @@ namespace Screen
                     //AbsHighLowPctChange = current.AbsHighLowPctChange,
                     CloseEnum = current.CloseEnum,
 
-                    Low2Low = Math.Truncate((current.Low / lowest - 1)*100)
+                    Lowest = lowest,
+                    Low2Low = Math.Truncate((current.Low / lowest - 1) * 100)
                 };
             })
             .Where(p => p != null);
@@ -108,9 +167,17 @@ namespace Screen
             return results.ToArray();
         }
 
-        private static void Save(IEnumerable<object> lowest, string file)
+        private static void Save(IEnumerable<object> data, string file)
         {
-            var text = lowest.ToCsv();
+            while (true)
+            {
+                var dir = Path.GetDirectoryName(file);
+                if (string.IsNullOrEmpty(dir) || Directory.Exists(dir))
+                    break;
+                Directory.CreateDirectory(dir);
+            }
+
+            var text = data.ToCsv();
             File.WriteAllText(file, text, Encoding.UTF8);
         }
 

@@ -87,4 +87,33 @@ namespace Screen.Data
             return new DataSeries(data);
         }
     }
+
+    public static class DataPointMixin
+    {
+        public static DataPoint[] NetPctChange(this DataPoint[] data)
+        {
+            for (var i = 1; i < data.Length; ++i)
+            {
+                var preClose = data[i - 1].Close;
+                data[i].PreClose = preClose;
+
+                data[i].NetChange = data[i].Close - preClose;
+                data[i].PctChange = Math.Round(((data[i].Close - preClose) / preClose) * 100, 2);
+
+                data[i].LowNetChange = data[i].Low - preClose;
+                data[i].LowPctChange = Math.Round(((data[i].Low - preClose) / preClose) * 100, 2);
+
+                data[i].HighNetChange = data[i].High - preClose;
+                data[i].HighPctChange = Math.Round(((data[i].High - preClose) / preClose) * 100, 2);
+
+                data[i].OpenNetChange = data[i].Open - preClose;
+                data[i].OpenPctChange = Math.Round(((data[i].Open - preClose) / preClose) * 100, 2);
+
+                data[i].HighLowNetChange = data[i].High - data[i].Low;
+                data[i].HighLowPctChange = Math.Round(((data[i].High - data[i].Low) / preClose) * 100, 2);
+            }
+
+            return data;
+        }
+    }
 }
