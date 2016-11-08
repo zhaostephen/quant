@@ -13,6 +13,7 @@ using Screen.Indicator;
 using System.Threading;
 using Screen.Screens;
 using Screen.Data;
+using ServiceStack;
 
 namespace Screen
 {
@@ -34,15 +35,83 @@ namespace Screen
         //date
         static void Main(string[] args)
         {
-            var arguments = Arguments.Parse(args);
-            if (arguments == null) return;
+            //var arguments = Arguments.Parse(args);
+            //if (arguments == null) return;
 
-            var date = arguments.Date ?? DateTime.Today;
-            var stockDB = new stockDB(arguments);
+            //var date = arguments.Date ?? DateTime.Today;
+            //var stockDB = new stockDB(arguments);
 
-            storeFundBs(stockDB);
-            calcBeta(stockDB);
-            screen(stockDB);
+            //storeFundBs(stockDB);
+            //calcBeta(stockDB);
+            //screen(stockDB);
+
+            Console.WriteLine("**********START**********");
+
+            var d = DataSeriesParser.Parse(@"D:\screen\Data", DateTime.Today);
+
+            Console.WriteLine("Calculate...");
+            var results = Analyze(d, new DateTime(2015,5,1));
+
+            Console.WriteLine("Save...");
+            Save(results, "__results__.csv");
+
+            Console.WriteLine("**********DONE**********");
+        }
+
+        private static IEnumerable<object> Analyze(IEnumerable<StockData> d, DateTime since)
+        {
+            var results = d.Select(p =>
+            {
+                var current = p.Data.Last();
+                var s = p.Data.Where(p1 => p1.Date >= since);
+                if (!s.Any()) return null;
+
+                var lowest = s.Min(p1 => p1.Low);
+
+                return new
+                {
+                    Name = p.Name,
+                    Lowest = lowest,
+                    Date = current.Date,
+                    Open = current.Open,
+                    Close = current.Close,
+                    High = current.High,
+                    Low = current.Low,
+                    //PreClose = current.PreClose,
+                    //NetChange = current.NetChange,
+                    //PctChange = current.PctChange,
+                    //HighNetChange = current.HighNetChange,
+                    //HighPctChange = current.HighPctChange,
+                    //LowNetChange = current.LowNetChange,
+                    //LowPctChange = current.LowPctChange,
+                    //OpenNetChange = current.OpenNetChange,
+                    //OpenPctChange = current.OpenPctChange,
+                    //HighLowNetChange = current.HighLowNetChange,
+                    //HighLowPctChange = current.HighLowPctChange,
+                    //AbsNetChange = current.AbsNetChange,
+                    //AbsPctChange = current.AbsPctChange,
+                    //AbsHighLowNetChange = current.AbsHighLowNetChange,
+                    //AbsHighLowPctChange = current.AbsHighLowPctChange,
+                    CloseEnum = current.CloseEnum,
+
+                    Low2Low = Math.Truncate((current.Low / lowest - 1)*100)
+                };
+            })
+            .Where(p => p != null);
+
+            var today = results.Max(p => p.Date);
+
+            results = results
+                .Where(p => p.Date == today)//exclude suspending
+                .OrderBy(p => p.Low2Low);
+
+            return results.ToArray();
+        }
+
+        private static void Save(IEnumerable<object> lowest, string file)
+        {
+            var text = lowest.ToCsv();
+            File.WriteAllText(file, text, Encoding.UTF8);
         }
 
         static void calcBeta(stockDB stockDB)

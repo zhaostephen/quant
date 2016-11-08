@@ -21,7 +21,8 @@ namespace Screen.Parsers
 
             Console.WriteLine("Read data...");
             return fileArray
-                .Select(file=>DataSeriesParser.ParseFile(file, dt))
+                .AsParallel()
+                .Select(file=>ParseFile(file, dt))
                 .Where(p => p != null)
                 .ToArray();
         }
@@ -29,14 +30,14 @@ namespace Screen.Parsers
         {
             var dt = date ?? DateTime.Today;
 
-            var name = Path.GetFileNameWithoutExtension(file).Replace("SH", "").Replace("SZ", "");
+            var name = Path.GetFileNameWithoutExtension(file).Replace("SH", "").Replace("SZ", "").Replace("#", "");
             var lines = File.ReadAllLines(file);
 
             var data = lines
                 .Select(p =>
                 {
                     var splits = p.Split(new[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    var isDate = Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
+                    var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d");
                     if (!isDate) return null;
 
                     return new DataPoint
