@@ -7,11 +7,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Screen.Mixin;
+using Screen.Utility;
 
 namespace Screen.Parsers
 {
     public class RefereceDataParser
     {
+        static Log log = typeof(RefereceDataParser).Log();
+
         public static FundB[] ParseFundB(string file)
         {
             var text = File.ReadAllText(file, Encoding.GetEncoding("GB2312"));

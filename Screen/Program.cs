@@ -14,6 +14,7 @@ using System.Threading;
 using Screen.Screens;
 using Screen.Data;
 using ServiceStack;
+using Screen.Utility;
 
 namespace Screen
 {
@@ -32,6 +33,8 @@ namespace Screen
     }
     class Program
     {
+        static Log log = typeof(Program).Log();
+
         //date
         static void Main(string[] args)
         {
@@ -45,24 +48,90 @@ namespace Screen
             //calcBeta(stockDB);
             //screen(stockDB);
 
-            Console.WriteLine("**********START**********");
+            log.Info("**********START**********");
 
-            Console.WriteLine("Read daily");
+            log.Info("Read daily");
             var daily = DataSeriesParser.Parse(@"D:\screen\Data", DateTime.Today);
 
-            Console.WriteLine("Build weekly");
+            log.Info("Build weekly");
             var weekly = BuildWeeklyTimeSeries(daily, @"D:\screen\Data\week");
 
-            Console.WriteLine("Build monthly");
+            log.Info("Build monthly");
             var monthly = BuildMonthlyTimeSeries(daily, @"D:\screen\Data\month");
 
-            Console.WriteLine("Calculate...");
+            log.Info("stats daily");
+            var statistics_daily = BuildStatistics(daily, @"D:\screen\Data\stat_daily");
+
+            log.Info("stats weekly");
+            var statistics_weekly = BuildStatistics(weekly, @"D:\screen\Data\stat_weekly");
+
+            log.Info("stats monthly");
+            var statistics_monthly = BuildStatistics(monthly, @"D:\screen\Data\stat_monthly");
+
+            log.Info("Calculate...");
             var results = Analyze(daily, new DateTime(2015,5,1));
 
-            Console.WriteLine("Save...");
+            log.Info("Save...");
             Save(results, "__results__.csv");
 
-            Console.WriteLine("**********DONE**********");
+            log.Info("**********DONE**********");
+        }
+
+        private static IEnumerable<object> BuildStatistics(IEnumerable<StockData> d, string folder)
+        {
+            var result = d.AsParallel().Select(p =>
+            {
+                var close = p.Data.CloseTimeSeries();
+                return new
+                {
+                    p.Name,
+                    p.Data,
+                    MACD = new MACD(p.Data),
+                    MA5 = new MA(close, 5),
+                    MA10 = new MA(close, 10),
+                    MA20 = new MA(close, 20),
+                    MA30 = new MA(close, 30),
+                    MA55 = new MA(close, 55),
+                    MA60 = new MA(close, 60),
+                    MA120 = new MA(close, 120),
+                    MA250 = new MA(close, 250)
+                };
+            })
+            .ToArray()
+            .AsParallel()
+            .Select(p => new
+            {
+                p.Name,
+                Data = p.Data.Select(p1=>
+                {
+                    var macd = p.MACD.WHICH(p1.Date);
+                    return new
+                    {
+                        p1.Date,
+                        DEA = macd==null ? (double?)null : macd.DEA,
+                        DIF = macd == null ? (double?)null : macd.DIF,
+                        MACD = macd == null ? (double?)null : macd.MACD,
+                        MA5 = p.MA5.WHICH(p1.Date),
+                        MA10 = p.MA10.WHICH(p1.Date),
+                        MA20 = p.MA20.WHICH(p1.Date),
+                        MA30 = p.MA30.WHICH(p1.Date),
+                        MA55 = p.MA55.WHICH(p1.Date),
+                        MA60 = p.MA60.WHICH(p1.Date),
+                        MA120 = p.MA120.WHICH(p1.Date),
+                        MA250 = p.MA250.WHICH(p1.Date)
+                    };
+                })
+                .ToArray()
+            })
+            .ToArray();
+
+            log.Info("Save..");
+            foreach(var r in result.AsParallel())
+            {
+                Save(r.Data, Path.Combine(folder, r.Name + ".csv"));
+            }
+
+            return result;
         }
 
         private static IEnumerable<StockData> BuildMonthlyTimeSeries(IEnumerable<StockData> daily, string folder)
@@ -204,7 +273,7 @@ namespace Screen
         static void screen(stockDB stockDB)
         {
             var dataArray = stockDB.stockData;
-            Console.WriteLine("Scan...");
+            log.Info("Scan...");
             var screen = new Break3Screen();
             var result = new List<string>();
             var counter = 0;
@@ -212,7 +281,7 @@ namespace Screen
             {
                 var screenResult = screen.Do(pair.Name, pair.Data);
 
-                Console.WriteLine("{0}/{1}, {2} --- {3}", Interlocked.Increment(ref counter), dataArray.Count(), pair.Name, screenResult.ErrorMessage);
+                log.Info("{0}/{1}, {2} --- {3}", Interlocked.Increment(ref counter), dataArray.Count(), pair.Name, screenResult.ErrorMessage);
 
                 if (screenResult.Good)
                 {
@@ -220,7 +289,7 @@ namespace Screen
                 }
             }
 
-            Console.WriteLine(string.Join(",", result));
+            log.Info(string.Join(",", result));
             File.WriteAllLines("screen.txt", result);
         }
     }

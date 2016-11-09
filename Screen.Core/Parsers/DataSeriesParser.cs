@@ -7,19 +7,22 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Screen.Mixin;
+using Screen.Utility;
 
 namespace Screen.Parsers
 {
     public class DataSeriesParser
     {
+        static Log log = typeof(DataSeriesParser).Log();
+
         public static IEnumerable<StockData> Parse(string path, DateTime? date = null, string pattern = "*.txt")
         {
             var dt = date ?? DateTime.Today;
 
-            Console.WriteLine("Search files...");
+            log.Info("Search files...");
             var fileArray = Directory.GetFiles(path, pattern);
 
-            Console.WriteLine("Read data...");
+            log.Info("Read data...");
             return fileArray
                 .AsParallel()
                 .Select(file=>ParseFile(file, dt))

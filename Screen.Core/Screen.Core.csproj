@@ -50,6 +50,7 @@
     <Compile Include="Data\TimeSeries.cs" />
     <Compile Include="Mixin\ArrayMixin.cs" />
     <Compile Include="Utility\FinanceUtil.cs" />
+    <Compile Include="Utility\Logging.cs" />
     <Compile Include="Utility\MathUtil.cs" />
     <Compile Include="Indicator\BOTTOM.cs" />
     <Compile Include="Indicator\BREAK3.cs" />
