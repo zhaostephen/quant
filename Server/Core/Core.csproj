@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1BDE39A1-3A03-4C37-8D22-C107965A3CFF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Screen</RootNamespace>
+    <AssemblyName>Screen.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\BREAKBACKSeries.cs" />
+    <Compile Include="Data\BREAKSeries.cs" />
+    <Compile Include="Data\DataPoint.cs" />
+    <Compile Include="Data\DataSeries.cs" />
+    <Compile Include="Data\JAXSeries.cs" />
+    <Compile Include="Data\MACDSeries.cs" />
+    <Compile Include="Data\RefereceData.cs" />
+    <Compile Include="Data\StkDataSeries.cs" />
+    <Compile Include="Data\StockEnum.cs" />
+    <Compile Include="Data\TimeSeries.cs" />
+    <Compile Include="Mixin\ArrayMixin.cs" />
+    <Compile Include="Utility\FinanceUtil.cs" />
+    <Compile Include="Utility\MathUtil.cs" />
+    <Compile Include="Indicator\BOTTOM.cs" />
+    <Compile Include="Indicator\BREAK3.cs" />
+    <Compile Include="Indicator\BREAK_BACK.cs" />
+    <Compile Include="Indicator\CCI.cs" />
+    <Compile Include="Indicator\DMA.cs" />
+    <Compile Include="Indicator\EMA.cs" />
+    <Compile Include="Indicator\JAX.cs" />
+    <Compile Include="Indicator\PEAK.cs" />
+    <Compile Include="Indicator\MA.cs" />
+    <Compile Include="Indicator\MACD.cs" />
+    <Compile Include="Indicator\BREAK.cs" />
+    <Compile Include="Indicator\STATE.cs" />
+    <Compile Include="Mixin\TypeMixin.cs" />
+    <Compile Include="Mixin\StatisticsMixin.cs" />
+    <Compile Include="Mixin\StringMixin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
