@@ -1,9 +1,12 @@
 ﻿using log4net;
 using Screen.Data;
+using Screen.Stat;
 using Screen.Utility;
+using ServiceStack;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Screen
 {
@@ -16,42 +19,32 @@ namespace Screen
             log4net.Config.XmlConfigurator.Configure();
 
             var client = new MktDataClient();
-            var d = client.Query("000001");
-        }
+            log.Info("query market data");
+            var data = client.QueryAll(PeriodEnum.Daily, Sector.shang_hai);
+            log.InfoFormat("total {0}", data.Count());
 
-        private static IEnumerable<object> stat(IEnumerable<StkDataSeries> d, DateTime since)
-        {
-            var results = d.Select(p =>
-            {
-                var current = p.Last();
-                var s = p.Where(p1 => p1.Date >= since);
-                if (!s.Any()) return null;
-
-                var lowest = s.Min(p1 => p1.Low);
-
-                return new
+            log.Info("build stat");
+            var stat = data
+                .Select(series => new statistic(series.Code)
                 {
-                    Name = p.Code,
-                    Date = current.Date,
-                    Open = current.Open,
-                    Close = current.Close,
-                    High = current.High,
-                    Low = current.Low,
-                    CloseEnum = current.CloseEnum,
+                    close_up_percent = new close_up_percent(series, TimeSpan.FromDays(180)).value,
+                    jun_xian_dou_tout = new jun_xian_dou_tout(series).value,
+                    low_to_historical_lowest =  new low_to_historical_lowest(series, new DateTime(2015, 5, 1)).value
+                })
+                .ToArray();
 
-                    Lowest = lowest,
-                    Low2Low = Math.Truncate((current.Low / lowest - 1) * 100)
-                };
-            })
-            .Where(p => p != null);
+            log.Info("save stat");
+            File.WriteAllText("__stat__.csv", stat.ToArray().ToCsv(), Encoding.UTF8);
 
-            var today = results.Max(p => p.Date);
-
-            results = results
-                .Where(p => p.Date == today)//exclude suspending
-                .OrderBy(p => p.Low2Low);
-
-            return results.ToArray();
+            log.Info("screen");
+            var benchmark = 20;
+            var safebenchmark = benchmark * 0.5;
+            var screen = stat
+                .Where(p => p.jun_xian_dou_tout)
+                .Where(p=>p.low_to_historical_lowest < safebenchmark)
+                .OrderBy(p=>p.low_to_historical_lowest)
+                .ToArray();
+            File.WriteAllText("__screen__.csv", screen.ToArray().ToCsv(), Encoding.UTF8);
         }
     }
 }

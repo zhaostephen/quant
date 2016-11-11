@@ -12,6 +12,17 @@ namespace Screen
 {
     public class MktDataClient
     {
+        public IEnumerable<string> Codes()
+        {
+            var path = @"D:\screen\Data";
+            return Directory
+                .GetFiles(path, "*.txt")
+                .Select(Code)
+                .Where(p => !string.IsNullOrEmpty(p))
+                .Distinct()
+                .ToArray();
+        }
+
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
         {
             var file = Path.Combine(PeriodPath(period), code + ".csv");
@@ -39,8 +50,16 @@ namespace Screen
             }
         }
 
+        private string Code(string path)
+        {
+            return Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
+        }
+
         private StkDataSeries QueryFile(string path)
         {
+            if (!File.Exists(path))
+                return null;
+
             var name = Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
             var lines = File.ReadAllLines(path);
 

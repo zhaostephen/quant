@@ -123,7 +123,9 @@
     <Compile Include="..\Core\Utility\MathUtil.cs">
       <Link>Interface\MathUtil.cs</Link>
     </Compile>
+    <Compile Include="Data\Sector.cs" />
     <Compile Include="MktDataClient.cs" />
+    <Compile Include="MktDataClientMixin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
