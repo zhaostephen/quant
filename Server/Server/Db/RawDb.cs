@@ -1,9 +1,8 @@
-﻿using Screen.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
+using Screen.Data;
+using System.IO;
 using System.Text.RegularExpressions;
 using Screen.Mixin;
 using Screen.Utility;
@@ -12,61 +11,52 @@ using ServiceStack;
 
 namespace Screen.Db
 {
-    public class MktDb
+    class RawDb
     {
-        static ILog log = typeof(MktDb).Log();
+        static ILog log = typeof(RawDb).Log();
+
+        public string Code(string path)
+        {
+            return Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
+        }
+
+        public IEnumerable<string> Codes()
+        {
+            var path = @"D:\screen\Data";
+            return Directory
+                .GetFiles(path, "*.txt")
+                .Select(Code)
+                .Where(p => !string.IsNullOrEmpty(p))
+                .Distinct()
+                .ToArray();
+        }
+
+        public StkDataSeries QueryFile(string path)
+        {
+            return Query(path);
+        }
 
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
         {
-            var file = Path.Combine(PeriodPath(period), code + ".csv");
-
-            return Query(file);
+            return Query(PeriodPath(code, period));
         }
+
         public DateTime? LastUpdate(string code, PeriodEnum period = PeriodEnum.Daily)
         {
-            var file = Path.Combine(PeriodPath(period), code + ".csv");
-            return LastUpdate(file);
-        }
-        public void Save(IEnumerable<StkDataSeries> dataset, PeriodEnum period = PeriodEnum.Daily)
-        {
-            var path = PeriodPath(period);
-            foreach (var d in dataset)
-            {
-                Save(d, Path.Combine(path, d.Code + ".csv"));
-            }
+            return LastUpdate(PeriodPath(code, period));
         }
 
-        private void Save(IEnumerable<object> data, string path)
+        private string PeriodPath(string code, PeriodEnum period)
         {
-            while (true)
-            {
-                var dir = Path.GetDirectoryName(path);
-                if (string.IsNullOrEmpty(dir) || Directory.Exists(dir))
-                    break;
-                Directory.CreateDirectory(dir);
-            }
+            var prefix = code.StartsWith("60") ? "SH#" : "SZ#";
+            return Path.Combine(@"D:\screen\Data", prefix + code + ".txt");
+        }
 
-            File.WriteAllText(path, data.ToCsv(), Encoding.UTF8);
-        }
-        private string PeriodPath(PeriodEnum period)
-        {
-            switch (period)
-            {
-                case PeriodEnum.Daily:
-                    return @"D:\screen\Data\daily";
-                case PeriodEnum.Weekly:
-                    return @"D:\screen\Data\week";
-                case PeriodEnum.Monthly:
-                    return @"D:\screen\Data\month";
-                default:
-                    throw new Exception("Unsupported period " + period);
-            }
-        }
         private StkDataSeries Query(string path)
         {
             if (!File.Exists(path)) return null;
 
-            var name = Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
+            var code = Code(path);
             var lines = File.ReadAllLines(path);
 
             var data = lines
@@ -92,8 +82,9 @@ namespace Screen.Db
             if (!data.Any())
                 return null;
 
-            return new StkDataSeries(name, new DataSeries(data.NetPctChange()));
+            return new StkDataSeries(code, new DataSeries(data.NetPctChange()));
         }
+
         private DateTime? LastUpdate(string path)
         {
             if (!File.Exists(path)) return null;
@@ -122,12 +113,5 @@ namespace Screen.Db
 
             return null;
         }
-    }
-
-    public enum PeriodEnum
-    {
-        Daily,
-        Weekly,
-        Monthly
     }
 }

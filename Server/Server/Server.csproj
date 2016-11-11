@@ -65,6 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Db\RawDb.cs" />
     <Compile Include="Mixin\Logging.cs" />
     <Compile Include="Mixin\SeriesMixin.cs" />
     <Compile Include="Db\MktDb.cs" />

@@ -6,6 +6,7 @@ using log4net;
 using Topshelf.FileSystemWatcher;
 using Screen.Db;
 using Screen.Mixin;
+using System.IO;
 
 namespace Screen
 {
@@ -13,39 +14,35 @@ namespace Screen
     {
         static ILog log = typeof(ScreenService).Log();
 
-        readonly FileSystemWatcherConfigurator _fs;
         readonly MktDb _mktdb;
+        readonly RawDb _rawdb;
 
         public ScreenService()
         {
-            _fs = new FileSystemWatcherConfigurator();
             _mktdb = new MktDb();
-        }
-
-        internal void Initialize()
-        {
-            _fs.AddDirectory((cfg) => { cfg.Path = @"D:\screen\Data"; cfg.FileFilter = "*.txt"; cfg.IncludeSubDirectories = false; });
+            _rawdb = new RawDb();
         }
 
         internal void FileChange(TopshelfFileSystemEventArgs e)
         {
-            log.Info("make  | " + e.FullPath);
-
-            var data = _mktdb.Query(e.FullPath);
-            Make(new[] { data });
-
-            log.Info("make complete | " + e.FullPath);
+            var code = _rawdb.Code(e.FullPath);
+            log.InfoFormat("Make {0}", code);
+            Make(code);
         }
 
         internal void Start()
         {
             log.Info("**********START**********");
 
-            log.Info("raw");
-            var dataset = _mktdb.QueryMany(@"D:\screen\Data");
+            log.Info("Query codes");
+            var codes = _rawdb.Codes();
+            log.InfoFormat("GOT, total {0}", codes.Count());
 
-            log.Info("roll");
-            Make(dataset);
+            foreach(var code in codes.AsParallel())
+            {
+                log.InfoFormat("Make {0}", code);
+                Make(code);
+            }
 
             log.Info("**********DONE**********");
         }
@@ -54,21 +51,40 @@ namespace Screen
         {
         }
 
-        private void Make(IEnumerable<StkDataSeries> dataset)
+        private void Make(string code)
         {
-            dataset = dataset.Where(p => p != null).ToArray();
+            var dailyUpdate = _mktdb.LastUpdate(code, PeriodEnum.Daily);
+            var monthlyUpdate = _mktdb.LastUpdate(code, PeriodEnum.Monthly);
+            var weeklyUpdate = _mktdb.LastUpdate(code, PeriodEnum.Weekly);
+            var rawUpdate = _rawdb.LastUpdate(code);
+
+            if (rawUpdate.HasValue
+                && (dailyUpdate.HasValue && dailyUpdate.Value >= rawUpdate.Value)
+                && (monthlyUpdate.HasValue && monthlyUpdate.Value >= rawUpdate.Value)
+                && (weeklyUpdate.HasValue && weeklyUpdate.Value >= rawUpdate.Value))
+            {
+                log.WarnFormat("Ignore {0}, already updated", code);
+                return;
+            }
+
+            var dataset = 
+                new[] { _rawdb.Query(code, PeriodEnum.Daily) }
+                .Where(p => p != null)
+                .ToArray();
+
+            if (!dataset.Any()) return;
 
             log.Info("daily");
             var daily = dataset;
-            _mktdb.SaveMany(daily, @"D:\screen\Data\daily");
+            _mktdb.Save(daily);
 
             log.Info("weekly");
             var weekly = dataset.MakeWeek();
-            _mktdb.SaveMany(weekly, @"D:\screen\Data\week");
+            _mktdb.Save(weekly);
 
             log.Info("monthly");
             var monthly = dataset.MakeMonth();
-            _mktdb.SaveMany(monthly, @"D:\screen\Data\month");
+            _mktdb.Save(monthly);
         }
     }
 }

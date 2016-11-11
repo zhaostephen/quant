@@ -24,11 +24,6 @@ namespace Screen
             return codes.Distinct().Select(p => Query(p, period)).ToArray();
         }
 
-        public IEnumerable<StkDataSeries> QueryAll(PeriodEnum period = PeriodEnum.Daily)
-        {
-            return QueryDirectory(PeriodPath(period));
-        }
-
         private string PeriodPath(PeriodEnum period)
         {
             switch (period)
@@ -44,16 +39,6 @@ namespace Screen
             }
         }
 
-        private IEnumerable<StkDataSeries> QueryDirectory(string path)
-        {
-            var fileArray = Directory.GetFiles(path, "*.txt");
-            return fileArray
-                .AsParallel()
-                .Select(file => QueryFile(file))
-                .Where(p => p != null)
-                .ToArray();
-        }
-
         private StkDataSeries QueryFile(string path)
         {
             var name = Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
@@ -62,8 +47,8 @@ namespace Screen
             var data = lines
                 .Select(p =>
                 {
-                    var splits = p.Split(new[] { '\t', ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d");
+                    var splits = p.Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
                     if (!isDate) return null;
 
                     return new DataPoint

@@ -4,6 +4,7 @@ using Screen.Utility;
 using Topshelf;
 using log4net;
 using Topshelf.HostConfigurators;
+using System.IO;
 
 namespace Screen
 {
@@ -33,35 +34,40 @@ namespace Screen
             }
         }
 
-        static void Go(HostConfigurator x)
+        static void Go(HostConfigurator svchost)
         {
-            x.Service<ScreenService>(
+            svchost.Service<ScreenService>(
                 (s) =>
                 {
-                    svc.Initialize();
-
                     s.ConstructUsing(c => svc);
                     s.WhenStarted(t => t.Start());
                     s.WhenStopped(t => t.Stop());
 
-                    s.WhenFileSystemChanged(cfg => { }, e => svc.FileChange(e));
-                    s.WhenFileSystemCreated(cfg => { }, e => svc.FileChange(e));
-                    s.WhenFileSystemDeleted(cfg => { }, e => { });
+                    s.WhenFileSystemChanged((cfg) =>
+                    {
+                        cfg.AddDirectory((dir) =>
+                        {
+                            dir.Path = @"D:\screen\Data";
+                            dir.IncludeSubDirectories = false;
+                            dir.FileFilter = "*.txt";
+                            dir.NotifyFilters = NotifyFilters.LastWrite;
+                        });
+                    }, e => svc.FileChange(e));
                 });
-            x.SetStartTimeout(TimeSpan.FromSeconds(60));
-            x.SetStopTimeout(TimeSpan.FromSeconds(300));
-            x.StartManually();
+            svchost.SetStartTimeout(TimeSpan.FromSeconds(60));
+            svchost.SetStopTimeout(TimeSpan.FromSeconds(300));
+            svchost.StartManually();
             if (!string.IsNullOrEmpty(cmdLine))
             {
                 if (cmdLine.Contains("install") || cmdLine.Contains("uninstall") || cmdLine.Contains("run"))
                 {
                     log.InfoFormat("Using command line: {0}", cmdLine);
-                    x.ApplyCommandLine(cmdLine);
+                    svchost.ApplyCommandLine(cmdLine);
                 }
             }
-            x.SetDescription(string.Format("{0}({1})", SERVICE_DESC, SERVICE_NAME));
-            x.SetServiceName(SERVICE_NAME);
-            x.UseLog4Net();
+            svchost.SetDescription(string.Format("{0}({1})", SERVICE_DESC, SERVICE_NAME));
+            svchost.SetServiceName(SERVICE_NAME);
+            svchost.UseLog4Net();
         }
     }
 }
