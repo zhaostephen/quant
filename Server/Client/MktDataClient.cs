@@ -1,4 +1,5 @@
-﻿using Screen.Data;
+﻿using Screen.Cfg;
+using Screen.Data;
 using Screen.Mixin;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Screen
     {
         public IEnumerable<string> Codes()
         {
-            var path = @"D:\screen\Data";
+            var path = Configuration.Raw.PATH;
             return Directory
                 .GetFiles(path, "*.txt")
                 .Select(Code)
@@ -25,7 +26,7 @@ namespace Screen
 
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
         {
-            var file = Path.Combine(PeriodPath(period), code + ".csv");
+            var file = Path.Combine(period.Path(LevelEnum.Level1), code + ".csv");
 
             return QueryFile(file);
         }
@@ -33,21 +34,6 @@ namespace Screen
         public IEnumerable<StkDataSeries> Query(IEnumerable<string> codes, PeriodEnum period = PeriodEnum.Daily)
         {
             return codes.Distinct().Select(p => Query(p, period)).ToArray();
-        }
-
-        private string PeriodPath(PeriodEnum period)
-        {
-            switch (period)
-            {
-                case PeriodEnum.Daily:
-                    return @"D:\screen\Data\daily";
-                case PeriodEnum.Weekly:
-                    return @"D:\screen\Data\week";
-                case PeriodEnum.Monthly:
-                    return @"D:\screen\Data\month";
-                default:
-                    throw new Exception("Unsupported period " + period);
-            }
         }
 
         private string Code(string path)
@@ -88,12 +74,5 @@ namespace Screen
 
             return new StkDataSeries(name, new DataSeries(data.NetPctChange()));
         }
-    }
-
-    public enum PeriodEnum
-    {
-        Daily,
-        Weekly,
-        Monthly
     }
 }

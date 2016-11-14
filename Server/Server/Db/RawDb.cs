@@ -8,6 +8,7 @@ using Screen.Mixin;
 using Screen.Utility;
 using log4net;
 using ServiceStack;
+using Screen.Cfg;
 
 namespace Screen.Db
 {
@@ -22,7 +23,7 @@ namespace Screen.Db
 
         public IEnumerable<string> Codes()
         {
-            var path = @"D:\screen\Data";
+            var path = Configuration.Raw.PATH;
             return Directory
                 .GetFiles(path, "*.txt")
                 .Select(Code)
@@ -49,7 +50,7 @@ namespace Screen.Db
         private string PeriodPath(string code, PeriodEnum period)
         {
             var prefix = code.StartsWith("60") ? "SH#" : "SZ#";
-            return Path.Combine(@"D:\screen\Data", prefix + code + ".txt");
+            return Path.Combine(Configuration.Raw.PATH, prefix + code + ".txt");
         }
 
         private StkDataSeries Query(string path)

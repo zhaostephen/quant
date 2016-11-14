@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cfg\Configuration.cs" />
     <Compile Include="Data\BREAKBACKSeries.cs" />
     <Compile Include="Data\BREAKSeries.cs" />
     <Compile Include="Data\DataPoint.cs" />

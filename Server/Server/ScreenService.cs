@@ -8,6 +8,7 @@ using Screen.Db;
 using Screen.Mixin;
 using System.IO;
 using System.Threading;
+using Screen.Cfg;
 
 namespace Screen
 {

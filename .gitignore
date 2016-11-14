@@ -34,4 +34,5 @@ bin
 packages
 *.user
 /Data
+/data
 obj

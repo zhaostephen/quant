@@ -9,6 +9,7 @@ using Screen.Mixin;
 using Screen.Utility;
 using log4net;
 using ServiceStack;
+using Screen.Cfg;
 
 namespace Screen.Db
 {
@@ -16,20 +17,27 @@ namespace Screen.Db
     {
         static ILog log = typeof(MktDb).Log();
 
+        LevelEnum level;
+
+        public MktDb(LevelEnum level = LevelEnum.Level1)
+        {
+            this.level = level;
+        }
+
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
         {
-            var file = Path.Combine(PeriodPath(period), code + ".csv");
+            var file = Path.Combine(period.Path(level), code + ".csv");
 
             return Query(file);
         }
         public DateTime? LastUpdate(string code, PeriodEnum period = PeriodEnum.Daily)
         {
-            var file = Path.Combine(PeriodPath(period), code + ".csv");
+            var file = Path.Combine(period.Path(level), code + ".csv");
             return LastUpdate(file);
         }
         public void Save(IEnumerable<StkDataSeries> dataset, PeriodEnum period = PeriodEnum.Daily)
         {
-            var path = PeriodPath(period);
+            var path = period.Path(level);
             foreach (var d in dataset)
             {
                 Save(d, Path.Combine(path, d.Code + ".csv"));
@@ -48,20 +56,7 @@ namespace Screen.Db
 
             File.WriteAllText(path, data.ToCsv(), Encoding.UTF8);
         }
-        private string PeriodPath(PeriodEnum period)
-        {
-            switch (period)
-            {
-                case PeriodEnum.Daily:
-                    return @"D:\screen\Data\daily";
-                case PeriodEnum.Weekly:
-                    return @"D:\screen\Data\week";
-                case PeriodEnum.Monthly:
-                    return @"D:\screen\Data\month";
-                default:
-                    throw new Exception("Unsupported period " + period);
-            }
-        }
+
         private StkDataSeries Query(string path)
         {
             if (!File.Exists(path)) return null;
@@ -122,12 +117,5 @@ namespace Screen.Db
 
             return null;
         }
-    }
-
-    public enum PeriodEnum
-    {
-        Daily,
-        Weekly,
-        Monthly
     }
 }

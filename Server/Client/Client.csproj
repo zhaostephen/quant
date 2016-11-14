@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Core\Cfg\Configuration.cs">
+      <Link>Interface\Configuration.cs</Link>
+    </Compile>
     <Compile Include="..\Core\Data\BREAKBACKSeries.cs">
       <Link>Interface\BREAKBACKSeries.cs</Link>
     </Compile>
