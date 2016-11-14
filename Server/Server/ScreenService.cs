@@ -7,6 +7,7 @@ using Topshelf.FileSystemWatcher;
 using Screen.Db;
 using Screen.Mixin;
 using System.IO;
+using System.Threading;
 
 namespace Screen
 {
@@ -38,7 +39,7 @@ namespace Screen
             var codes = _rawdb.Codes();
             log.InfoFormat("GOT, total {0}", codes.Count());
 
-            foreach(var code in codes.AsParallel())
+            foreach (var code in codes.AsParallel())
             {
                 log.InfoFormat("Make {0}", code);
                 Make(code);
@@ -76,15 +77,15 @@ namespace Screen
 
             log.Info("daily");
             var daily = dataset;
-            _mktdb.Save(daily);
+            _mktdb.Save(daily, PeriodEnum.Daily);
 
             log.Info("weekly");
             var weekly = dataset.MakeWeek();
-            _mktdb.Save(weekly);
+            _mktdb.Save(weekly, PeriodEnum.Weekly);
 
             log.Info("monthly");
             var monthly = dataset.MakeMonth();
-            _mktdb.Save(monthly);
+            _mktdb.Save(monthly, PeriodEnum.Monthly);
         }
     }
 }
