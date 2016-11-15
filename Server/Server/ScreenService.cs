@@ -9,6 +9,7 @@ using Screen.Mixin;
 using System.IO;
 using System.Threading;
 using Screen.Cfg;
+using System.Threading.Tasks;
 
 namespace Screen
 {
@@ -41,10 +42,10 @@ namespace Screen
             log.InfoFormat("GOT, total {0}", codes.Count());
 
             log.Info("Make days");
-            MakeDays(codes);
+            Task.Factory.StartNew(() => MakeDays(codes));
 
             log.Info("Make minutes");
-            MakeMinutes(codes);
+            Task.Factory.StartNew(() => MakeMinutes(codes)); 
 
             log.Info("**********DONE**********");
         }
@@ -55,18 +56,24 @@ namespace Screen
 
         private void MakeDays(IEnumerable<string> codes)
         {
+            var i = 0;
+            var total = codes.Count();
             foreach (var code in codes.AsParallel())
             {
-                log.InfoFormat("Make days {0}", code);
+                Interlocked.Increment(ref i);
+                log.InfoFormat("{0}/{1} - make days - {2}",i, total , code);
                 Make(code, PeriodEnum.Daily, new[] { PeriodEnum.Daily, PeriodEnum.Weekly, PeriodEnum.Monthly });
             }
         }
 
         private void MakeMinutes(IEnumerable<string> codes)
         {
+            var i = 0;
+            var total = codes.Count();
             foreach (var code in codes.AsParallel())
             {
-                log.InfoFormat("Make minutes {0}", code);
+                Interlocked.Increment(ref i);
+                log.InfoFormat("{0}/{1} - make minutes - {2}", i, total, code);
                 Make(code, PeriodEnum.Min_5, new[] { PeriodEnum.Min_5, PeriodEnum.Min_15, PeriodEnum.Min_30, PeriodEnum.Min_60 });
             }
         }
@@ -89,7 +96,7 @@ namespace Screen
 
             if (!dataset.Any()) return;
 
-            foreach (var following in followings)
+            foreach (var following in followings.AsParallel())
             {
                 log.Info(following);
                 var another = dataset.Make(rawPeriod, following);
