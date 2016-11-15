@@ -85,10 +85,10 @@ namespace Screen.Db
                 }
                 else if(period.Minbase())
                 {
+                    var datetime = string.Format("{0} {1}:{2}", splits[0],splits[1].Substring(0,2), splits[1].Substring(2,2));
                     return new DataPoint
                     {
-                        Date = splits[0].Date(),
-                        Time = splits[1],
+                        Date = datetime.Date(),
                         Open = splits[2].Double(),
                         High = splits[3].Double(),
                         Low = splits[4].Double(),

@@ -40,8 +40,8 @@ namespace Screen
             var codes = _rawdb.Codes();
             log.InfoFormat("GOT, total {0}", codes.Count());
 
-            //log.Info("Make days");
-            //MakeDays(codes);
+            log.Info("Make days");
+            MakeDays(codes);
 
             log.Info("Make minutes");
             MakeMinutes(codes);

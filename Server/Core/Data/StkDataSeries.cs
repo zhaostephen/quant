@@ -68,47 +68,43 @@ namespace Screen.Data
             }
             else if(basePeriod == PeriodEnum.Min_5)
             {
-                switch (basePeriod)
+                switch (followingPeriod)
                 {
                     case PeriodEnum.Min_15:
-                        return RollMinutes((d) => Tuple.Create(d.AddMinutes(-15), d.AddMinutes(15)));
+                        return RollMinutes(15);
                     case PeriodEnum.Min_30:
-                        return RollMinutes((d) => Tuple.Create(d.AddMinutes(-30), d.AddMinutes(30)));
+                        return RollMinutes(30);
                     case PeriodEnum.Min_60:
-                        return RollMinutes((d) => Tuple.Create(d.AddMinutes(-60), d.AddMinutes(60)));
+                        return RollMinutes(60);
                 }
             }
 
-            throw new Exception("Unsupported");
+            throw new Exception("Unsupported " + basePeriod + " ==> " + followingPeriod);
         }
 
-        private StkDataSeries RollMinutes(Func<DateTime, Tuple<DateTime, DateTime>> func)
+        private StkDataSeries RollMinutes(int minutes)
         {
-            var ranges = this.Select(p1 => func(p1.Date)).Distinct().ToArray();
-            var r = ranges.Select(p1 =>
+            var am = new DateTime(2010, 1, 1, 9, 30, 0);
+            var pm = new DateTime(2010, 1, 1, 13, 00, 0);
+            var count = 120 / minutes;
+            var amRange = Enumerable.Range(1, count)
+                .Select(p => Tuple.Create(am.AddMinutes((p - 1) * minutes), am.AddMinutes(minutes * p)));
+            var pmRange = Enumerable.Range(1, count)
+                .Select(p => Tuple.Create(pm.AddMinutes((p - 1) * minutes), pm.AddMinutes(minutes * p)));
+            var range = amRange.Concat(pmRange).ToArray();
+
+            return Roll((d) =>
             {
-                var range = Section(p1.Item2, p1.Item1);
-                if (!range.Any()) return null;
+                var time = new DateTime(2010, 1, 1, d.Hour, d.Minute, 0);
 
-                return new
-                {
-                    Date = range.Last().Date,
-                    Time = range.Last().Time,
-                    Open = range.First().Open,
-                    Close = range.Last().Close,
-                    High = range.Max(p2 => p2.High),
-                    Low = range.Max(p2 => p2.Low)
-                };
-            })
-            .Where(p1 => p1 != null)
-            .ToArray();
+                var r = range.SingleOrDefault(p => time > p.Item1 && time <= p.Item2);
 
-            var points = r.Select(p1 => new DataPoint { Close = p1.Close, Date = p1.Date, Time = p1.Time, Open = p1.Open, High = p1.High, Low = p1.Low })
-                          .ToArray()
-                          .NetPctChange();
-            var series = new DataSeries(points);
+                if (r == null) return null;
 
-            return new StkDataSeries(Code, series);
+                return Tuple.Create(
+                    new DateTime(d.Year, d.Month, d.Day, r.Item1.Hour, r.Item1.Minute, r.Item1.Second).AddSeconds(1),
+                    new DateTime(d.Year, d.Month, d.Day, r.Item2.Hour, r.Item2.Minute, r.Item2.Second));
+            });
         }
 
         private StkDataSeries Roll(Func<DateTime, Tuple<DateTime, DateTime>> func)
@@ -116,6 +112,7 @@ namespace Screen.Data
             var dateRanges = this.Select(p1 => func(p1.Date)).Distinct().ToArray();
             var r = dateRanges.Select(p1 =>
             {
+                if (p1 == null) return null;
                 var range = Section(p1.Item2, p1.Item1);
                 if (!range.Any()) return null;
 
