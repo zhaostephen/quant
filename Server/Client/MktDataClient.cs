@@ -15,7 +15,7 @@ namespace Screen
     {
         public IEnumerable<string> Codes()
         {
-            var path = Configuration.Raw.PATH;
+            var path = Configuration.Raw.daily;
             return Directory
                 .GetFiles(path, "*.txt")
                 .Select(Code)

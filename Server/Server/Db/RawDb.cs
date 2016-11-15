@@ -20,10 +20,9 @@ namespace Screen.Db
         {
             return Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
         }
-
         public IEnumerable<string> Codes()
         {
-            var path = Configuration.Raw.PATH;
+            var path = Configuration.Raw.daily;
             return Directory
                 .GetFiles(path, "*.txt")
                 .Select(Code)
@@ -31,51 +30,15 @@ namespace Screen.Db
                 .Distinct()
                 .ToArray();
         }
-
-        public StkDataSeries QueryFile(string path)
+        public StkDataSeries Query(string code, PeriodEnum period)
         {
-            return Query(path);
-        }
+            var path = PeriodPath(code, period);
 
-        public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
-        {
-            return Query(PeriodPath(code, period));
-        }
-
-        public DateTime? LastUpdate(string code, PeriodEnum period = PeriodEnum.Daily)
-        {
-            return LastUpdate(PeriodPath(code, period));
-        }
-
-        private string PeriodPath(string code, PeriodEnum period)
-        {
-            var prefix = code.StartsWith("60") ? "SH#" : "SZ#";
-            return Path.Combine(Configuration.Raw.PATH, prefix + code + ".txt");
-        }
-
-        private StkDataSeries Query(string path)
-        {
             if (!File.Exists(path)) return null;
-
-            var code = Code(path);
             var lines = File.ReadAllLines(path);
 
             var data = lines
-                .Select(p =>
-                {
-                    var splits = p.Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
-                    if (!isDate) return null;
-
-                    return new DataPoint
-                    {
-                        Date = splits[0].Date(),
-                        Open = splits[1].Double(),
-                        High = splits[2].Double(),
-                        Low = splits[3].Double(),
-                        Close = splits[4].Double()
-                    };
-                })
+                .Select(line => ParseData(line, period))
                 .Where(p => p != null && p.Open > 0d && p.Close > 0d)
                 .OrderBy(p => p.Date)
                 .ToArray();
@@ -85,9 +48,9 @@ namespace Screen.Db
 
             return new StkDataSeries(code, new DataSeries(data.NetPctChange()));
         }
-
-        private DateTime? LastUpdate(string path)
+        public DateTime? LastUpdate(string code, PeriodEnum period)
         {
+            var path = PeriodPath(code, period);
             if (!File.Exists(path)) return null;
 
             var name = Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
@@ -95,11 +58,23 @@ namespace Screen.Db
 
             for (var i = lines.Length - 1; i >= 0; --i)
             {
-                var splits = lines[i].Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
-                if (isDate)
+                var p = ParseData(lines[i], period);
+                if (p != null && p.Open > 0d && p.Close > 0d)
+                    return p.Date;
+            }
+
+            return null;
+        }
+
+        private DataPoint ParseData(string line, PeriodEnum period)
+        {
+            var splits = line.Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
+            if (isDate)
+            {
+                if (period.Daybase())
                 {
-                    var p = new DataPoint
+                    return new DataPoint
                     {
                         Date = splits[0].Date(),
                         Open = splits[1].Double(),
@@ -107,12 +82,27 @@ namespace Screen.Db
                         Low = splits[3].Double(),
                         Close = splits[4].Double()
                     };
-                    if (p.Open > 0d && p.Close > 0d)
-                        return p.Date;
+                }
+                else if(period.Minbase())
+                {
+                    return new DataPoint
+                    {
+                        Date = splits[0].Date(),
+                        Time = splits[1],
+                        Open = splits[2].Double(),
+                        High = splits[3].Double(),
+                        Low = splits[4].Double(),
+                        Close = splits[5].Double()
+                    };
                 }
             }
 
             return null;
+        }
+        private string PeriodPath(string code, PeriodEnum period)
+        {
+            var prefix = code.StartsWith("60") ? "SH#" : "SZ#";
+            return Path.Combine(period.Path(LevelEnum.Raw), prefix + code + ".txt");
         }
     }
 }

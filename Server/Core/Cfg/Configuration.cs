@@ -10,7 +10,7 @@ namespace Screen.Cfg
     {
         public class Raw
         {
-            public const string PATH = @"D:\screen\data\raw";
+            const string PATH = @"D:\screen\data\raw";
 
             public const string min_5 = PATH + @"\5mins";
             public const string min_15 = PATH + @"\15mins";
@@ -23,7 +23,7 @@ namespace Screen.Cfg
 
         public class level1
         {
-            public const string PATH = @"D:\screen\data\level1";
+            const string PATH = @"D:\screen\data\level1";
 
             public const string min_5 = PATH + @"\5mins";
             public const string min_15 = PATH + @"\15mins";
@@ -87,6 +87,16 @@ namespace Screen.Cfg
         public static string Path(this PeriodEnum period, LevelEnum level)
         {
             return PATH[level][period];
+        }
+
+        public static bool Daybase(this PeriodEnum period)
+        {
+            return period >= PeriodEnum.Daily;
+        }
+
+        public static bool Minbase(this PeriodEnum period)
+        {
+            return period < PeriodEnum.Daily;
         }
 
         public static string Path(this LevelEnum level, PeriodEnum period)

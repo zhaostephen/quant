@@ -1,4 +1,5 @@
-﻿using Screen.Data;
+﻿using Screen.Cfg;
+using Screen.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,14 +101,9 @@ namespace Screen.Mixin
             Console.WriteLine("-----------------------------------------------------------------");
         }
 
-        public static IEnumerable<StkDataSeries> MakeMonth(this IEnumerable<StkDataSeries> @this)
+        public static IEnumerable<StkDataSeries> Make(this IEnumerable<StkDataSeries> @this, PeriodEnum basePeriod, PeriodEnum followingPeriod)
         {
-            return @this.Select(p => p.MakeMonth()).ToArray();
-        }
-
-        public static IEnumerable<StkDataSeries> MakeWeek(this IEnumerable<StkDataSeries> @this)
-        {
-            return @this.Select(p => p.MakeWeek()).ToArray();
+            return @this.Select(p => p.Make(basePeriod, followingPeriod)).ToArray();
         }
     }
 }

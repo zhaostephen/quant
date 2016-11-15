@@ -9,6 +9,7 @@ namespace Screen.Data
     public class DataPoint
     {
         public DateTime Date { get; set; }
+        public string Time { get; set; }
         public double Open { get; set; }
         public double Close { get; set; }
         public double High { get; set; }

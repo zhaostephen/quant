@@ -27,9 +27,9 @@ namespace Screen
 
         internal void FileChange(TopshelfFileSystemEventArgs e)
         {
-            var code = _rawdb.Code(e.FullPath);
-            log.InfoFormat("Make {0}", code);
-            Make(code);
+            //var code = _rawdb.Code(e.FullPath);
+            //log.InfoFormat("Make {0}", code);
+            //Make(code);
         }
 
         internal void Start()
@@ -40,11 +40,11 @@ namespace Screen
             var codes = _rawdb.Codes();
             log.InfoFormat("GOT, total {0}", codes.Count());
 
-            foreach (var code in codes.AsParallel())
-            {
-                log.InfoFormat("Make {0}", code);
-                Make(code);
-            }
+            //log.Info("Make days");
+            //MakeDays(codes);
+
+            log.Info("Make minutes");
+            MakeMinutes(codes);
 
             log.Info("**********DONE**********");
         }
@@ -53,40 +53,48 @@ namespace Screen
         {
         }
 
-        private void Make(string code)
+        private void MakeDays(IEnumerable<string> codes)
         {
-            var dailyUpdate = _mktdb.LastUpdate(code, PeriodEnum.Daily);
-            var monthlyUpdate = _mktdb.LastUpdate(code, PeriodEnum.Monthly);
-            var weeklyUpdate = _mktdb.LastUpdate(code, PeriodEnum.Weekly);
-            var rawUpdate = _rawdb.LastUpdate(code);
+            foreach (var code in codes.AsParallel())
+            {
+                log.InfoFormat("Make days {0}", code);
+                Make(code, PeriodEnum.Daily, new[] { PeriodEnum.Daily, PeriodEnum.Weekly, PeriodEnum.Monthly });
+            }
+        }
 
-            if (rawUpdate.HasValue
-                && (dailyUpdate.HasValue && dailyUpdate.Value >= rawUpdate.Value)
-                && (monthlyUpdate.HasValue && monthlyUpdate.Value >= rawUpdate.Value)
-                && (weeklyUpdate.HasValue && weeklyUpdate.Value >= rawUpdate.Value))
+        private void MakeMinutes(IEnumerable<string> codes)
+        {
+            foreach (var code in codes.AsParallel())
+            {
+                log.InfoFormat("Make minutes {0}", code);
+                Make(code, PeriodEnum.Min_5, new[] { PeriodEnum.Min_5, PeriodEnum.Min_15, PeriodEnum.Min_30, PeriodEnum.Min_60 });
+            }
+        }
+
+        private void Make(string code, PeriodEnum rawPeriod, PeriodEnum[] followings)
+        {
+            var rawUpdate = _rawdb.LastUpdate(code, rawPeriod);
+            var followingUpdates = followings.Select(p => _mktdb.LastUpdate(code, p)).ToArray();
+
+            if (rawUpdate.HasValue && followingUpdates.All(p => p.HasValue && p.Value >= rawUpdate.Value))
             {
                 log.WarnFormat("Ignore {0}, already updated", code);
                 return;
             }
 
             var dataset = 
-                new[] { _rawdb.Query(code, PeriodEnum.Daily) }
+                new[] { _rawdb.Query(code, rawPeriod) }
                 .Where(p => p != null)
                 .ToArray();
 
             if (!dataset.Any()) return;
 
-            log.Info("daily");
-            var daily = dataset;
-            _mktdb.Save(daily, PeriodEnum.Daily);
-
-            log.Info("weekly");
-            var weekly = dataset.MakeWeek();
-            _mktdb.Save(weekly, PeriodEnum.Weekly);
-
-            log.Info("monthly");
-            var monthly = dataset.MakeMonth();
-            _mktdb.Save(monthly, PeriodEnum.Monthly);
+            foreach (var following in followings)
+            {
+                log.Info(following);
+                var another = dataset.Make(rawPeriod, following);
+                _mktdb.Save(another, following);
+            }
         }
     }
 }

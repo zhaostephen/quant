@@ -1,4 +1,5 @@
-﻿using Screen.Indicator;
+﻿using Screen.Cfg;
+using Screen.Indicator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,19 +50,68 @@ namespace Screen.Data
             }
         }
 
-        public StkDataSeries MakeMonth()
+        public StkDataSeries Make(PeriodEnum basePeriod, PeriodEnum followingPeriod)
         {
-            return Roll((d) => Tuple.Create(
-                new DateTime(d.Year, d.Month, 1),
-                new DateTime(d.Year, d.Month, 1).AddMonths(1).AddDays(-1)));
+            if (basePeriod == followingPeriod) return this;
+
+            if(basePeriod == PeriodEnum.Daily)
+            {
+                switch (followingPeriod)
+                {
+                    case PeriodEnum.Weekly:
+                        return Roll((d) => Tuple.Create(d.AddDays(DayOfWeek.Monday - d.DayOfWeek), d.AddDays(DayOfWeek.Friday - d.DayOfWeek)));
+                    case PeriodEnum.Monthly:
+                        return Roll((d) => Tuple.Create(
+                            new DateTime(d.Year, d.Month, 1),
+                            new DateTime(d.Year, d.Month, 1).AddMonths(1).AddDays(-1)));
+                }
+            }
+            else if(basePeriod == PeriodEnum.Min_5)
+            {
+                switch (basePeriod)
+                {
+                    case PeriodEnum.Min_15:
+                        return RollMinutes((d) => Tuple.Create(d.AddMinutes(-15), d.AddMinutes(15)));
+                    case PeriodEnum.Min_30:
+                        return RollMinutes((d) => Tuple.Create(d.AddMinutes(-30), d.AddMinutes(30)));
+                    case PeriodEnum.Min_60:
+                        return RollMinutes((d) => Tuple.Create(d.AddMinutes(-60), d.AddMinutes(60)));
+                }
+            }
+
+            throw new Exception("Unsupported");
         }
 
-        public StkDataSeries MakeWeek()
+        private StkDataSeries RollMinutes(Func<DateTime, Tuple<DateTime, DateTime>> func)
         {
-            return Roll((d) => Tuple.Create(d.AddDays(DayOfWeek.Monday - d.DayOfWeek), d.AddDays(DayOfWeek.Friday - d.DayOfWeek)));
+            var ranges = this.Select(p1 => func(p1.Date)).Distinct().ToArray();
+            var r = ranges.Select(p1 =>
+            {
+                var range = Section(p1.Item2, p1.Item1);
+                if (!range.Any()) return null;
+
+                return new
+                {
+                    Date = range.Last().Date,
+                    Time = range.Last().Time,
+                    Open = range.First().Open,
+                    Close = range.Last().Close,
+                    High = range.Max(p2 => p2.High),
+                    Low = range.Max(p2 => p2.Low)
+                };
+            })
+            .Where(p1 => p1 != null)
+            .ToArray();
+
+            var points = r.Select(p1 => new DataPoint { Close = p1.Close, Date = p1.Date, Time = p1.Time, Open = p1.Open, High = p1.High, Low = p1.Low })
+                          .ToArray()
+                          .NetPctChange();
+            var series = new DataSeries(points);
+
+            return new StkDataSeries(Code, series);
         }
 
-        public StkDataSeries Roll(Func<DateTime, Tuple<DateTime, DateTime>> func)
+        private StkDataSeries Roll(Func<DateTime, Tuple<DateTime, DateTime>> func)
         {
             var dateRanges = this.Select(p1 => func(p1.Date)).Distinct().ToArray();
             var r = dateRanges.Select(p1 =>
