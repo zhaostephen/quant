@@ -1,4 +1,5 @@
 ﻿using log4net;
+using Screen.Cfg;
 using Screen.Data;
 using Screen.Stat;
 using Screen.Utility;
@@ -20,7 +21,7 @@ namespace Screen
 
             var client = new MktDataClient();
             log.Info("query market data");
-            var data = client.QueryAll(PeriodEnum.Daily, Sector.shang_hai);
+            var data = client.QueryAll(PeriodEnum.Daily, Sector.any);
             log.InfoFormat("total {0}", data.Count());
 
             log.Info("build stat");
