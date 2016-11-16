@@ -21,7 +21,7 @@ namespace Screen
 
             var client = new MktDataClient();
             log.Info("query market data");
-            var data = client.QueryAll(PeriodEnum.Daily, Sector.any);
+            var data = client.QueryAll(PeriodEnum.Daily, Sector.zheng_jin_chi_gu);
             log.InfoFormat("total {0}", data.Count());
 
             log.Info("build stat");
@@ -39,7 +39,7 @@ namespace Screen
 
             log.Info("screen");
             var benchmark = 20;
-            var safebenchmark = benchmark * 0.5;
+            var safebenchmark = benchmark * 1;
             var screen = stat
                 .Where(p => p.jun_xian_dou_tout)
                 .Where(p=>p.low_to_historical_lowest < safebenchmark)
