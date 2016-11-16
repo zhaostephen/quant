@@ -13,5 +13,6 @@ namespace Screen.Data
         public const string sheng_zheng = "深证";
         public const string chuang_ye_ban = "创业板";
         public const string zhong_xiao_ban = "中小板";
+        public const string zheng_jin_chi_gu = "证金持股";
     }
 }
