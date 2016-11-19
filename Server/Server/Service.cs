@@ -74,7 +74,7 @@ namespace Trade
             {
                 Interlocked.Increment(ref i);
                 log.InfoFormat("{0}/{1} - make minutes - {2}", i, total, code);
-                Make(code, PeriodEnum.Min_5, new[] { PeriodEnum.Min_5, PeriodEnum.Min_15, PeriodEnum.Min_30, PeriodEnum.Min_60 });
+                Make(code, PeriodEnum.Min5, new[] { PeriodEnum.Min5, PeriodEnum.Min15, PeriodEnum.Min30, PeriodEnum.Min60 });
             }
         }
 

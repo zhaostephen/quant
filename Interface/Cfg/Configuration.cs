@@ -37,10 +37,10 @@ namespace Trade.Cfg
 
     public enum PeriodEnum
     {
-        Min_5,
-        Min_15,
-        Min_30,
-        Min_60,
+        Min5,
+        Min15,
+        Min30,
+        Min60,
         Daily,
         Weekly,
         Monthly
@@ -60,10 +60,10 @@ namespace Trade.Cfg
                 LevelEnum.Raw,
                 new Dictionary<PeriodEnum, string>()
                 {
-                    { PeriodEnum.Min_5, Configuration.Raw.min_5 },
-                    { PeriodEnum.Min_15, Configuration.Raw.min_15 },
-                    { PeriodEnum.Min_30, Configuration.Raw.min_30 },
-                    { PeriodEnum.Min_60, Configuration.Raw.min_60 },
+                    { PeriodEnum.Min5, Configuration.Raw.min_5 },
+                    { PeriodEnum.Min15, Configuration.Raw.min_15 },
+                    { PeriodEnum.Min30, Configuration.Raw.min_30 },
+                    { PeriodEnum.Min60, Configuration.Raw.min_60 },
                     { PeriodEnum.Daily, Configuration.Raw.daily },
                     { PeriodEnum.Monthly, Configuration.Raw.month },
                     { PeriodEnum.Weekly, Configuration.Raw.week }
@@ -73,10 +73,10 @@ namespace Trade.Cfg
                 LevelEnum.Level1,
                 new Dictionary<PeriodEnum, string>()
                 {
-                    { PeriodEnum.Min_5, Configuration.level1.min_5 },
-                    { PeriodEnum.Min_15, Configuration.level1.min_15 },
-                    { PeriodEnum.Min_30, Configuration.level1.min_30 },
-                    { PeriodEnum.Min_60, Configuration.level1.min_60 },
+                    { PeriodEnum.Min5, Configuration.level1.min_5 },
+                    { PeriodEnum.Min15, Configuration.level1.min_15 },
+                    { PeriodEnum.Min30, Configuration.level1.min_30 },
+                    { PeriodEnum.Min60, Configuration.level1.min_60 },
                     { PeriodEnum.Daily, Configuration.level1.daily },
                     { PeriodEnum.Monthly, Configuration.level1.month },
                     { PeriodEnum.Weekly, Configuration.level1.week }

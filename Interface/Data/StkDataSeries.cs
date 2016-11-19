@@ -66,15 +66,15 @@ namespace Trade.Data
                             new DateTime(d.Year, d.Month, 1).AddMonths(1).AddDays(-1)));
                 }
             }
-            else if(basePeriod == PeriodEnum.Min_5)
+            else if(basePeriod == PeriodEnum.Min5)
             {
                 switch (followingPeriod)
                 {
-                    case PeriodEnum.Min_15:
+                    case PeriodEnum.Min15:
                         return RollMinutes(15);
-                    case PeriodEnum.Min_30:
+                    case PeriodEnum.Min30:
                         return RollMinutes(30);
-                    case PeriodEnum.Min_60:
+                    case PeriodEnum.Min60:
                         return RollMinutes(60);
                 }
             }
