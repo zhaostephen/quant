@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>0df75efd-9a54-4504-a6e7-c634e9047318</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Interace</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Cfg\Configuration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\BREAKBACKSeries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\BREAKSeries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\DataPoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\DataSeries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Fundamental.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\JAXSeries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\MACDSeries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\StkDataSeries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\StockEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\TimeSeries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\BOTTOM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\BREAK.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\BREAK3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\BREAK_BACK.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\CCI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\DMA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\EMA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\JAX.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\MA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\MACD.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\PEAK.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\STATE.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mixin\ArrayMixin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mixin\StatisticsMixin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mixin\StringMixin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mixin\TypeMixin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\FinanceUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\MathUtil.cs" />
+  </ItemGroup>
+</Project>

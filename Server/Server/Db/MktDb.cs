@@ -13,7 +13,7 @@ using Screen.Cfg;
 
 namespace Screen.Db
 {
-    public class MktDb
+    public partial class MktDb
     {
         static ILog log = typeof(MktDb).Log();
 

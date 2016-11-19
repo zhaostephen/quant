@@ -1,15 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{DEE47F97-B2FB-4B49-A484-3B8E3DBA3CCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{1BDE39A1-3A03-4C37-8D22-C107965A3CFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Interface", "..\Interface\Interface.shproj", "{0DF75EFD-9A54-4504-A6E7-C634E9047318}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Interface\Interace.projitems*{0df75efd-9a54-4504-a6e7-c634e9047318}*SharedItemsImports = 13
+		..\Interface\Interace.projitems*{1bde39a1-3a03-4c37-8d22-c107965a3cff}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -23,10 +27,6 @@ Global
 		{1BDE39A1-3A03-4C37-8D22-C107965A3CFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BDE39A1-3A03-4C37-8D22-C107965A3CFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BDE39A1-3A03-4C37-8D22-C107965A3CFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

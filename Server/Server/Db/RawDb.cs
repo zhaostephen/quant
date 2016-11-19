@@ -12,7 +12,7 @@ using Screen.Cfg;
 
 namespace Screen.Db
 {
-    class RawDb
+    partial class RawDb
     {
         static ILog log = typeof(RawDb).Log();
 

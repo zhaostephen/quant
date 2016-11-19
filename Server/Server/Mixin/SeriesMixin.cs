@@ -23,19 +23,6 @@ namespace Screen.Mixin
             Console.WriteLine("-----------------------------------------------------------------");
         }
 
-        public static void Dump(this IEnumerable<Stock> @this)
-        {
-            const string format = "{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}";
-            Console.WriteLine(format, "代码", "名称", "流通股本", "细分行业", "地区");
-            foreach (var i in @this)
-            {
-                Console.WriteLine(format, i.代码, i.名称, i.流通股本, i.细分行业, i.地区);
-            }
-            Console.WriteLine("-----------------------------------------------------------------");
-            Console.WriteLine("total {0}", @this.Count());
-            Console.WriteLine("-----------------------------------------------------------------");
-        }
-
         public static void Dump(this TimeSeries<double> @this)
         {
             const string format = "{0,-15:MM/dd/yyyy}{1,-10}";
