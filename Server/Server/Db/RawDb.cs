@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Screen.Data;
+using Trade.Data;
 using System.IO;
 using System.Text.RegularExpressions;
-using Screen.Mixin;
-using Screen.Utility;
+using Trade.Mixin;
+using Trade.Utility;
 using log4net;
 using ServiceStack;
-using Screen.Cfg;
+using Trade.Cfg;
 
-namespace Screen.Db
+namespace Trade.Db
 {
     partial class RawDb
     {

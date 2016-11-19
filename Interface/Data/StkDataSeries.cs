@@ -1,10 +1,10 @@
-﻿using Screen.Cfg;
-using Screen.Indicator;
+﻿using Trade.Cfg;
+using Trade.Indicator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Screen.Data
+namespace Trade.Data
 {
     public class StkDataSeries : DataSeries
     {

@@ -7,7 +7,7 @@
     <ProjectGuid>{DEE47F97-B2FB-4B49-A484-3B8E3DBA3CCD}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Screen</RootNamespace>
+    <RootNamespace>Trade</RootNamespace>
     <AssemblyName>server</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -73,7 +73,7 @@
     <Compile Include="Db\MktDb.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenService.cs" />
+    <Compile Include="Service.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

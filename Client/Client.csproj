@@ -7,8 +7,8 @@
     <ProjectGuid>{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Screen</RootNamespace>
-    <AssemblyName>Screen.Client</AssemblyName>
+    <RootNamespace>Trade</RootNamespace>
+    <AssemblyName>Trade.Client</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

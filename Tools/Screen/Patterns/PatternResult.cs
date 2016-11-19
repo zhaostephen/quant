@@ -1,4 +1,4 @@
-﻿namespace Screen.Patterns
+﻿namespace Trade.Patterns
 {
     public class PatternResult
     {

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Screen.Cfg
+namespace Trade.Cfg
 {
     public class Configuration
     {
         public class Raw
         {
-            const string PATH = @"D:\screen\data\raw";
+            const string PATH = @"D:\trade\data\raw";
 
             public const string min_5 = PATH + @"\5mins";
             public const string min_15 = PATH + @"\15mins";
@@ -23,7 +23,7 @@ namespace Screen.Cfg
 
         public class level1
         {
-            const string PATH = @"D:\screen\data\level1";
+            const string PATH = @"D:\trade\data\level1";
 
             public const string min_5 = PATH + @"\5mins";
             public const string min_15 = PATH + @"\15mins";

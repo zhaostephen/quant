@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Screen.Mixin
+namespace Trade.Mixin
 {
     public static class StringMixin
     {

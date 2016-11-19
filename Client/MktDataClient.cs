@@ -1,6 +1,6 @@
-﻿using Screen.Cfg;
-using Screen.Data;
-using Screen.Mixin;
+﻿using Trade.Cfg;
+using Trade.Data;
+using Trade.Mixin;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Screen
+namespace Trade
 {
     public class MktDataClient
     {

@@ -1,11 +1,11 @@
-﻿using Screen.Data;
+﻿using Trade.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Screen.Indicator
+namespace Trade.Indicator
 {
     public class EMA : TimeSeries<double>
     {

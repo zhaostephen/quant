@@ -1,15 +1,15 @@
 ﻿using log4net;
-using Screen.Cfg;
-using Screen.Data;
-using Screen.Stat;
-using Screen.Utility;
+using Trade.Cfg;
+using Trade.Data;
+using Trade.Stat;
+using Trade.Utility;
 using ServiceStack;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Screen
+namespace Trade
 {
     class Program
     {

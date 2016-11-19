@@ -1,12 +1,12 @@
-﻿using Screen.Cfg;
-using Screen.Data;
+﻿using Trade.Cfg;
+using Trade.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Screen
+namespace Trade
 {
     public static class MktDataClientMixin
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Screen.Utility
+namespace Trade.Utility
 {
     public static class LogMixin
     {

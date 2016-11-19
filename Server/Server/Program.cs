@@ -1,21 +1,21 @@
 ﻿using System;
 using Topshelf.FileSystemWatcher;
-using Screen.Utility;
+using Trade.Utility;
 using Topshelf;
 using log4net;
 using Topshelf.HostConfigurators;
 using System.IO;
 
-namespace Screen
+namespace Trade
 {
     class Program
     {
         static ILog log = typeof(Program).Log();
 
-        static string SERVICE_NAME = "ScreenService";
-        static string SERVICE_DESC = "Screen Service";
+        static string SERVICE_NAME = "TradeService";
+        static string SERVICE_DESC = "Trade Service";
         static string cmdLine = string.Empty;
-        static ScreenService svc;
+        static Service svc;
 
         static void Main(string[] args)
         {
@@ -25,7 +25,7 @@ namespace Screen
             if (args != null && args.Length > 0)
                 cmdLine = string.Join(" ", args);
 
-            svc = new ScreenService();
+            svc = new Service();
 
             var code = HostFactory.Run(Go);
             if (code != TopshelfExitCode.Ok)
@@ -36,23 +36,12 @@ namespace Screen
 
         static void Go(HostConfigurator svchost)
         {
-            svchost.Service<ScreenService>(
+            svchost.Service<Service>(
                 (s) =>
                 {
                     s.ConstructUsing(c => svc);
                     s.WhenStarted(t => t.Start());
                     s.WhenStopped(t => t.Stop());
-
-                    s.WhenFileSystemChanged((cfg) =>
-                    {
-                        cfg.AddDirectory((dir) =>
-                        {
-                            dir.Path = @"D:\screen\Data";
-                            dir.IncludeSubDirectories = false;
-                            dir.FileFilter = "*.txt";
-                            dir.NotifyFilters = NotifyFilters.LastWrite;
-                        });
-                    }, e => svc.FileChange(e));
                 });
             svchost.SetStartTimeout(TimeSpan.FromSeconds(60));
             svchost.SetStopTimeout(TimeSpan.FromSeconds(300));

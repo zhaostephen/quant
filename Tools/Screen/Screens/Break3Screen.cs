@@ -1,12 +1,12 @@
-﻿using Screen.Data;
-using Screen.Indicator;
+﻿using Trade.Data;
+using Trade.Indicator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Screen.Screens
+namespace Trade.Screens
 {
     public class Break3Screen : Screen
     {

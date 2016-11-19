@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Screen.Mixin;
+using Trade.Mixin;
 
-namespace Screen.Utility
+namespace Trade.Utility
 {
     public static class MathUtil
     {

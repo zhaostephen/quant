@@ -7,7 +7,7 @@
     <ProjectGuid>{819907C5-1222-4409-8B1C-356EFB783C0C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Screen.Stat</RootNamespace>
+    <RootNamespace>Trade.Stat</RootNamespace>
     <AssemblyName>Statistics</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -1,11 +1,11 @@
-﻿using Screen.Data;
+﻿using Trade.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Screen.Stat
+namespace Trade.Stat
 {
     public class close_up_percent : statistic_value<double?>
     {
