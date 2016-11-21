@@ -26,7 +26,7 @@ namespace Trade.Db
                 Directory.CreateDirectory(dir);
             }
 
-            File.WriteAllText(Path.Combine(path, "fundamental.csv"), data.ToCsv(), Encoding.UTF8);
+            File.WriteAllText(path, data.ToCsv(), Encoding.UTF8);
         }
     }
 }
