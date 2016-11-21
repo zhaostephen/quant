@@ -13,6 +13,12 @@ namespace Trade
 {
     public class MktDataClient
     {
+        public Fundamental QueryFundamental(string code)
+        {
+            return QueryFundamentals()
+                .FirstOrDefault(p=>string.Equals(p.代码, code, StringComparison.InvariantCultureIgnoreCase));
+        }
+
         public IEnumerable<Fundamental> QueryFundamentals()
         {
             var path = Configuration.level1.fundamental;
@@ -42,13 +48,7 @@ namespace Trade
 
         public IEnumerable<string> Codes()
         {
-            var path = Configuration.Raw.daily;
-            return Directory
-                .GetFiles(path, "*.txt")
-                .Select(Code)
-                .Where(p => !string.IsNullOrEmpty(p))
-                .Distinct()
-                .ToArray();
+            return QueryFundamentals().Select(p => p.代码).Distinct().ToArray();
         }
 
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)

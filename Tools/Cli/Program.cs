@@ -65,6 +65,13 @@ namespace Trade.Cli
                     query = client.Query(parameters.code, PeriodEnum.Monthly)
                         .Where(p => p.Date == parameters.date || !parameters.date.HasValue);
                     break;
+                case "basic":
+                case "fundamental":
+                    {
+                        var f = new[] { client.QueryFundamental(parameters.code) }.Where(p => p != null).ToArray();
+                        log.Info(f.ToCsv());
+                        return;
+                    }
             }
             if (query != null && !string.IsNullOrEmpty(parameters.field))
             {
