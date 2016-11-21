@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Fundamental.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\JAXSeries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MACDSeries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Sector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\StkDataSeries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\StockEnum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\TimeSeries.cs" />

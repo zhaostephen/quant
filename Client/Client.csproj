@@ -39,7 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Sector.cs" />
     <Compile Include="MktDataClient.cs" />
     <Compile Include="MktDataClientMixin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

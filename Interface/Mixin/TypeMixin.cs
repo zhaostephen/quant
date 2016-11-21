@@ -46,5 +46,15 @@ namespace Trade.Mixin
             }
             return @this >= minInclusive && @this <= maxInclusive;
         }
+
+        public static T SetPropertyValue<T>(this T obj, string property, object value)
+        {
+            var p = typeof(T).GetProperty(property);
+            if(p != null)
+            {
+                p.SetValue(obj, value);
+            }
+            return obj;
+        }
     }
 }

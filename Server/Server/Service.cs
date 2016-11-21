@@ -37,6 +37,11 @@ namespace Trade
         {
             log.Info("**********START**********");
 
+            log.Info("Make fundamental");
+            var fundamentals = _rawdb.QueryFundamentals();
+            _mktdb.Save(fundamentals);
+            log.InfoFormat("GOT, total {0}", fundamentals.Count());
+
             log.Info("Query codes");
             var codes = _rawdb.Codes();
             log.InfoFormat("GOT, total {0}", codes.Count());
@@ -45,7 +50,7 @@ namespace Trade
             Task.Factory.StartNew(() => MakeDays(codes));
 
             log.Info("Make minutes");
-            Task.Factory.StartNew(() => MakeMinutes(codes)); 
+            Task.Factory.StartNew(() => MakeMinutes(codes));
 
             log.Info("**********DONE**********");
         }

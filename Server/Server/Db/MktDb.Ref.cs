@@ -15,5 +15,18 @@ namespace Trade.Db
 {
     public partial class MktDb
     {
+        internal void Save(IEnumerable<Fundamental> data)
+        {
+            var path = Configuration.level1.fundamental;
+            while (true)
+            {
+                var dir = Path.GetDirectoryName(path);
+                if (string.IsNullOrEmpty(dir) || Directory.Exists(dir))
+                    break;
+                Directory.CreateDirectory(dir);
+            }
+
+            File.WriteAllText(Path.Combine(path, "fundamental.csv"), data.ToCsv(), Encoding.UTF8);
+        }
     }
 }

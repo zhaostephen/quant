@@ -13,6 +13,33 @@ namespace Trade
 {
     public class MktDataClient
     {
+        public IEnumerable<Fundamental> QueryFundamentals()
+        {
+            var path = Configuration.level1.fundamental;
+            if (!File.Exists(path))
+                return Enumerable.Empty<Fundamental>();
+
+            var lines = File.ReadAllLines(path);
+            if(!lines.Any())
+                return Enumerable.Empty<Fundamental>();
+
+            var columns = lines[0].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            return lines
+                .Skip(1)
+                .Select(p =>
+                {
+                    var splits = p.Split(new[] {',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var f = new Fundamental();
+                    for(var i  = 0; i < columns.Length; ++i)
+                    {
+                        var column = columns[i];
+                        f.SetPropertyValue(column, splits[i]);
+                    }
+                    return f;
+                })
+                .ToArray();
+        }
+
         public IEnumerable<string> Codes()
         {
             var path = Configuration.Raw.daily;
