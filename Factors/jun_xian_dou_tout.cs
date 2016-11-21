@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trade.Stat
+namespace Trade.Factors
 {
-    public class jun_xian_dou_tout : statistic_value<bool>
+    public class jun_xian_dou_tout : factor<bool>
     {
         public jun_xian_dou_tout(StkDataSeries series)
             : base(series)

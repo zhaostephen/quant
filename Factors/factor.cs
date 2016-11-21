@@ -5,34 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trade.Stat
+namespace Trade.Factors
 {
-    public class statistic
+    public class factorset
     {
         public string code { get; set; }
         public double? low_to_historical_lowest { get; set; }
         public double? close_up_percent { get; set; }
         public bool jun_xian_dou_tout { get; set; }
 
-        public statistic()
+        public factorset()
         {
 
         }
-        public statistic(string code)
+        public factorset(string code)
         {
             this.code = code;
         }
     }
 
-    public class statistic_series : List<statistic>
-    {
-    }
-
-    public class statistic_value<T>
+    public class factor<T>
     {
         public T value { get; set; }
 
-        public statistic_value(StkDataSeries series)
+        public factor(StkDataSeries series)
         {
         }
 

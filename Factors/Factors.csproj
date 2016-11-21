@@ -7,8 +7,8 @@
     <ProjectGuid>{819907C5-1222-4409-8B1C-356EFB783C0C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Trade.Stat</RootNamespace>
-    <AssemblyName>Statistics</AssemblyName>
+    <RootNamespace>Trade.Factors</RootNamespace>
+    <AssemblyName>factors</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,10 +44,10 @@
     <Compile Include="close_up_percent.cs" />
     <Compile Include="low_to_historical_lowest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="statistic.cs" />
+    <Compile Include="factor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Client\Client.csproj">
+    <ProjectReference Include="..\Client\Client.csproj">
       <Project>{fddb42e9-f7d2-4b8a-b219-98e65a05a038}</Project>
       <Name>Client</Name>
     </ProjectReference>

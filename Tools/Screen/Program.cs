@@ -1,13 +1,13 @@
 ﻿using log4net;
 using Trade.Cfg;
 using Trade.Data;
-using Trade.Stat;
 using Trade.Utility;
 using ServiceStack;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Trade.Factors;
 
 namespace Trade
 {
@@ -26,7 +26,7 @@ namespace Trade
 
             log.Info("build stat");
             var stat = data
-                .Select(series => new statistic(series.Code)
+                .Select(series => new factorset(series.Code)
                 {
                     close_up_percent = new close_up_percent(series, TimeSpan.FromDays(180)).value,
                     jun_xian_dou_tout = new jun_xian_dou_tout(series).value,

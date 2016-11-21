@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trade.Stat
+namespace Trade.Factors
 {
-    public class close_up_percent : statistic_value<double?>
+    public class close_up_percent : factor<double?>
     {
         public close_up_percent(StkDataSeries series, TimeSpan cross)
             : this(series, DateTime.Today - cross)

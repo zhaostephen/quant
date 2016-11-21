@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trade.Stat
+namespace Trade.Factors
 {
-    public class low_to_historical_lowest : statistic_value<double?>
+    public class low_to_historical_lowest : factor<double?>
     {
         public low_to_historical_lowest(StkDataSeries series, DateTime since)
             : base(series)
