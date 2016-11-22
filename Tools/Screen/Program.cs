@@ -59,7 +59,7 @@ namespace Trade
                         s.收阳百分比,
                         s.低点反弹高度,
                         s.均线多头,
-
+                        买入卖出 = BuyOrSell(s.代码) ? "买入" : "卖出",
                         b.市盈率,
                         b.总市值,
                         b.所属行业,
@@ -70,6 +70,19 @@ namespace Trade
                     };
 
             File.WriteAllText("__screen__.csv", q.ToArray().ToCsv(), Encoding.UTF8);
+        }
+
+        static bool BuyOrSell(string code)
+        {
+            var client = new MktDataClient();
+
+            var Min15 = client.Query(code, PeriodEnum.Min15);
+            var Min30 = client.Query(code, PeriodEnum.Min30);
+            var Min60 = client.Query(code, PeriodEnum.Min60);
+
+            return Min15.Last().MACD >= 0 &&
+                Min30.Last().MACD >= 0 &&
+                Min60.Last().MACD >= 0;
         }
     }
 }
