@@ -21,7 +21,7 @@ namespace Trade
 
             var client = new MktDataClient();
             log.Info("query market data");
-            var data = client.QueryAll(PeriodEnum.Daily, Sector.zheng_jin_chi_gu);
+            var data = client.QueryAll(PeriodEnum.Daily, Sector.any);
             log.InfoFormat("total {0}", data.Count());
 
             log.Info("build stat");
@@ -34,8 +34,8 @@ namespace Trade
                 })
                 .ToArray();
 
-            log.Info("save stat");
-            File.WriteAllText("__stat__.csv", stat.ToArray().ToCsv(), Encoding.UTF8);
+            //log.Info("save stat");
+            //File.WriteAllText("__stat__.csv", stat.ToArray().ToCsv(), Encoding.UTF8);
 
             log.Info("screen");
             var benchmark = 20;
