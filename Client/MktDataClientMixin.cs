@@ -12,7 +12,7 @@ namespace Trade
     {
         public static IEnumerable<StkDataSeries> QueryAll(this MktDataClient client, PeriodEnum period = PeriodEnum.Daily, string sector = null)
         {
-            var codes = client.Codes().Where(code => InSector(code, sector)).ToArray();
+            var codes = client.Codes(sector).ToArray();
             var results = codes
                 .AsParallel()
                 .Select(code => client.Query(code, period))
@@ -21,23 +21,23 @@ namespace Trade
             return results;
         }
 
-        public static IEnumerable<string> CodesInSector(string sector)
+        public static IEnumerable<string> Codes(this MktDataClient client, string sector = Sector.any)
         {
-            var client = new MktDataClient();
-            return client.Codes().Where(code => InSector(code, sector)).ToArray();
+            return client.QueryFundamentals().Where(p => InSector(p, sector)).Select(p => p.代码).Distinct().ToArray();
         }
 
-        static bool InSector(string code, string sector)
+        static bool InSector(Fundamental f, string sector)
         {
+            var code = f.代码;
             if (string.IsNullOrEmpty(sector)) return true;
 
             switch (sector)
             {
-                case Sector.shang_hai: return code.StartsWith("60");
-                case Sector.sheng_zheng: return code.StartsWith("30") || code.StartsWith("00");
-                case Sector.chuang_ye_ban: return code.StartsWith("30");
-                case Sector.zhong_xiao_ban: return code.StartsWith("00");
-                case Sector.zheng_jin_chi_gu:
+                case Sector.上证: return code.StartsWith("60");
+                case Sector.深证: return code.StartsWith("30") || code.StartsWith("00");
+                case Sector.创业板: return code.StartsWith("30");
+                case Sector.中小板: return code.StartsWith("00");
+                case Sector.证金持股:
                     {
                         var codes = new string[]
                         {
@@ -445,7 +445,7 @@ namespace Trade
                         return codes.Contains(code);
                     }
                 default:
-                    throw new NotSupportedException(sector);
+                    return f.所属行业 == sector;
             }
         }
     }

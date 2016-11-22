@@ -57,11 +57,6 @@ namespace Trade
                 .ToArray();
         }
 
-        public IEnumerable<string> Codes()
-        {
-            return QueryFundamentals().Select(p => p.代码).Distinct().ToArray();
-        }
-
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
         {
             var file = Path.Combine(period.Path(LevelEnum.Level1), code + ".csv");
