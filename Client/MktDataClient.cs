@@ -19,6 +19,17 @@ namespace Trade
                 .FirstOrDefault(p=>string.Equals(p.代码, code, StringComparison.InvariantCultureIgnoreCase));
         }
 
+        public IEnumerable<Fundamental> QueryFundamentals(IEnumerable<string> codes)
+        {
+            var set = QueryFundamentals();
+
+            var q = from f in set
+                    join c in codes on f.代码 equals c
+                    select f;
+
+            return q.ToArray();
+        }
+
         public IEnumerable<Fundamental> QueryFundamentals()
         {
             var path = Configuration.level1.fundamental;

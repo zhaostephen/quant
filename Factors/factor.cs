@@ -9,10 +9,10 @@ namespace Trade.Factors
 {
     public class factorset
     {
-        public string code { get; set; }
-        public double? low_to_historical_lowest { get; set; }
-        public double? close_up_percent { get; set; }
-        public bool jun_xian_dou_tout { get; set; }
+        public string 代码{ get; set; }
+        public double? 低点反弹高度 { get; set; }
+        public double? 收阳百分比 { get; set; }
+        public bool 均线多头 { get; set; }
 
         public factorset()
         {
@@ -20,7 +20,7 @@ namespace Trade.Factors
         }
         public factorset(string code)
         {
-            this.code = code;
+            this.代码 = code;
         }
     }
 

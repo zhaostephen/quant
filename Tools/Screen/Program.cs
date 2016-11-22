@@ -20,6 +20,7 @@ namespace Trade
             log4net.Config.XmlConfigurator.Configure();
 
             var client = new MktDataClient();
+
             log.Info("query market data");
             var data = client.QueryAll(PeriodEnum.Daily, Sector.any);
             log.InfoFormat("total {0}", data.Count());
@@ -28,9 +29,9 @@ namespace Trade
             var stat = data
                 .Select(series => new factorset(series.Code)
                 {
-                    close_up_percent = new close_up_percent(series, TimeSpan.FromDays(180)).value,
-                    jun_xian_dou_tout = new jun_xian_dou_tout(series).value,
-                    low_to_historical_lowest =  new low_to_historical_lowest(series, new DateTime(2015, 5, 1)).value
+                    收阳百分比 = new close_up_percent(series, TimeSpan.FromDays(180)).value,
+                    均线多头 = new jun_xian_dou_tout(series).value,
+                    低点反弹高度 =  new low_to_historical_lowest(series, new DateTime(2015, 5, 1)).value
                 })
                 .ToArray();
 
@@ -40,12 +41,35 @@ namespace Trade
             log.Info("screen");
             var benchmark = 20;
             var safebenchmark = benchmark * 1;
-            var screen = stat
-                .Where(p => p.jun_xian_dou_tout)
-                .Where(p=>p.low_to_historical_lowest < safebenchmark)
-                .OrderBy(p=>p.low_to_historical_lowest)
+
+            stat = stat
+                .Where(p => p.均线多头)
+                .Where(p=>p.低点反弹高度 < safebenchmark)
+                .OrderBy(p=>p.低点反弹高度)
                 .ToArray();
-            File.WriteAllText("__screen__.csv", screen.ToArray().ToCsv(), Encoding.UTF8);
+
+            var basics = client.QueryFundamentals(stat.Select(p => p.代码).Distinct().ToArray());
+
+            var q = from s in stat
+                    join b in basics on s.代码 equals b.代码
+                    select new
+                    {
+                        s.代码,
+                        b.名称,
+                        s.收阳百分比,
+                        s.低点反弹高度,
+                        s.均线多头,
+
+                        b.市盈率,
+                        b.总市值,
+                        b.所属行业,
+                        b.流通市值,
+                        b.营业总收入同比,
+                        b.销售毛利率,
+                        b.净利润同比
+                    };
+
+            File.WriteAllText("__screen__.csv", q.ToArray().ToCsv(), Encoding.UTF8);
         }
     }
 }
