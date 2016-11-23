@@ -11,6 +11,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Interface", "..\Interface\I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "..\Client\Client.csproj", "{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indexing", "Indexing\Indexing.csproj", "{2FA4A1BE-5547-47E2-97BE-3636C711E5BE}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\Interface\Interace.projitems*{0df75efd-9a54-4504-a6e7-c634e9047318}*SharedItemsImports = 13
@@ -34,6 +36,10 @@ Global
 		{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FA4A1BE-5547-47E2-97BE-3636C711E5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FA4A1BE-5547-47E2-97BE-3636C711E5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FA4A1BE-5547-47E2-97BE-3636C711E5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FA4A1BE-5547-47E2-97BE-3636C711E5BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

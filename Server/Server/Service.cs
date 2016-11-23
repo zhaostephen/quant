@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using System;
 using Interace.Idx;
 using Interace.Mixin;
-using Trade.Services;
 
 namespace Trade
 {
@@ -23,7 +22,6 @@ namespace Trade
 
         readonly MktDb _mktdb;
         readonly RawDb _rawdb;
-        readonly IdxService _idxService;
         Index _mktIndex;
         Index _rawIndex;
 
@@ -31,7 +29,6 @@ namespace Trade
         {
             _mktdb = new MktDb();
             _rawdb = new RawDb();
-            _idxService = new IdxService(_rawdb, _mktdb);
         }
 
         internal void FileChange(TopshelfFileSystemEventArgs e)
@@ -65,9 +62,6 @@ namespace Trade
             var t2 = Task.Factory.StartNew(() => MakeMinutes(codes));
 
             Task.WaitAll(new[] { t1, t2 });
-
-            log.Info("Build index");
-            _idxService.Build(codes);
 
             log.Info("**********DONE**********");
         }
