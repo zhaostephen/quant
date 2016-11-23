@@ -12,6 +12,7 @@ using Trade.Cfg;
 using System.Threading.Tasks;
 using System;
 using Interace.Idx;
+using Trade.Services;
 
 namespace Trade
 {
@@ -21,11 +22,13 @@ namespace Trade
 
         readonly MktDb _mktdb;
         readonly RawDb _rawdb;
+        readonly IdxService _idxService;
 
         public Service()
         {
             _mktdb = new MktDb();
             _rawdb = new RawDb();
+            _idxService = new IdxService(_rawdb, _mktdb);
         }
 
         internal void FileChange(TopshelfFileSystemEventArgs e)
@@ -49,53 +52,15 @@ namespace Trade
             log.InfoFormat("GOT, total {0}", codes.Count());
 
             log.Info("Build index");
-            BuildIndex(codes);
+            _idxService.Build(codes);
 
-            log.Info("Make days");
-            Task.Factory.StartNew(() => MakeDays(codes));
+            //log.Info("Make days");
+            //Task.Factory.StartNew(() => MakeDays(codes));
 
-            log.Info("Make minutes");
-            Task.Factory.StartNew(() => MakeMinutes(codes));
+            //log.Info("Make minutes");
+            //Task.Factory.StartNew(() => MakeMinutes(codes));
 
             log.Info("**********DONE**********");
-        }
-
-        private void BuildIndex(IEnumerable<string> codes)
-        {
-            var periods = new[]
-            {
-                PeriodEnum.Daily, PeriodEnum.Weekly, PeriodEnum.Monthly, PeriodEnum.Min5, PeriodEnum.Min15, PeriodEnum.Min30, PeriodEnum.Min60
-            };
-
-            log.Info("build raw index");
-            var rawIndx = new Interace.Idx.Index();
-            rawIndx.LastUpdate = BuildLastUpdateIndex(codes, periods, (code, period)=>_rawdb.LastUpdate(code, period));
-            _rawdb.SaveIdx(rawIndx);
-
-            log.Info("build mkt index");
-            var mktIndx = new Interace.Idx.Index();
-            mktIndx.LastUpdate = BuildLastUpdateIndex(codes, periods, (code, period) => _mktdb.LastUpdate(code, period));
-            _mktdb.SaveIdx(mktIndx);
-        }
-
-        private static LastUpdateIdx[] BuildLastUpdateIndex(IEnumerable<string> codes, PeriodEnum[] periods, Func<string,PeriodEnum, DateTime?> get)
-        {
-            return codes.AsParallel()
-                .SelectMany(code =>
-                    periods.AsParallel().Select(period =>
-                    {
-                        var dt = get(code, period);
-                        if (dt == null) return null;
-                        return new LastUpdateIdx()
-                        {
-                            Code = code,
-                            Period = period.ToString(),
-                            Date = dt.Value.ToString("yyyy-MM-dd")
-                        };
-                    })
-                        .ToArray())
-                .Where(p => p != null)
-                .ToArray();
         }
 
         internal void Stop()

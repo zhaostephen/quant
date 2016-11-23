@@ -54,9 +54,7 @@ namespace Trade.Db
             var path = PeriodPath(code, period);
             if (!File.Exists(path)) return null;
 
-            var name = Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
             var lines = File.ReadAllLines(path);
-
             for (var i = lines.Length - 1; i >= 0; --i)
             {
                 var p = ParseData(lines[i], period);
