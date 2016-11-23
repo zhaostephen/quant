@@ -21,11 +21,10 @@ namespace Trade
         {
             log4net.Config.XmlConfigurator.Configure();
 
-            string cmdLine = string.Empty;
             if (args != null && args.Length > 0)
                 cmdLine = string.Join(" ", args);
 
-            svc = new Service();
+            svc = new Service(args);
 
             var code = HostFactory.Run(Go);
             if (code != TopshelfExitCode.Ok)
