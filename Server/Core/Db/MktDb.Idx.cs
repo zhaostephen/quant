@@ -43,29 +43,26 @@ namespace Trade.Db
         {
             if (!File.Exists(path)) return null;
 
-            var name = Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
-            var lines = File.ReadAllLines(path);
+            DateTime? dt = null;
 
-            for (var i = lines.Length - 1; i >= 0; --i)
+            using (var reader = new StreamReader(path))
             {
-                var splits = lines[i].Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
-                if (isDate)
+                var offset = Math.Min(reader.BaseStream.Length, 512);
+                reader.BaseStream.Seek(offset * -1, SeekOrigin.End);
+
+                while (!reader.EndOfStream)
                 {
-                    var p = new DataPoint
+                    var splits = reader.ReadLine().Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (splits.Any())
                     {
-                        Date = splits[0].Date(),
-                        Open = splits[1].Double(),
-                        High = splits[2].Double(),
-                        Low = splits[3].Double(),
-                        Close = splits[4].Double()
-                    };
-                    if (p.Open > 0d && p.Close > 0d)
-                        return p.Date;
+                        var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
+                        if (isDate)
+                            dt = splits[0].Date();
+                    }
                 }
             }
 
-            return null;
+            return dt;
         }
     }
 }

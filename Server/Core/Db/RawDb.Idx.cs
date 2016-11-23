@@ -40,15 +40,26 @@ namespace Trade.Db
             var path = PeriodPath(code, period);
             if (!File.Exists(path)) return null;
 
-            var lines = File.ReadAllLines(path);
-            for (var i = lines.Length - 1; i >= 0; --i)
+            DateTime? dt = null;
+
+            using (var reader = new StreamReader(path))
             {
-                var p = ParseData(lines[i], period);
-                if (p != null && p.Open > 0d && p.Close > 0d)
-                    return p.Date;
+                var offset = Math.Min(reader.BaseStream.Length, 512);
+                reader.BaseStream.Seek(offset * -1, SeekOrigin.End);
+
+                while (!reader.EndOfStream)
+                {
+                    var splits = reader.ReadLine().Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (splits.Any())
+                    {
+                        var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
+                        if (isDate)
+                            dt = splits[0].Date();
+                    }
+                }
             }
 
-            return null;
+            return dt;
         }
     }
 }
