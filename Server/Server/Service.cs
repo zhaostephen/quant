@@ -66,6 +66,9 @@ namespace Trade
 
             Task.WaitAll(new[] { t1, t2 });
 
+            log.Info("Build index");
+            _idxService.Build(codes);
+
             log.Info("**********DONE**********");
         }
 
@@ -121,9 +124,6 @@ namespace Trade
                 var another = dataset.Make(rawPeriod, following);
                 _mktdb.Save(another, following);
             }
-
-            log.Info("Build index");
-            _idxService.Build(new[] { code });
         }
     }
 }

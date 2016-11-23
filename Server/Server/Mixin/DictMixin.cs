@@ -39,7 +39,7 @@ namespace Trade.Mixin
                     if (@this.ContainsKey(p.Key))
                         Merge(@this[p.Key], p.Value);
                     else
-                        @this[p.Key] = new Dictionary<string, string>();
+                        @this[p.Key] = p.Value;
                 }
             }
             return @this;

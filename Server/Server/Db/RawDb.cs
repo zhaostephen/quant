@@ -100,7 +100,7 @@ namespace Trade.Db
         }
         private string PeriodPath(string code, PeriodEnum period)
         {
-            var prefix = code.StartsWith("60") ? "SH#" : "SZ#";
+            var prefix = code.StartsWith("60") || code.StartsWith("88") ? "SH#" : "SZ#";
             return Path.Combine(period.Path(LevelEnum.Raw), prefix + code + ".txt");
         }
     }
