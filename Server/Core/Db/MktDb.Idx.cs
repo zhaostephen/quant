@@ -24,6 +24,15 @@ namespace Trade.Db
             File.WriteAllText(path, rawIndx.LastUpdate.ToCsv(), Encoding.UTF8);
         }
 
+        public void UpdateIdx(Interace.Idx.Index index)
+        {
+            var i = GetIdx();
+
+            var path = Path.Combine(Configuration.level1.index.EnsurePathCreated(), "last-update.csv");
+
+            File.WriteAllText(path, i.LastUpdate.ToCsv(), Encoding.UTF8);
+        }
+
         public Interace.Idx.Index GetIdx()
         {
             var path = Path.Combine(Configuration.level1.index.EnsurePathCreated(), "last-update.csv");
