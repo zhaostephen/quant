@@ -51,14 +51,13 @@ namespace Trade
             var codes = _rawdb.Codes();
             log.InfoFormat("GOT, total {0}", codes.Count());
 
-            log.Info("Build index");
-            _idxService.Build(codes);
+            log.Info("Make days");
+            var t1 = Task.Factory.StartNew(() => MakeDays(codes));
 
-            //log.Info("Make days");
-            //Task.Factory.StartNew(() => MakeDays(codes));
+            log.Info("Make minutes");
+            var t2 = Task.Factory.StartNew(() => MakeMinutes(codes));
 
-            //log.Info("Make minutes");
-            //Task.Factory.StartNew(() => MakeMinutes(codes));
+            Task.WaitAll(new[] { t1, t2 });
 
             log.Info("**********DONE**********");
         }
