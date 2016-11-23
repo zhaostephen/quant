@@ -24,11 +24,13 @@ namespace Trade
         readonly RawDb _rawdb;
         Index _mktIndex;
         Index _rawIndex;
+        CancellationTokenSource _cancel;
 
         public Service()
         {
             _mktdb = new MktDb();
             _rawdb = new RawDb();
+            _cancel = new CancellationTokenSource();
         }
 
         internal void Start()
@@ -54,13 +56,21 @@ namespace Trade
             log.Info("Make minutes");
             var t2 = Task.Factory.StartNew(() => MakeMinutes(codes));
 
-            Task.WaitAll(new[] { t1, t2 });
+            try
+            {
+                Task.WaitAll(new[] { t1, t2 }, _cancel.Token);
+            }
+            catch(OperationCanceledException)
+            {
+                log.Warn("Cancelled");
+            }
 
             log.Info("**********DONE**********");
         }
 
         internal void Stop()
         {
+            _cancel.Cancel(false);
         }
 
         private void MakeDays(IEnumerable<string> codes)
