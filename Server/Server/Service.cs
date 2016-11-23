@@ -83,8 +83,6 @@ namespace Trade
                 log.InfoFormat("{0}/{1} - make days - {2}",i, total , code);
                 Make(code, PeriodEnum.Daily, new[] { PeriodEnum.Daily, PeriodEnum.Weekly, PeriodEnum.Monthly });
             }
-
-            //_mktdb.SaveIdx(_mktIndex);
         }
 
         private void MakeMinutes(IEnumerable<string> codes)
@@ -97,8 +95,6 @@ namespace Trade
                 log.InfoFormat("{0}/{1} - make minutes - {2}", i, total, code);
                 Make(code, PeriodEnum.Min5, new[] { PeriodEnum.Min5, PeriodEnum.Min15, PeriodEnum.Min30, PeriodEnum.Min60 });
             }
-
-            //_mktdb.SaveIdx(_mktIndex);
         }
 
         private void Make(string code, PeriodEnum rawPeriod, PeriodEnum[] followings)
@@ -128,22 +124,6 @@ namespace Trade
                 log.Info(following);
                 var another = dataset.Make(rawPeriod, following);
                 _mktdb.Save(another, following);
-
-                if (another.Any() && another.Last().Any())
-                {
-                    var idx = new Index
-                    {
-                        LastUpdate = new[]
-                        {
-                        new LastUpdateIdx
-                        {
-                            Code = code,
-                            Period = following.ToString(),
-                            Date = another.Last().Last().Date.ToString("yyyy-MM-dd")
-                        }
-                    }};
-                    _mktIndex.Update(idx);
-                }
             }
         }
     }
