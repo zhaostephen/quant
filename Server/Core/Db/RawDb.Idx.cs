@@ -17,7 +17,7 @@ using Interace.Idx;
 
 namespace Trade.Db
 {
-    partial class RawDb
+    public partial class RawDb
     {
         public void SaveIdx(Interace.Idx.Index rawIndx)
         {

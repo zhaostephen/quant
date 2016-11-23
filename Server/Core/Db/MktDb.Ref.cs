@@ -15,7 +15,7 @@ namespace Trade.Db
 {
     public partial class MktDb
     {
-        internal void Save(IEnumerable<Fundamental> data)
+        public void Save(IEnumerable<Fundamental> data)
         {
             var path = Configuration.level1.fundamental;
             while (true)

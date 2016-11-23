@@ -1,19 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Trade.Data;
 using Trade.Utility;
 using log4net;
-using Topshelf.FileSystemWatcher;
 using Trade.Db;
-using Trade.Mixin;
-using System.IO;
-using System.Threading;
 using Trade.Cfg;
-using System.Threading.Tasks;
 using System;
 using Interace.Idx;
-using Interace.Mixin;
-using Trade.Services;
 
 namespace Trade
 {
@@ -23,20 +15,11 @@ namespace Trade
 
         readonly MktDb _mktdb;
         readonly RawDb _rawdb;
-        readonly IdxService _idxService;
 
         public Service()
         {
             _mktdb = new MktDb();
             _rawdb = new RawDb();
-            _idxService = new IdxService(_rawdb, _mktdb);
-        }
-
-        internal void FileChange(TopshelfFileSystemEventArgs e)
-        {
-            //var code = _rawdb.Code(e.FullPath);
-            //log.InfoFormat("Make {0}", code);
-            //Make(code);
         }
 
         internal void Start()
@@ -53,13 +36,50 @@ namespace Trade
             log.InfoFormat("GOT, total {0}", codes.Count());
 
             log.Info("Build index");
-            _idxService.Build(codes);
+            Build(codes);
 
             log.Info("**********DONE**********");
         }
 
         internal void Stop()
         {
+        }
+
+        private void Build(IEnumerable<string> codes)
+        {
+            log.Info("build raw index");
+            var rawIndx = new Interace.Idx.Index();
+            rawIndx.LastUpdate = BuildLastUpdateIndex(codes,
+                new[] { PeriodEnum.Daily, PeriodEnum.Min5 },
+                (code, period) => _rawdb.LastUpdate(code, period));
+            _rawdb.SaveIdx(rawIndx);
+
+            log.Info("build mkt index");
+            var mktIndx = new Interace.Idx.Index();
+            mktIndx.LastUpdate = BuildLastUpdateIndex(codes,
+                new[] { PeriodEnum.Daily, PeriodEnum.Weekly, PeriodEnum.Monthly, PeriodEnum.Min5, PeriodEnum.Min15, PeriodEnum.Min30, PeriodEnum.Min60 },
+                (code, period) => _mktdb.LastUpdate(code, period));
+            _mktdb.SaveIdx(mktIndx);
+        }
+
+        private static LastUpdateIdx[] BuildLastUpdateIndex(IEnumerable<string> codes, PeriodEnum[] periods, Func<string, PeriodEnum, DateTime?> get)
+        {
+            return codes.AsParallel()
+                .SelectMany(code =>
+                    periods.AsParallel().Select(period =>
+                    {
+                        var dt = get(code, period);
+                        if (dt == null) return null;
+                        return new LastUpdateIdx()
+                        {
+                            Code = code,
+                            Period = period.ToString(),
+                            Date = dt.Value.ToString("yyyy-MM-dd")
+                        };
+                    })
+                        .ToArray())
+                .Where(p => p != null)
+                .ToArray();
         }
     }
 }

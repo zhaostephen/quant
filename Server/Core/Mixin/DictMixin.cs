@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Trade.Mixin
 {
-    static class DictMixin
+    public static class DictMixin
     {
         public static string select(this Dictionary<string, Dictionary<string, string>> @this, string k1, params string[] k2s)
         {

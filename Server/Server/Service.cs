@@ -31,13 +31,6 @@ namespace Trade
             _rawdb = new RawDb();
         }
 
-        internal void FileChange(TopshelfFileSystemEventArgs e)
-        {
-            //var code = _rawdb.Code(e.FullPath);
-            //log.InfoFormat("Make {0}", code);
-            //Make(code);
-        }
-
         internal void Start()
         {
             log.Info("**********START**********");

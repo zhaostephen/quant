@@ -13,7 +13,7 @@ using Interace.Idx;
 
 namespace Trade.Db
 {
-    partial class RawDb
+    public partial class RawDb
     {
         static ILog log = typeof(RawDb).Log();
 

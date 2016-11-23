@@ -14,7 +14,7 @@ using System.Data;
 
 namespace Trade.Db
 {
-    partial class RawDb
+    public partial class RawDb
     {
         public IEnumerable<Fundamental> QueryFundamentals()
         {
