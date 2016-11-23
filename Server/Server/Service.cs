@@ -103,7 +103,11 @@ namespace Trade
                 .Where(p => p != null)
                 .ToArray();
 
-            if (!dataset.Any()) return;
+            if (!dataset.Any())
+            {
+                log.WarnFormat("empty data set {0}", code);
+                return;
+            }
 
             foreach (var following in followings.AsParallel())
             {
