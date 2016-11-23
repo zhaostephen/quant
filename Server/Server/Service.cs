@@ -59,6 +59,9 @@ namespace Trade
 
             Task.WaitAll(new[] { t1, t2 });
 
+            log.Info("Build index");
+            _idxService.Build(codes);
+
             log.Info("**********DONE**********");
         }
 
