@@ -12,6 +12,7 @@ using Trade.Cfg;
 using System.Threading.Tasks;
 using System;
 using Interace.Idx;
+using Interace.Mixin;
 using Trade.Services;
 
 namespace Trade
@@ -23,6 +24,8 @@ namespace Trade
         readonly MktDb _mktdb;
         readonly RawDb _rawdb;
         readonly IdxService _idxService;
+        Index _mktIndex;
+        Index _rawIndex;
 
         public Service()
         {
@@ -51,6 +54,10 @@ namespace Trade
             var codes = _rawdb.Codes();
             log.InfoFormat("GOT, total {0}", codes.Count());
 
+            log.Info("Query index");
+            _mktIndex = _mktdb.GetIdx();
+            _rawIndex = _rawdb.GetIdx();
+
             log.Info("Make days");
             var t1 = Task.Factory.StartNew(() => MakeDays(codes));
 
@@ -58,9 +65,6 @@ namespace Trade
             var t2 = Task.Factory.StartNew(() => MakeMinutes(codes));
 
             Task.WaitAll(new[] { t1, t2 });
-
-            log.Info("Build index");
-            _idxService.Build(codes);
 
             log.Info("**********DONE**********");
         }
@@ -95,8 +99,8 @@ namespace Trade
 
         private void Make(string code, PeriodEnum rawPeriod, PeriodEnum[] followings)
         {
-            var rawUpdate = _rawdb.LastUpdate(code, rawPeriod);
-            var followingUpdates = followings.Select(p => _mktdb.LastUpdate(code, p)).ToArray();
+            var rawUpdate = _rawIndex.LastUpdate(code, rawPeriod);
+            var followingUpdates = followings.Select(p => _mktIndex.LastUpdate(code, p)).ToArray();
 
             if (rawUpdate.HasValue && followingUpdates.All(p => p.HasValue && p.Value >= rawUpdate.Value))
             {
@@ -117,6 +121,9 @@ namespace Trade
                 var another = dataset.Make(rawPeriod, following);
                 _mktdb.Save(another, following);
             }
+
+            log.Info("Build index");
+            _idxService.Build(new[] { code });
         }
     }
 }

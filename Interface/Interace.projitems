@@ -37,6 +37,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Indicator\STATE.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mixin\ArrayMixin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mixin\CsvMixin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mixin\IndexMixin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mixin\PathMixin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mixin\StatisticsMixin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mixin\StringMixin.cs" />
