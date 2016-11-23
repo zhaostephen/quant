@@ -77,7 +77,7 @@ namespace Trade
         {
             var i = 0;
             var total = codes.Count();
-            foreach (var code in codes.AsParallel())
+            foreach (var code in codes.AsParallel().WithDegreeOfParallelism(4))
             {
                 Interlocked.Increment(ref i);
                 log.InfoFormat("{0}/{1} - make days - {2}",i, total , code);

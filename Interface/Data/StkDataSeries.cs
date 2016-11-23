@@ -59,30 +59,30 @@ namespace Trade.Data
                 switch (followingPeriod)
                 {
                     case PeriodEnum.Weekly:
-                        return Roll((d) => Tuple.Create(d.AddDays(DayOfWeek.Monday - d.DayOfWeek), d.AddDays(DayOfWeek.Friday - d.DayOfWeek)));
+                        return Roll(this,(d) => Tuple.Create(d.AddDays(DayOfWeek.Monday - d.DayOfWeek), d.AddDays(DayOfWeek.Friday - d.DayOfWeek)));
                     case PeriodEnum.Monthly:
-                        return Roll((d) => Tuple.Create(
+                        return Roll(this, (d) => Tuple.Create(
                             new DateTime(d.Year, d.Month, 1),
                             new DateTime(d.Year, d.Month, 1).AddMonths(1).AddDays(-1)));
                 }
             }
-            else if(basePeriod == PeriodEnum.Min5)
+            else if (basePeriod == PeriodEnum.Min5)
             {
                 switch (followingPeriod)
                 {
                     case PeriodEnum.Min15:
-                        return RollMinutes(15);
+                        return RollMinutes(15, 120);
                     case PeriodEnum.Min30:
-                        return RollMinutes(30);
+                        return RollMinutes(30, 120);
                     case PeriodEnum.Min60:
-                        return RollMinutes(60);
+                        return RollMinutes(60, 120);
                 }
             }
 
             throw new Exception("Unsupported " + basePeriod + " ==> " + followingPeriod);
         }
 
-        private StkDataSeries RollMinutes(int minutes)
+        private StkDataSeries RollMinutes(int minutes, int howMany)
         {
             var am = new DateTime(2010, 1, 1, 9, 30, 0);
             var pm = new DateTime(2010, 1, 1, 13, 00, 0);
@@ -93,7 +93,9 @@ namespace Trade.Data
                 .Select(p => Tuple.Create(pm.AddMinutes((p - 1) * minutes), pm.AddMinutes(minutes * p)));
             var range = amRange.Concat(pmRange).ToArray();
 
-            return Roll((d) =>
+            var skip = Math.Max(Count - howMany, 0);
+            var data = new StkDataSeries(this.Code, new DataSeries(this.Skip(skip).ToArray()));
+            return Roll(data, (d) =>
             {
                 var time = new DateTime(2010, 1, 1, d.Hour, d.Minute, 0);
 
@@ -107,13 +109,13 @@ namespace Trade.Data
             });
         }
 
-        private StkDataSeries Roll(Func<DateTime, Tuple<DateTime, DateTime>> func)
+        private static StkDataSeries Roll(StkDataSeries data,Func<DateTime, Tuple<DateTime, DateTime>> func)
         {
-            var dateRanges = this.Select(p1 => func(p1.Date)).Distinct().ToArray();
+            var dateRanges = data.Select(p1 => func(p1.Date)).Distinct().ToArray();
             var r = dateRanges.Select(p1 =>
             {
                 if (p1 == null) return null;
-                var range = Section(p1.Item2, p1.Item1);
+                var range = data.Section(p1.Item2, p1.Item1);
                 if (!range.Any()) return null;
 
                 return new
@@ -133,7 +135,7 @@ namespace Trade.Data
                           .NetPctChange();
             var series = new DataSeries(points);
 
-            return new StkDataSeries(Code, series);
+            return new StkDataSeries(data.Code, series);
         }
     }
 }
