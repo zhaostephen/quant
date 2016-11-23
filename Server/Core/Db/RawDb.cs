@@ -17,20 +17,6 @@ namespace Trade.Db
     {
         static ILog log = typeof(RawDb).Log();
 
-        public string Code(string path)
-        {
-            return Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
-        }
-        public IEnumerable<string> Codes()
-        {
-            var path = Configuration.Raw.daily;
-            return Directory
-                .GetFiles(path, "*.txt")
-                .Select(Code)
-                .Where(p => !string.IsNullOrEmpty(p))
-                .Distinct()
-                .ToArray();
-        }
         public StkDataSeries Query(string code, PeriodEnum period)
         {
             var path = PeriodPath(code, period);
@@ -49,25 +35,11 @@ namespace Trade.Db
 
             return new StkDataSeries(code, new DataSeries(data.NetPctChange()));
         }
-        public DateTime? LastUpdate(string code, PeriodEnum period)
-        {
-            var path = PeriodPath(code, period);
-            if (!File.Exists(path)) return null;
-
-            var lines = File.ReadAllLines(path);
-            for (var i = lines.Length - 1; i >= 0; --i)
-            {
-                var p = ParseData(lines[i], period);
-                if (p != null && p.Open > 0d && p.Close > 0d)
-                    return p.Date;
-            }
-
-            return null;
-        }
 
         private DataPoint ParseData(string line, PeriodEnum period)
         {
             var splits = line.Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            if (!splits.Any()) return null;
             var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
             if (isDate)
             {

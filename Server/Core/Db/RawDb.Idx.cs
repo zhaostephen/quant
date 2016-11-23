@@ -34,5 +34,21 @@ namespace Trade.Db
                 LastUpdate = path.ReadCsv<LastUpdateIdx>().ToArray()
             };
         }
+
+        public DateTime? LastUpdate(string code, PeriodEnum period)
+        {
+            var path = PeriodPath(code, period);
+            if (!File.Exists(path)) return null;
+
+            var lines = File.ReadAllLines(path);
+            for (var i = lines.Length - 1; i >= 0; --i)
+            {
+                var p = ParseData(lines[i], period);
+                if (p != null && p.Open > 0d && p.Close > 0d)
+                    return p.Date;
+            }
+
+            return null;
+        }
     }
 }

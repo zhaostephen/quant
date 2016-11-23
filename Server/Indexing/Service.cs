@@ -32,7 +32,7 @@ namespace Trade
             log.InfoFormat("GOT, total {0}", fundamentals.Count());
 
             log.Info("Query codes");
-            var codes = _rawdb.Codes();
+            var codes = fundamentals.Select(p => p.代码).Distinct().ToArray();
             log.InfoFormat("GOT, total {0}", codes.Count());
 
             log.Info("Build index");
