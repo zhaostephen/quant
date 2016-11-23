@@ -9,6 +9,7 @@ using Trade.Utility;
 using log4net;
 using ServiceStack;
 using Trade.Cfg;
+using Interace.Idx;
 
 namespace Trade.Db
 {

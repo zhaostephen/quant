@@ -20,6 +20,7 @@ namespace Trade.Cfg
             public const string month = PATH + @"\month";
             public const string week = PATH + @"\week";
             public const string fundamental = PATH + @"\fundamental";
+            public const string index = PATH + @"\index";
         }
 
         public class level1
@@ -35,6 +36,7 @@ namespace Trade.Cfg
             public const string week = PATH + @"\week";
 
             public const string fundamental = PATH + @"\fundamental\fundamental.csv";
+            public const string index = PATH + @"\index";
         }
     }
 

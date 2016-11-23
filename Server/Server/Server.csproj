@@ -73,7 +73,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Db\MktDb.Idx.cs" />
     <Compile Include="Db\MktDb.Ref.cs" />
+    <Compile Include="Db\RawDb.Idx.cs" />
     <Compile Include="Db\RawDb.Ref.cs" />
     <Compile Include="Db\RawDb.cs" />
     <Compile Include="Mixin\DictMixin.cs" />
