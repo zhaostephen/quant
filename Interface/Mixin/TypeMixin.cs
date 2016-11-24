@@ -50,7 +50,7 @@ namespace Trade.Mixin
         public static T SetPropertyValue<T>(this T obj, string property, object value)
         {
             var p = typeof(T).GetProperty(property);
-            if(p != null)
+            if(p != null && p.CanWrite)
             {
                 p.SetValue(obj, value);
             }

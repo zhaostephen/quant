@@ -10,7 +10,7 @@ namespace Interace.Mixin
 {
     public static class CsvMixin
     {
-        public static IEnumerable<T> ReadCsv<T>(this string path) where T:new()
+        public static IEnumerable<T> ReadCsv<T>(this string path, StringSplitOptions options=StringSplitOptions.RemoveEmptyEntries) where T:new()
         {
             if (!File.Exists(path))
                 return Enumerable.Empty<T>();
@@ -19,12 +19,12 @@ namespace Interace.Mixin
             if (!lines.Any())
                 return Enumerable.Empty<T>();
 
-            var columns = lines[0].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var columns = lines[0].Split(new[] { ',' }, options);
             return lines
                 .Skip(1)
                 .Select(p =>
                 {
-                    var splits = p.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var splits = p.Split(new[] { ',' }, options);
                     var f = new T();
                     for (var i = 0; i < columns.Length; ++i)
                     {

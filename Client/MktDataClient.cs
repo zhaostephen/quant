@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Interace.Mixin;
 
 namespace Trade
 {
@@ -32,50 +33,13 @@ namespace Trade
 
         public IEnumerable<Fundamental> QueryFundamentals()
         {
-            var path = Configuration.level1.fundamental;
-            if (!File.Exists(path))
-                return Enumerable.Empty<Fundamental>();
-
-            var lines = File.ReadAllLines(path);
-            if(!lines.Any())
-                return Enumerable.Empty<Fundamental>();
-
-            var columns = lines[0].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            return lines
-                .Skip(1)
-                .Select(p =>
-                {
-                    var splits = p.Split(new[] {',' }, StringSplitOptions.RemoveEmptyEntries);
-                    var f = new Fundamental();
-                    for(var i  = 0; i < columns.Length; ++i)
-                    {
-                        var column = columns[i];
-                        f.SetPropertyValue(column, splits[i]);
-                    }
-                    return f;
-                })
-                .ToArray();
+            return Configuration.level1.fundamental.ReadCsv<Fundamental>(StringSplitOptions.None);
         }
 
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
         {
-            var file = Path.Combine(period.Path(LevelEnum.Level1), code + ".csv");
+            var path = Path.Combine(period.Path(LevelEnum.Level1), code + ".csv");
 
-            return QueryFile(file);
-        }
-
-        public IEnumerable<StkDataSeries> Query(IEnumerable<string> codes, PeriodEnum period = PeriodEnum.Daily)
-        {
-            return codes.Distinct().Select(p => Query(p, period)).ToArray();
-        }
-
-        private string Code(string path)
-        {
-            return Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
-        }
-
-        private StkDataSeries QueryFile(string path)
-        {
             if (!File.Exists(path))
                 return null;
 
@@ -106,6 +70,16 @@ namespace Trade
                 return null;
 
             return new StkDataSeries(name, new DataSeries(data.NetPctChange()));
+        }
+
+        public IEnumerable<StkDataSeries> Query(IEnumerable<string> codes, PeriodEnum period = PeriodEnum.Daily)
+        {
+            return codes.Distinct().Select(p => Query(p, period)).ToArray();
+        }
+
+        private string Code(string path)
+        {
+            return Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
         }
     }
 }

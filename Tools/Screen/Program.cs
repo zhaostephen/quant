@@ -40,10 +40,10 @@ namespace Trade
 
             log.Info("screen");
             var benchmark = 20;
-            var safebenchmark = benchmark * 1;
+            var safebenchmark = benchmark * 0.5;
 
             stat = stat
-                .Where(p => p.均线多头)
+                //.Where(p => p.均线多头)
                 .Where(p=>p.低点反弹高度 < safebenchmark)
                 .OrderBy(p=>p.低点反弹高度)
                 .ToArray();
