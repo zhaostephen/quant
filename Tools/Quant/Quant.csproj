@@ -54,15 +54,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logging.cs" />
-    <Compile Include="Patterns\Pattern.cs" />
-    <Compile Include="Patterns\PatternResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Screens\Break3Screen.cs" />
-    <Compile Include="Screens\BreakBackScreen.cs" />
-    <Compile Include="Screens\BreakJAXScreen.cs" />
-    <Compile Include="Screens\BreakScreen.cs" />
-    <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Selections\Break3.cs" />
+    <Compile Include="Selections\BreakBack.cs" />
+    <Compile Include="Selections\BreakJAX.cs" />
+    <Compile Include="Selections\Break.cs" />
+    <Compile Include="Selections\Selection.cs" />
+    <Compile Include="Strategy\SectorStrategy.cs" />
+    <Compile Include="Strategy\LowBetaStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -79,7 +79,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="NewFolder1\" />
+    <Folder Include="Analysis\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

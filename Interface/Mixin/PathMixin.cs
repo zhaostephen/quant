@@ -18,7 +18,7 @@ namespace Interace.Mixin
 
                 s.Push(dir);
 
-                dir = Path.GetDirectoryName(path);
+                dir = Path.GetDirectoryName(dir);
             }
 
             while (s.Count > 0)

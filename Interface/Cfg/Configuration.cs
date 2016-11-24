@@ -38,6 +38,13 @@ namespace Trade.Cfg
             public const string fundamental = PATH + @"\fundamental\fundamental.csv";
             public const string index = PATH + @"\index";
         }
+
+        public class strategy
+        {
+            const string PATH = @"D:\trade\data\strategy";
+
+            public const string selection = PATH + @"\selection";
+        }
     }
 
     public enum PeriodEnum

@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trade.Screens
+namespace Quant.Selections
 {
-    public class BreakBackScreen : Screen
+    public class BreakBack : Selection
     {
-        public override ScreenResult Do(string stockName, DataSeries data)
+        public override SelectionResult Do(string stockName, DataSeries data)
         {
-            if (!data.Any()) return ScreenResult.Error(stockName, "No stock data");
+            if (!data.Any()) return SelectionResult.Error(stockName, "No stock data");
 
             var maxDate = data.Max(p => p.Date);
 
@@ -24,9 +24,9 @@ namespace Trade.Screens
                 errors.Add("突破前高后回踩不成功");
           
             if (errors.Count > 0)
-                return ScreenResult.Error(stockName, string.Join(" | ", errors));
+                return SelectionResult.Error(stockName, string.Join(" | ", errors));
 
-            return ScreenResult.Ok(stockName);
+            return SelectionResult.Ok(stockName);
         }
     }
 }
