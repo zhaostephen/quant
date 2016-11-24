@@ -26,7 +26,7 @@ namespace Trade
         Index _rawIndex;
         CancellationTokenSource _cancel;
 
-        public Service(string[] args)
+        public Service()
         {
             _mktdb = new MktDb();
             _rawdb = new RawDb();
@@ -40,7 +40,10 @@ namespace Trade
             log.Info("Make fundamental");
             var fundamentals = _rawdb.QueryFundamentals();
             if (range != null && range.Item1.HasValue && range.Item2.HasValue)
-                fundamentals = fundamentals.Skip(range.Item1.Value).Take(range.Item2.Value- range.Item1.Value).ToArray();
+            {
+                fundamentals = fundamentals.Skip(range.Item1.Value).Take(range.Item2.Value - range.Item1.Value).ToArray();
+                log.WarnFormat("********Range {0}-{1}********", range.Item1, range.Item2);
+            }
             _mktdb.Save(fundamentals);
             log.InfoFormat("GOT, total {0}", fundamentals.Count());
 

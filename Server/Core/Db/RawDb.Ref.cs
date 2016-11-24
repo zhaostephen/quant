@@ -72,7 +72,7 @@ namespace Trade.Db
 
         private Dictionary<string, Dictionary<string, string>> QueryFundamentals(string file, string key= "代码")
         {
-            using (var stream = File.Open(file, FileMode.Open, FileAccess.Read))
+            using (var stream = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (var excelReader = ExcelReaderFactory.CreateBinaryReader(stream))
             {
                 excelReader.IsFirstRowAsColumnNames = true;
