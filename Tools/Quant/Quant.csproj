@@ -7,8 +7,8 @@
     <ProjectGuid>{BAD4A09E-7FB2-4AD2-B45C-639C036C5F7F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Screen</RootNamespace>
-    <AssemblyName>trade-scr</AssemblyName>
+    <RootNamespace>Quant</RootNamespace>
+    <AssemblyName>quant</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -78,7 +78,9 @@
       <Name>Factors</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
