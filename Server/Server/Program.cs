@@ -35,11 +35,17 @@ namespace Trade
 
         static void Go(HostConfigurator svchost)
         {
+            int? from = null;
+            int? to = null;
+
+            svchost.AddCommandLineDefinition("from", f => { from = int.Parse(f); });
+            svchost.AddCommandLineDefinition("to", f => { to = int.Parse(f); });
+
             svchost.Service<Service>(
                 (s) =>
                 {
                     s.ConstructUsing(c => svc);
-                    s.WhenStarted(t => t.Start());
+                    s.WhenStarted(t => t.Start(Tuple.Create(from, to)));
                     s.WhenStopped(t => t.Stop());
                 });
             svchost.SetStartTimeout(TimeSpan.FromSeconds(60));

@@ -22,27 +22,25 @@ namespace Trade
 
         readonly MktDb _mktdb;
         readonly RawDb _rawdb;
-        readonly Tuple<int?,int?> _range;
         Index _mktIndex;
         Index _rawIndex;
         CancellationTokenSource _cancel;
 
         public Service(string[] args)
         {
-            _range = Tuple.Create(args.Length > 1 ? int.Parse(args[1]) : (int?)null, args.Length > 2 ? int.Parse(args[2]) : (int?)null);
             _mktdb = new MktDb();
             _rawdb = new RawDb();
             _cancel = new CancellationTokenSource();
         }
 
-        internal void Start()
+        internal void Start(Tuple<int?, int?> range)
         {
             log.Info("**********START**********");
 
             log.Info("Make fundamental");
             var fundamentals = _rawdb.QueryFundamentals();
-            if (_range != null && _range.Item1.HasValue && _range.Item2.HasValue)
-                fundamentals = fundamentals.Skip(_range.Item1.Value).Take(_range.Item2.Value-_range.Item1.Value).ToArray();
+            if (range != null && range.Item1.HasValue && range.Item2.HasValue)
+                fundamentals = fundamentals.Skip(range.Item1.Value).Take(range.Item2.Value- range.Item1.Value).ToArray();
             _mktdb.Save(fundamentals);
             log.InfoFormat("GOT, total {0}", fundamentals.Count());
 
