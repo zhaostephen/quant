@@ -1,6 +1,9 @@
-﻿using log4net;
+﻿using Interace.Mixin;
+using log4net;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,7 +60,16 @@ namespace Quant.Strategy
                         b.市盈率
                     };
 
-            return q.ToArray();
+            var result = q.ToArray();
+
+            var path = Path.Combine(Configuration.strategy.selection.EnsurePathCreated(), "板块.csv");
+            log.Info("save to path " + path);
+            File.WriteAllText(
+                path,
+                result.ToCsv(),
+                Encoding.UTF8);
+
+            return result;
         }
 
         static bool BuyOrSell(string code)

@@ -1,6 +1,9 @@
-﻿using log4net;
+﻿using Interace.Mixin;
+using log4net;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +23,7 @@ namespace Quant.Strategy
 
         }
 
-        public IEnumerable<object> Run(string sector)
+        public IEnumerable<object> Run(string sector = Sector.any)
         {
             var client = new MktDataClient();
 
@@ -40,10 +43,10 @@ namespace Quant.Strategy
 
             log.Info("run selection");
             var benchmark = 20;
-            var safebenchmark = benchmark * 0.5;
+            var safebenchmark = benchmark * 1;
 
             stat = stat
-                .Where(p => p.均线多头)
+                //.Where(p => p.均线多头)
                 .Where(p => p.低点反弹高度 < safebenchmark)
                 .OrderBy(p => p.低点反弹高度)
                 .ToArray();
@@ -69,7 +72,16 @@ namespace Quant.Strategy
                         b.净利润同比
                     };
 
-            return q.ToArray();
+            var result = q.ToArray();
+
+            var path = Path.Combine(Configuration.strategy.selection.EnsurePathCreated(), "low-beta.csv");
+            log.Info("save to path " + path);
+            File.WriteAllText(
+                path,
+                result.ToCsv(),
+                Encoding.UTF8);
+
+            return result;
         }
 
         static bool BuyOrSell(string code)

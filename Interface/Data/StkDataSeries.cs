@@ -71,11 +71,11 @@ namespace Trade.Data
                 switch (followingPeriod)
                 {
                     case PeriodEnum.Min15:
-                        return RollMinutes(15, 120);
+                        return RollMinutes(15, 240);
                     case PeriodEnum.Min30:
-                        return RollMinutes(30, 120);
+                        return RollMinutes(30, 240);
                     case PeriodEnum.Min60:
-                        return RollMinutes(60, 120);
+                        return RollMinutes(60, 240);
                 }
             }
 

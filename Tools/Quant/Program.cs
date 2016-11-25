@@ -22,15 +22,8 @@ namespace Quant
             log.Warn("***********************START***********************");
 
             log.Info("run strategy");
-            var s = new SectorStrategy();
-            var obj = s.Run();
-
-            var path = Path.Combine(Configuration.strategy.selection.EnsurePathCreated(), "板块.csv");
-            log.Info("save to path "+path);
-            File.WriteAllText(
-                path,
-                obj.ToCsv(),
-                Encoding.UTF8);
+            var s = new LowBetaStrategy();
+            s.Run(Sector.券商信托);
 
             log.Warn("***********************DONE***********************");
         }
