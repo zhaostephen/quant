@@ -15,6 +15,7 @@ namespace Trade.Data
         public const string 中小板 = "中小板";
         public const string 证金持股 = "证金持股";
         public const string 板块指数 = "板块指数";
+        public const string 板块指数除外 = "板块指数除外";
 
         public const string 医药制造 = " 医药制造";
          public const string 医疗行业 = " 医疗行业";

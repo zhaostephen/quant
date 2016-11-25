@@ -38,6 +38,7 @@ namespace Trade
                 case Sector.创业板: return code.StartsWith("30");
                 case Sector.中小板: return code.StartsWith("00");
                 case Sector.板块指数: return code.StartsWith("88");
+                case Sector.板块指数除外: return !code.StartsWith("88");
                 case Sector.证金持股:
                     {
                         var codes = new string[]

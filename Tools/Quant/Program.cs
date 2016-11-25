@@ -1,6 +1,6 @@
 ﻿using Interace.Mixin;
 using log4net;
-using Quant.Strategy;
+using Quant.Strategies;
 using ServiceStack;
 using System.IO;
 using System.Linq;
@@ -22,8 +22,12 @@ namespace Quant
             log.Warn("***********************START***********************");
 
             log.Info("run strategy");
-            var s = new LowBetaStrategy();
-            s.Run(Sector.券商信托);
+            //var s = new BackMA120Strategy();
+            //s.Run(StrategyIn.Default);
+            //var s = new LowBetaStrategy(junxianduotou:false, beta:0.5);
+            //s.Run(StrategyIn.Default);
+            var s = new LowPEStrategy();
+            s.Run(StrategyIn.Default);
 
             log.Warn("***********************DONE***********************");
         }

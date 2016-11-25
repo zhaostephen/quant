@@ -10,11 +10,12 @@ namespace Trade.Data
     {
         public string Code { get; set; }
 
-        public StkDataSeries(string code, DataSeries d)
+        public StkDataSeries(string code, DataSeries d, bool calcIndicator=true)
         {
             Code = code;
             AddRange(d);
-            Indicators();
+            if(calcIndicator)
+                Indicators();
         }
 
         private void Indicators()

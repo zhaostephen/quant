@@ -33,43 +33,15 @@ namespace Trade
 
         public IEnumerable<Fundamental> QueryFundamentals()
         {
-            return Configuration.level1.fundamental.ReadCsv<Fundamental>(StringSplitOptions.None);
+            return Configuration.level1.fundamental.ReadCsv<Fundamental>();
         }
 
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
         {
             var path = Path.Combine(period.Path(LevelEnum.Level1), code + ".csv");
+            var p = path.ReadCsv<DataPoint>();
 
-            if (!File.Exists(path))
-                return null;
-
-            var name = Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
-            var lines = File.ReadAllLines(path);
-
-            var data = lines
-                .Select(p =>
-                {
-                    var splits = p.Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
-                    if (!isDate) return null;
-
-                    return new DataPoint
-                    {
-                        Date = splits[0].Date(),
-                        Open = splits[1].Double(),
-                        High = splits[2].Double(),
-                        Low = splits[3].Double(),
-                        Close = splits[4].Double()
-                    };
-                })
-                .Where(p => p != null && p.Open > 0d && p.Close > 0d)
-                .OrderBy(p => p.Date)
-                .ToArray();
-
-            if (!data.Any())
-                return null;
-
-            return new StkDataSeries(name, new DataSeries(data.NetPctChange()));
+            return new StkDataSeries(code, new DataSeries(p), false);
         }
 
         public IEnumerable<StkDataSeries> Query(IEnumerable<string> codes, PeriodEnum period = PeriodEnum.Daily)

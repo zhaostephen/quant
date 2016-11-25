@@ -12,23 +12,23 @@ using Trade.Cfg;
 using Trade.Data;
 using Trade.Factors;
 
-namespace Quant.Strategy
+namespace Quant.Strategies
 {
-    class LowBetaStrategy
+    class SectorStrategy
     {
-        static ILog log = typeof(LowBetaStrategy).Log();
+        static ILog log = typeof(SectorStrategy).Log();
 
-        public LowBetaStrategy()
+        public SectorStrategy()
         {
 
         }
 
-        public IEnumerable<object> Run(string sector = Sector.any)
+        public IEnumerable<object> Run()
         {
             var client = new MktDataClient();
 
             log.Info("query market data");
-            var data = client.QueryAll(PeriodEnum.Daily, sector);
+            var data = client.QueryAll(PeriodEnum.Daily, Sector.板块指数);
             log.InfoFormat("total {0}", data.Count());
 
             log.Info("build stat");
@@ -42,12 +42,7 @@ namespace Quant.Strategy
                 .ToArray();
 
             log.Info("run selection");
-            var benchmark = 20;
-            var safebenchmark = benchmark * 1;
-
             stat = stat
-                //.Where(p => p.均线多头)
-                .Where(p => p.低点反弹高度 < safebenchmark)
                 .OrderBy(p => p.低点反弹高度)
                 .ToArray();
 
@@ -61,20 +56,13 @@ namespace Quant.Strategy
                         b.名称,
                         s.收阳百分比,
                         s.低点反弹高度,
-                        s.均线多头,
                         短线买入 = BuyOrSell(s.代码) ? "买入" : "卖出",
-                        b.市盈率,
-                        b.总市值,
-                        b.所属行业,
-                        b.流通市值,
-                        b.营业总收入同比,
-                        b.销售毛利率,
-                        b.净利润同比
+                        b.市盈率
                     };
 
             var result = q.ToArray();
 
-            var path = Path.Combine(Configuration.strategy.selection.EnsurePathCreated(), "low-beta.csv");
+            var path = Path.Combine(Configuration.oms.selection.EnsurePathCreated(), "板块.csv");
             log.Info("save to path " + path);
             File.WriteAllText(
                 path,

@@ -39,11 +39,12 @@ namespace Trade.Cfg
             public const string index = PATH + @"\index";
         }
 
-        public class strategy
+        public class oms
         {
-            const string PATH = @"D:\trade\data\strategy";
+            const string PATH = @"D:\trade\data";
 
             public const string selection = PATH + @"\selection";
+            public const string strategy = PATH + @"\strategy";
         }
     }
 

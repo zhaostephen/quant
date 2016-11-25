@@ -61,8 +61,11 @@
     <Compile Include="Selections\BreakJAX.cs" />
     <Compile Include="Selections\Break.cs" />
     <Compile Include="Selections\Selection.cs" />
-    <Compile Include="Strategy\SectorStrategy.cs" />
-    <Compile Include="Strategy\LowBetaStrategy.cs" />
+    <Compile Include="Strategies\LowPEStrategy.cs" />
+    <Compile Include="Strategies\Strategy.cs" />
+    <Compile Include="Strategies\BackMA120Strategy.cs" />
+    <Compile Include="Strategies\SectorStrategy.cs" />
+    <Compile Include="Strategies\LowBetaStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
