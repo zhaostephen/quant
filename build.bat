@@ -1,2 +1,2 @@
 C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe Server/Server.sln /t:rebuild /p:Configuration=Release
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe Tools/Tools.sln /t:rebuild /p:Configuration=Release
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe Quant/Quant.sln /t:rebuild /p:Configuration=Release

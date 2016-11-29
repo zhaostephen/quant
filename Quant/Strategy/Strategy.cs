@@ -1,6 +1,7 @@
 ﻿using Interace.Strategies;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Trade.Strategies
 {
@@ -10,14 +11,14 @@ namespace Trade.Strategies
 
         public void Run(Account account)
         {
-            foreach(var stock in account.StockPool)
+            foreach(var stock in account.StockPool.AsParallel())
             {
-                Buy(account,stock);
+                Buy(account, stock);
                 Sell(account, stock);
             }
         }
 
-        protected abstract void Sell(Account account, string stock);
-        protected abstract void Buy(Account account, string stock);
+        protected abstract void Sell(Account account, Stock stock);
+        protected abstract void Buy(Account account, Stock stock);
     }
 }
