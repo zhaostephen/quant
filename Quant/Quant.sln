@@ -5,13 +5,9 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "..\Client\Client.csproj", "{FDDB42E9-F7D2-4B8A-B219-98E65A05A038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factors", "..\Factors\Factors.csproj", "{819907C5-1222-4409-8B1C-356EFB783C0C}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Interface", "..\Interface\Interface.shproj", "{0DF75EFD-9A54-4504-A6E7-C634E9047318}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cli", "Cli\cli.csproj", "{3CA28CF4-A008-41F4-875B-D5661D84B290}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quant", "Quant\Quant.csproj", "{BAD4A09E-7FB2-4AD2-B45C-639C036C5F7F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factors", "Factors\Factors.csproj", "{819907C5-1222-4409-8B1C-356EFB783C0C}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -31,14 +27,6 @@ Global
 		{819907C5-1222-4409-8B1C-356EFB783C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{819907C5-1222-4409-8B1C-356EFB783C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{819907C5-1222-4409-8B1C-356EFB783C0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3CA28CF4-A008-41F4-875B-D5661D84B290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3CA28CF4-A008-41F4-875B-D5661D84B290}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3CA28CF4-A008-41F4-875B-D5661D84B290}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3CA28CF4-A008-41F4-875B-D5661D84B290}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BAD4A09E-7FB2-4AD2-B45C-639C036C5F7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAD4A09E-7FB2-4AD2-B45C-639C036C5F7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAD4A09E-7FB2-4AD2-B45C-639C036C5F7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAD4A09E-7FB2-4AD2-B45C-639C036C5F7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
