@@ -62,7 +62,7 @@ namespace Trade.Cfg
     public enum LevelEnum
     {
         Raw,
-        Level1
+        Analytic
     }
 
     public static class PeriodMixin
@@ -83,7 +83,7 @@ namespace Trade.Cfg
                 }
             },
             {
-                LevelEnum.Level1,
+                LevelEnum.Analytic,
                 new Dictionary<PeriodEnum, string>()
                 {
                     { PeriodEnum.Min5, Configuration.level1.min_5 },

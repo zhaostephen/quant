@@ -19,7 +19,7 @@ namespace Trade.Db
 
         LevelEnum level;
 
-        public MktDb(LevelEnum level = LevelEnum.Level1)
+        public MktDb(LevelEnum level = LevelEnum.Analytic)
         {
             this.level = level;
         }

@@ -38,7 +38,7 @@ namespace Trade
 
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
         {
-            var path = Path.Combine(period.Path(LevelEnum.Level1), code + ".csv");
+            var path = Path.Combine(period.Path(LevelEnum.Analytic), code + ".csv");
             var p = path.ReadCsv<DataPoint>();
 
             return new StkDataSeries(code, new DataSeries(p), false);
