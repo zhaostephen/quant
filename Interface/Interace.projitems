@@ -42,6 +42,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Mixin\StatisticsMixin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mixin\StringMixin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mixin\TypeMixin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Strategies\Account.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Strategies\Money.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Strategies\StockPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\FinanceUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\MathUtil.cs" />
   </ItemGroup>
