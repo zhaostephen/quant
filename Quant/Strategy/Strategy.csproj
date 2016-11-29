@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BetaMacdStrategy.cs" />
+    <Compile Include="Impl\LowBeta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategy.cs" />
     <Compile Include="Utility\Logging.cs" />

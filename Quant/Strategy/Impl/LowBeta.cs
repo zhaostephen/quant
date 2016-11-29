@@ -1,9 +1,9 @@
 ﻿using System;
 using Interace.Quant;
 
-namespace Trade.Strategies
+namespace Trade.Strategies.Impl
 {
-    public class BetaMacdStrategy : Strategy
+    public class LowBeta : Strategy
     {
         protected override void Buy(Account account, Stock stock)
         {
