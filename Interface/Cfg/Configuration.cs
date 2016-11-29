@@ -10,7 +10,7 @@ namespace Trade.Cfg
     {
         public class Raw
         {
-            const string PATH = @"D:\trade\data\raw";
+            const string PATH = @"D:\quant\data\raw";
 
             public const string min_5 = PATH + @"\5mins";
             public const string min_15 = PATH + @"\15mins";
@@ -25,7 +25,7 @@ namespace Trade.Cfg
 
         public class level1
         {
-            const string PATH = @"D:\trade\data\level1";
+            const string PATH = @"D:\quant\data\analytic";
 
             public const string min_5 = PATH + @"\5mins";
             public const string min_15 = PATH + @"\15mins";
@@ -41,7 +41,7 @@ namespace Trade.Cfg
 
         public class oms
         {
-            const string PATH = @"D:\trade\data";
+            const string PATH = @"D:\quant\data";
 
             public const string selection = PATH + @"\selection";
             public const string strategy = PATH + @"\strategy";
