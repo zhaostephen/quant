@@ -11,6 +11,7 @@ using Trade;
 using Trade.Cfg;
 using Trade.Data;
 using Trade.Selections;
+using Trade.Selections.Impl;
 using Trade.Selections.Utility;
 
 namespace Quant
@@ -49,7 +50,7 @@ namespace Quant
                         var codes = client.Codes(parameters.sector??string.Empty);
 
                         log.Info("run selection");
-                        var o = new LowBetaSelection().Pass(codes);
+                        var o = new LowBeta().Pass(codes);
                         log.WarnFormat("{0} selections", o.Count);
                         if (o.Any())
                         {

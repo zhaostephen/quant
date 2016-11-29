@@ -1,6 +1,4 @@
-﻿using Interace.Strategies;
-using System;
-using System.Collections.Generic;
+﻿using Interace.Quant;
 using System.Linq;
 
 namespace Trade.Strategies

@@ -1,5 +1,5 @@
 ﻿using System;
-using Interace.Strategies;
+using Interace.Quant;
 
 namespace Trade.Strategies
 {
