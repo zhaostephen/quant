@@ -6,13 +6,15 @@ namespace Interace.Quant
 {
     public class Account
     {
-        public StockPool StockPool { get; set; }
-        public Money Money { get; set; }
+        public string Portflio { get; set; }
+        public StockPool universe { get; set; }
+        public List<Trade> Trades { get; set; }
 
-        public Account(StockPool stocks, Money money)
+        public Account(string portflio, StockPool universe)
         {
-            StockPool = stocks;
-            Money = money;
+            this.Portflio = portflio;
+            this.universe = universe;
+            Trades = new List<Trade>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Interace.Quant;
+using System;
 using System.Linq;
 
 namespace Trade.Strategies
@@ -7,16 +8,21 @@ namespace Trade.Strategies
     {
         protected Strategy() { }
 
-        public void Run(Account account)
+        public abstract void Run(Account account);
+
+        protected void Buy(Account account, double quantity = 0)
         {
-            foreach(var stock in account.StockPool.AsParallel())
-            {
-                Buy(account, stock);
-                Sell(account, stock);
-            }
+            PostTrade(account, Interace.Quant.Trade.Buy(account.Portflio, quantity));
         }
 
-        protected abstract void Sell(Account account, Stock stock);
-        protected abstract void Buy(Account account, Stock stock);
+        protected void Sell(Account account, double quantity = 0)
+        {
+            PostTrade(account, Interace.Quant.Trade.Sell(account.Portflio, quantity));
+        }
+
+        protected void PostTrade(Account account, Interace.Quant.Trade trade)
+        {
+            account.Trades.Add(trade);
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Trade;
 using Trade.Cfg;
+using Trade.Strategies.Impl;
 using Trade.Strategies.Utility;
 
 namespace Quant
@@ -35,10 +36,26 @@ namespace Quant
                 return;
             }
 
+            log.Info(command);
             switch (command.ToLower())
             {
-                case "macd":
+                case "lowbeta":
                     {
+                        var s = new LowBeta();
+                        var pool = new Interace.Quant.StockPool();
+                        var account = new Interace.Quant.Account("lowbeta",pool);
+
+                        log.Info("run strategy");
+                        s.Run(account);
+
+                        log.WarnFormat("{0} trades", account.Trades.Count);
+                        if (account.Trades.Any())
+                        {
+                            log.Info("save down selections");
+                            var path = Configuration.oms.trade.EnsurePathCreated();
+
+                            File.WriteAllText(Path.Combine(path, DateTime.Today.ToString("yyyy-MM-dd")+".csv"), account.Trades.ToCsv(), Encoding.UTF8);
+                        }
                     }
                     break;
                 default:

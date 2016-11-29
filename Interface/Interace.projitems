@@ -46,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Quant\Money.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Quant\Stock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Quant\StockPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Quant\Trade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\FinanceUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\MathUtil.cs" />
   </ItemGroup>
