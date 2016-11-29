@@ -9,13 +9,12 @@ using System.Text;
 using Trade;
 using Trade.Cfg;
 using Trade.Strategies.Impl;
-using Trade.Strategies.Utility;
 
 namespace Quant
 {
     class Program
     {
-        static ILog log = typeof(Program).Log();
+        static ILog log = LogManager.GetLogger(typeof(Program));
 
         static void Main(string[] args)
         {
@@ -41,12 +40,19 @@ namespace Quant
             {
                 case "lowbeta":
                     {
-                        var s = new LowBeta();
-                        var pool = new Interace.Quant.StockPool();
+                        log.InfoFormat("query data from sector {0}", string.IsNullOrEmpty(parameters.sector) ? "any" : parameters.sector);
+                        var client = new MktDataClient();
+                        var codes = client.Codes(parameters.sector ?? string.Empty);
+
+                        log.Info("run selection");
+                        var pool = new Trade.Selections.Impl.LowBeta().Pass(codes);
+                        log.WarnFormat("{0} selections", pool.Count);
+
+                        var quant = new LowBeta();
                         var account = new Interace.Quant.Account("lowbeta",pool);
 
                         log.Info("run strategy");
-                        s.Run(account);
+                        quant.Run(account);
 
                         log.WarnFormat("{0} trades", account.Trades.Count);
                         if (account.Trades.Any())
@@ -66,7 +72,7 @@ namespace Quant
 
     class Parameters
     {
-        [Option('p', "pool", DefaultValue = "", Required = true)]
-        public string pool { get; set; }
+        [Option('s', "sector", DefaultValue = "", Required = true)]
+        public string sector { get; set; }
     }
 }

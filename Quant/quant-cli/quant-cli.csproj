@@ -65,9 +65,13 @@
       <Project>{fddb42e9-f7d2-4b8a-b219-98e65a05a038}</Project>
       <Name>Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Strategy\Strategy.csproj">
+    <ProjectReference Include="..\Quant\Quant.csproj">
       <Project>{c8f9558c-4e08-4b7e-b775-8a139866acde}</Project>
-      <Name>Strategy</Name>
+      <Name>Quant</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Selection\Selection.csproj">
+      <Project>{a994889f-6199-49ba-ba05-37c0da5af09a}</Project>
+      <Name>Selection</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,13 +3,12 @@ using Interace.Quant;
 using System.Linq;
 using Trade.Factors;
 using log4net;
-using Trade.Strategies.Utility;
 
 namespace Trade.Strategies.Impl
 {
     public class LowBeta : Strategy
     {
-        static ILog log = typeof(LowBeta).Log();
+        static ILog log = LogManager.GetLogger(typeof(LowBeta));
 
         private double benchmark;
         private double beta;

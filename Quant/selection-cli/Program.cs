@@ -12,13 +12,12 @@ using Trade.Cfg;
 using Trade.Data;
 using Trade.Selections;
 using Trade.Selections.Impl;
-using Trade.Selections.Utility;
 
 namespace Quant
 {
     class Program
     {
-        static ILog log = typeof(Program).Log();
+        static ILog log = LogManager.GetLogger(typeof(Program));
 
         static void Main(string[] args)
         {

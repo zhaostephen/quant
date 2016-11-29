@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using log4net;
-using Trade.Selections.Utility;
 using Trade.Factors;
 using Interace.Quant;
 
@@ -10,7 +9,7 @@ namespace Trade.Selections.Impl
 {
     public class LowBeta : Selection
     {
-        static ILog log = typeof(LowBeta).Log();
+        static ILog log = LogManager.GetLogger(typeof(LowBeta));
 
         double benchmark = 20;
         double beta = 0.5;

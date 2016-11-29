@@ -44,7 +44,7 @@ namespace Trade.Cfg
             const string PATH = @"D:\quant\data";
 
             public const string selection = PATH + @"\selection";
-            public const string trade = PATH + @"\strategy";
+            public const string trade = PATH + @"\trade";
         }
     }
 

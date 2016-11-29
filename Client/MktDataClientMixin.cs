@@ -33,6 +33,7 @@ namespace Trade
 
             switch (sector)
             {
+                case "any": return true;
                 case Sector.上证: return code.StartsWith("60");
                 case Sector.深证: return code.StartsWith("30") || code.StartsWith("00");
                 case Sector.创业板: return code.StartsWith("30");
