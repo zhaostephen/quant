@@ -10,14 +10,14 @@ namespace Trade.Strategies
 
         public abstract void Run(Account account);
 
-        protected void Buy(Account account, double quantity = 0)
+        protected void Buy(Account account, string stock, DateTime date, double quantity = 0)
         {
-            PostTrade(account, Interace.Quant.Trade.Buy(account.Portflio, quantity));
+            PostTrade(account, Interace.Quant.Trade.Buy(account.Portflio, stock, quantity, date));
         }
 
-        protected void Sell(Account account, double quantity = 0)
+        protected void Sell(Account account, string stock, DateTime date, double quantity = 0)
         {
-            PostTrade(account, Interace.Quant.Trade.Sell(account.Portflio, quantity));
+            PostTrade(account, Interace.Quant.Trade.Sell(account.Portflio, stock, quantity, date));
         }
 
         protected void PostTrade(Account account, Interace.Quant.Trade trade)

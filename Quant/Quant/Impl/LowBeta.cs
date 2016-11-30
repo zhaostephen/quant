@@ -23,6 +23,7 @@ namespace Trade.Strategies.Impl
         {
             var client = new MktDataClient();
 
+            log.InfoFormat("total {0}", account.universe.Count);
             foreach (var stock in account.universe.AsParallel())
             {
                 log.InfoFormat("run {0}", stock.Code);
@@ -33,7 +34,7 @@ namespace Trade.Strategies.Impl
                     if (f.低点反弹高度 >= benchmark * beta)
                     {
                         log.InfoFormat("sell {0}", stock.Code);
-                        Sell(account);
+                        Sell(account, stock.Code, daily.Last().Date);
                     }
                     else
                     {
@@ -44,7 +45,7 @@ namespace Trade.Strategies.Impl
                             if (min60.Last().MACD >= 0 && min15.Last().MACD >= 0)
                             {
                                 log.InfoFormat("buy {0}", stock.Code);
-                                Buy(account);
+                                Buy(account, stock.Code, daily.Last().Date);
                             }
                         }
                     }

@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using Interace.Mixin;
+using Interace.Quant;
 using log4net;
 using ServiceStack;
 using System;
@@ -36,34 +37,19 @@ namespace Quant
             }
 
             log.Info(command);
+            var s = new QuantService();
             switch (command.ToLower())
             {
+                case "ma120":
+                    {
+                        s.ma120(parameters.sector);
+                        break;
+                    }
                 case "lowbeta":
                     {
-                        log.InfoFormat("query data from sector {0}", string.IsNullOrEmpty(parameters.sector) ? "any" : parameters.sector);
-                        var client = new MktDataClient();
-                        var codes = client.Codes(parameters.sector ?? string.Empty);
-
-                        log.Info("run selection");
-                        var pool = new Trade.Selections.Impl.LowBeta(junxianduotou:false).Pass(codes);
-                        log.WarnFormat("{0} selections", pool.Count);
-
-                        var quant = new LowBeta();
-                        var account = new Interace.Quant.Account("lowbeta",pool);
-
-                        log.Info("run strategy");
-                        quant.Run(account);
-
-                        log.WarnFormat("{0} trades", account.Trades.Count);
-                        if (account.Trades.Any())
-                        {
-                            log.Info("save down trades");
-                            var path = Configuration.oms.trade.EnsurePathCreated();
-
-                            File.WriteAllText(Path.Combine(path, DateTime.Today.ToString("yyyy-MM-dd")+".csv"), account.Trades.ToCsv(), Encoding.UTF8);
-                        }
+                        s.LowBeta(parameters.sector);
+                        break;
                     }
-                    break;
                 default:
                     break;
             }

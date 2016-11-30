@@ -13,7 +13,7 @@ namespace Interace.Quant
         {
 
         }
-        public Stock(string code, object details)
+        public Stock(string code, object details = null)
         {
             Code = code;
             Attribute = details;

@@ -18,6 +18,12 @@ namespace Interace.Quant
 
         }
 
+        public StockPool(IEnumerable<string> codes)
+            : base(codes.Select(p=>new Stock(p)).ToArray())
+        {
+
+        }
+
         public IEnumerable<string> Codes { get { return this.Select(p => p.Code).Distinct().ToArray(); } }
         public IEnumerable<object> Attributes { get { return this.Select(p => p.Attribute).Distinct().ToArray(); } }
     }
