@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Db\AttributionDb.cs" />
     <Compile Include="Db\MktDb.cs" />
     <Compile Include="Db\MktDb.Idx.cs" />
     <Compile Include="Db\MktDb.Ref.cs" />
@@ -64,6 +65,8 @@
     <Compile Include="Mixin\DictMixin.cs" />
     <Compile Include="Mixin\Logging.cs" />
     <Compile Include="Mixin\SeriesMixin.cs" />
+    <Compile Include="Impl\AttributionImpl.cs" />
+    <Compile Include="Impl\MktDataImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

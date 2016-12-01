@@ -61,7 +61,9 @@ namespace Trade.Mixin
         {
             if (value == null) return null;
 
-            if(target == typeof(double))
+            if (target == typeof(bool))
+                return bool.Parse(value);
+            else if (target == typeof(double))
                 return value.Double();
             else if (target == typeof(double?))
                 return value.DoubleNull();

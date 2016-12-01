@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trade.Utility
+namespace Cli
 {
-    public static class LogMixin
+    static class LogMixin
     {
         public static ILog Log(this object obj)
         {

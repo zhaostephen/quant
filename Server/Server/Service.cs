@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System;
 using Interace.Idx;
 using Interace.Mixin;
+using Trade.Impl;
 
 namespace Trade
 {
@@ -20,16 +21,12 @@ namespace Trade
     {
         static ILog log = typeof(Service).Log();
 
-        readonly MktDb _mktdb;
-        readonly RawDb _rawdb;
-        Index _mktIndex;
-        Index _rawIndex;
-        CancellationTokenSource _cancel;
+        readonly MktDataImpl _mktdata;
+        readonly CancellationTokenSource _cancel;
 
         public Service()
         {
-            _mktdb = new MktDb();
-            _rawdb = new RawDb();
+            _mktdata = new MktDataImpl();
             _cancel = new CancellationTokenSource();
         }
 
@@ -37,33 +34,14 @@ namespace Trade
         {
             log.Info("**********START**********");
 
-            log.Info("Make fundamental");
-            var fundamentals = _rawdb.QueryFundamentals();
-            if (range != null && range.Item1.HasValue && range.Item2.HasValue)
-            {
-                fundamentals = fundamentals.Skip(range.Item1.Value).Take(range.Item2.Value - range.Item1.Value).ToArray();
-                log.WarnFormat("********Range {0}-{1}********", range.Item1, range.Item2);
-            }
-            _mktdb.Save(fundamentals);
+            var fundamentals = _mktdata.MakeFundametals();
             log.InfoFormat("GOT, total {0}", fundamentals.Count());
 
-            log.Info("Query codes");
-            var codes = fundamentals.Select(p => p.代码).Distinct().ToArray();
-            log.InfoFormat("GOT, total {0}", codes.Count());
-
-            log.Info("Query index");
-            _mktIndex = _mktdb.GetIdx();
-            _rawIndex = _rawdb.GetIdx();
-
-            log.Info("Make days");
-            var t1 = Task.Factory.StartNew(() => MakeDays(codes));
-
-            log.Info("Make minutes");
-            var t2 = Task.Factory.StartNew(() => MakeMinutes(codes));
+            var tasks = _mktdata.MakeAsync(range);
 
             try
             {
-                Task.WaitAll(new[] { t1, t2 }, _cancel.Token);
+                Task.WaitAll(tasks, _cancel.Token);
             }
             catch(OperationCanceledException)
             {
@@ -76,60 +54,6 @@ namespace Trade
         internal void Stop()
         {
             _cancel.Cancel(false);
-        }
-
-        private void MakeDays(IEnumerable<string> codes)
-        {
-            var i = 0;
-            var total = codes.Count();
-            foreach (var code in codes.AsParallel())
-            {
-                Interlocked.Increment(ref i);
-                log.InfoFormat("{0}/{1} - make days - {2}",i, total , code);
-                Make(code, PeriodEnum.Daily, new[] { PeriodEnum.Daily, PeriodEnum.Weekly, PeriodEnum.Monthly });
-            }
-        }
-
-        private void MakeMinutes(IEnumerable<string> codes)
-        {
-            var i = 0;
-            var total = codes.Count();
-            foreach (var code in codes.AsParallel())
-            {
-                Interlocked.Increment(ref i);
-                log.InfoFormat("{0}/{1} - make minutes - {2}", i, total, code);
-                Make(code, PeriodEnum.Min5, new[] { PeriodEnum.Min5, PeriodEnum.Min15, PeriodEnum.Min30, PeriodEnum.Min60 });
-            }
-        }
-
-        private void Make(string code, PeriodEnum rawPeriod, PeriodEnum[] followings)
-        {
-            var rawUpdate = _rawIndex.LastUpdate(code, rawPeriod);
-            var followingUpdates = followings.Select(p => _mktIndex.LastUpdate(code, p)).ToArray();
-
-            if (rawUpdate.HasValue && followingUpdates.All(p => p.HasValue && p.Value >= rawUpdate.Value))
-            {
-                log.WarnFormat("Ignore {0}, already updated", code);
-                return;
-            }
-
-            var dataset = 
-                new[] { _rawdb.Query(code, rawPeriod) }
-                .Where(p => p != null)
-                .ToArray();
-
-            if (!dataset.Any())
-            {
-                log.WarnFormat("empty data set {0}", code);
-                return;
-            }
-
-            foreach (var following in followings.AsParallel())
-            {
-                log.Info(following);
-                var another = dataset.Make(rawPeriod, following);
-                _mktdb.Save(another, following);
-            }
         }
     }
 }

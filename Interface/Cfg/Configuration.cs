@@ -39,6 +39,13 @@ namespace Trade.Cfg
             public const string index = PATH + @"\index";
         }
 
+        public class attribution
+        {
+            const string PATH = @"D:\quant\data\attribution";
+
+            public const string root = PATH;
+        }
+
         public class oms
         {
             const string PATH = @"D:\quant\data";
