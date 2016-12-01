@@ -26,5 +26,10 @@ namespace Interace.Attribution
         {
             return new KeyPrice { Code = code, Date = date, Price = price, Auto = auto, Flag = Flags.lower };
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0},{1:yyyy-MM-dd},{2},{3},{4}", Code, Date, Price, Flag, Auto);
+        }
     }
 }

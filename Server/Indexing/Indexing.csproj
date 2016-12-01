@@ -82,6 +82,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Factors\Factors.csproj">
+      <Project>{819907c5-1222-4409-8b1c-356efb783c0c}</Project>
+      <Name>Factors</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{1bde39a1-3a03-4c37-8d22-c107965a3cff}</Project>
       <Name>Core</Name>

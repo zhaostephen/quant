@@ -42,16 +42,12 @@
   <ItemGroup>
     <Compile Include="jun_xian_dou_tout.cs" />
     <Compile Include="close_up_percent.cs" />
+    <Compile Include="historical_low.cs" />
     <Compile Include="low_to_historical_lowest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="factor.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Client\Client.csproj">
-      <Project>{fddb42e9-f7d2-4b8a-b219-98e65a05a038}</Project>
-      <Name>Client</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <Import Project="..\..\Interface\Interace.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

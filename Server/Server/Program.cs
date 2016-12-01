@@ -24,21 +24,27 @@ namespace Trade
             if (args != null && args.Length > 0)
                 cmdLine = string.Join(" ", args);
 
-            if (cmdLine.Contains("console"))
-            {
-                svc = new Service();
+            svc = new Service();
+            if(args.Length > 2)
                 svc.Start(Tuple.Create((int?)int.Parse(args[1]), (int?)int.Parse(args[2])));
-            }
             else
-            {
-                svc = new Service();
+                svc.Start();
 
-                var code = HostFactory.Run(Go);
-                if (code != TopshelfExitCode.Ok)
-                {
-                    throw new Exception(string.Format("Topshelf error code name: {0}, value: {1}", code.ToString(), (int)code));
-                }
-            }
+            //if (cmdLine.Contains("console"))
+            //{
+            //    svc = new Service();
+            //    svc.Start(Tuple.Create((int?)int.Parse(args[1]), (int?)int.Parse(args[2])));
+            //}
+            //else
+            //{
+            //    svc = new Service();
+
+            //    var code = HostFactory.Run(Go);
+            //    if (code != TopshelfExitCode.Ok)
+            //    {
+            //        throw new Exception(string.Format("Topshelf error code name: {0}, value: {1}", code.ToString(), (int)code));
+            //    }
+            //}
         }
 
         static void Go(HostConfigurator svchost)

@@ -17,7 +17,7 @@ namespace Trade.Impl
     public interface IMktDataImpl
     {
         IEnumerable<Fundamental> MakeFundametals();
-        Task[] MakeAsync(Tuple<int?, int?> range);
+        Task[] MakeAsync(IEnumerable<string> codes);
     }
 
     public class MktDataImpl : IMktDataImpl
@@ -39,27 +39,14 @@ namespace Trade.Impl
 
         public IEnumerable<Fundamental> MakeFundametals()
         {
-            log.Info("Make fundamental");
             var fundamentals = _rawdb.QueryFundamentals();
             _mktdb.Save(fundamentals);
 
             return fundamentals;
         }
 
-        public Task[] MakeAsync(Tuple<int?, int?> range)
+        public Task[] MakeAsync(IEnumerable<string> codes)
         {
-            var fundamentals = _rawdb.QueryFundamentals();
-            if (range != null && range.Item1.HasValue && range.Item2.HasValue)
-            {
-                fundamentals = fundamentals.Skip(range.Item1.Value).Take(range.Item2.Value - range.Item1.Value).ToArray();
-                log.WarnFormat("********Range {0}-{1}********", range.Item1, range.Item2);
-            }
-            log.InfoFormat("GOT, total {0}", fundamentals.Count());
-
-            log.Info("Query codes");
-            var codes = fundamentals.Select(p => p.代码).Distinct().ToArray();
-            log.InfoFormat("GOT, total {0}", codes.Count());
-
             log.Info("Make days");
             var t1 = Task.Factory.StartNew(() => MakeDays(codes));
 
