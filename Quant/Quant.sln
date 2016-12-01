@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "..\Client\Client.
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Interface", "..\Interface\Interface.shproj", "{0DF75EFD-9A54-4504-A6E7-C634E9047318}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factors", "Factors\Factors.csproj", "{819907C5-1222-4409-8B1C-356EFB783C0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factors", "..\Core\Factors\Factors.csproj", "{819907C5-1222-4409-8B1C-356EFB783C0C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selection", "Selection\Selection.csproj", "{A994889F-6199-49BA-BA05-37C0DA5AF09A}"
 EndProject

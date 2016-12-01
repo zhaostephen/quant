@@ -54,7 +54,7 @@
       <Project>{fddb42e9-f7d2-4b8a-b219-98e65a05a038}</Project>
       <Name>Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Factors\Factors.csproj">
+    <ProjectReference Include="..\..\Core\Factors\Factors.csproj">
       <Project>{819907c5-1222-4409-8b1c-356efb783c0c}</Project>
       <Name>Factors</Name>
     </ProjectReference>
