@@ -12,6 +12,9 @@
     @*<script type="text/javascript" src="http://cdn.hcharts.cn/highstock/highstock.js"></script>
     <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
     <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/themes/sand-signika.js"></script>*@
+    <script type="text/javascript">
+        var root = '@Url.Content("~")';
+    </script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -45,10 +48,10 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
+        @*<hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - Quant</p>
-        </footer>
+        </footer>*@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
