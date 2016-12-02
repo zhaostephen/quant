@@ -18,6 +18,9 @@ namespace Trade.Impl
     {
         IEnumerable<Fundamental> MakeFundametals();
         Task[] MakeAsync(IEnumerable<string> codes);
+        IEnumerable<Fundamental> QueryFundametals();
+        void MakeDays(IEnumerable<string> codes);
+        void MakeMinutes(IEnumerable<string> codes);
     }
 
     public class MktDataImpl : IMktDataImpl
@@ -45,6 +48,11 @@ namespace Trade.Impl
             return fundamentals;
         }
 
+        public IEnumerable<Fundamental> QueryFundametals()
+        {
+             return _rawdb.QueryFundamentals();
+        }
+
         public Task[] MakeAsync(IEnumerable<string> codes)
         {
             log.Info("Make days");
@@ -56,7 +64,7 @@ namespace Trade.Impl
             return new[] { t1, t2};
         }
 
-        private void MakeDays(IEnumerable<string> codes)
+        public void MakeDays(IEnumerable<string> codes)
         {
             var i = 0;
             var total = codes.Count();
@@ -67,7 +75,7 @@ namespace Trade.Impl
                 MakeByCode(code, PeriodEnum.Daily, new[] { PeriodEnum.Daily, PeriodEnum.Weekly, PeriodEnum.Monthly });
             }
         }
-        private void MakeMinutes(IEnumerable<string> codes)
+        public void MakeMinutes(IEnumerable<string> codes)
         {
             var i = 0;
             var total = codes.Count();
@@ -78,6 +86,7 @@ namespace Trade.Impl
                 MakeByCode(code, PeriodEnum.Min5, new[] { PeriodEnum.Min5, PeriodEnum.Min15, PeriodEnum.Min30, PeriodEnum.Min60 });
             }
         }
+
         private void MakeByCode(string code, PeriodEnum rawPeriod, PeriodEnum[] followings)
         {
             var rawUpdate = _rawIndex.Value.LastUpdate(code, rawPeriod);

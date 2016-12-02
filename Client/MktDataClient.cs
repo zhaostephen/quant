@@ -41,17 +41,12 @@ namespace Trade
             var path = Path.Combine(period.Path(LevelEnum.Analytic), code + ".csv");
             var p = path.ReadCsv<DataPoint>();
 
-            return new StkDataSeries(code, new DataSeries(p), false);
+            return new StkDataSeries(code, p);
         }
 
         public IEnumerable<StkDataSeries> Query(IEnumerable<string> codes, PeriodEnum period = PeriodEnum.Daily)
         {
             return codes.Distinct().Select(p => Query(p, period)).ToArray();
-        }
-
-        private string Code(string path)
-        {
-            return Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
         }
     }
 }

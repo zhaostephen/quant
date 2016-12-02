@@ -32,6 +32,73 @@ namespace Trade
             _cancel = new CancellationTokenSource();
         }
 
+        internal void Start(string command)
+        {
+            log.Info("**********START**********");
+
+            switch (command.ToLower())
+            {
+                case "fundamental":
+                    {
+                        log.Info("Make fundamental");
+                        var fundamentals = _mktdata.MakeFundametals();
+                        log.InfoFormat("GOT, total {0}", fundamentals.Count());
+                    }
+                    break;
+                case "keyprice":
+                    {
+                        log.Info("Query codes");
+                        var codes = GetCodes();
+                        log.InfoFormat("GOT, total {0}", codes.Count());
+
+                        log.Info("Make key price");
+                        _attribution.MakeKeyPrice(codes, Configuration.bearcrossbull);
+                    }
+                    break;
+                case "days":
+                    {
+                        log.Info("Query codes");
+                        var codes = GetCodes();
+                        log.InfoFormat("GOT, total {0}", codes.Count());
+
+                        log.Info("Make days");
+                        _mktdata.MakeDays(codes);
+                    }
+                    break;
+                case "minutes":
+                    {
+                        log.Info("Query codes");
+                        var codes = GetCodes();
+                        log.InfoFormat("GOT, total {0}", codes.Count());
+
+                        log.Info("Make minutes");
+                        _mktdata.MakeMinutes(codes);
+                    }
+                    break;
+                case "mktdata":
+                    {
+                        log.Info("Query codes");
+                        var codes = GetCodes();
+                        log.InfoFormat("GOT, total {0}", codes.Count());
+
+                        log.Info("Make mkt data");
+                        var tasks = _mktdata.MakeAsync(codes);
+
+                        try
+                        {
+                            Task.WaitAll(tasks, _cancel.Token);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            log.Warn("Cancelled");
+                        }
+                    }
+                    break;
+            }
+
+            log.Info("**********DONE**********");
+        }
+
         internal void Start(Tuple<int?, int?> range = null)
         {
             log.Info("**********START**********");
@@ -45,7 +112,7 @@ namespace Trade
             log.InfoFormat("GOT, total {0}", codes.Count());
 
             log.Info("Make key price");
-            _attribution.MakeKeyPrice(codes);
+            _attribution.MakeKeyPrice(codes, Configuration.bearcrossbull);
 
             log.Info("Make mkt data");
             var tasks = _mktdata.MakeAsync(codes);
@@ -62,8 +129,9 @@ namespace Trade
             log.Info("**********DONE**********");
         }
 
-        private string[] GetCodes(Tuple<int?, int?> range, IEnumerable<Fundamental> fundamentals)
+        private string[] GetCodes(Tuple<int?, int?> range = null, IEnumerable<Fundamental> fundamentals =null)
         {
+            fundamentals = fundamentals ?? _mktdata.QueryFundametals();
             if (range != null && range.Item1.HasValue && range.Item2.HasValue)
             {
                 fundamentals = fundamentals.Skip(range.Item1.Value).Take(range.Item2.Value - range.Item1.Value).ToArray();

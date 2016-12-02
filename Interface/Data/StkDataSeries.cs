@@ -10,15 +10,27 @@ namespace Trade.Data
     {
         public string Code { get; set; }
 
-        public StkDataSeries(string code, DataSeries d, bool calcIndicator=true)
+        public StkDataSeries(string code, DataSeries d, bool complete = false)
         {
             Code = code;
             AddRange(d);
-            if(calcIndicator)
-                Indicators();
+            if (complete)
+                this.complete();
+        }
+        public StkDataSeries(string code, IEnumerable<DataPoint> d, bool complete = false)
+        {
+            Code = code;
+            AddRange(d);
+            if (complete)
+                this.complete();
         }
 
-        private void Indicators()
+        private void complete()
+        {
+            completeChange();
+            completeIndicators();
+        }
+        private void completeIndicators()
         {
             var close = CloseTimeSeries();
 
@@ -48,6 +60,30 @@ namespace Trade.Data
                 p.MA60 = MA60.ContainsKey(date) ? MA60[date].Value : (double?)null;
                 p.MA120 = MA120.ContainsKey(date) ? MA120[date].Value : (double?)null;
                 p.MA250 = MA250.ContainsKey(date) ? MA250[date].Value : (double?)null;
+            }
+        }
+        private void completeChange()
+        {
+            var data = this;
+            for (var i = 1; i < data.Count; ++i)
+            {
+                var preClose = data[i - 1].Close;
+                data[i].PreClose = preClose;
+
+                data[i].NetChange = data[i].Close - preClose;
+                data[i].PctChange = Math.Round(((data[i].Close - preClose) / preClose) * 100, 2);
+
+                data[i].LowNetChange = data[i].Low - preClose;
+                data[i].LowPctChange = Math.Round(((data[i].Low - preClose) / preClose) * 100, 2);
+
+                data[i].HighNetChange = data[i].High - preClose;
+                data[i].HighPctChange = Math.Round(((data[i].High - preClose) / preClose) * 100, 2);
+
+                data[i].OpenNetChange = data[i].Open - preClose;
+                data[i].OpenPctChange = Math.Round(((data[i].Open - preClose) / preClose) * 100, 2);
+
+                data[i].HighLowNetChange = data[i].High - data[i].Low;
+                data[i].HighLowPctChange = Math.Round(((data[i].High - data[i].Low) / preClose) * 100, 2);
             }
         }
 
@@ -95,7 +131,7 @@ namespace Trade.Data
             var range = amRange.Concat(pmRange).ToArray();
 
             var skip = Math.Max(Count - howMany, 0);
-            var data = new StkDataSeries(this.Code, new DataSeries(this.Skip(skip).ToArray()));
+            var data = new StkDataSeries(Code, this.Skip(skip).ToArray());
             return Roll(data, (d) =>
             {
                 var time = new DateTime(2010, 1, 1, d.Hour, d.Minute, 0);
@@ -132,11 +168,9 @@ namespace Trade.Data
             .ToArray();
 
             var points = r.Select(p1 => new DataPoint { Close = p1.Close, Date = p1.Date, Open = p1.Open, High = p1.High, Low = p1.Low })
-                          .ToArray()
-                          .NetPctChange();
-            var series = new DataSeries(points);
+                          .ToArray();
 
-            return new StkDataSeries(data.Code, series);
+            return new StkDataSeries(data.Code, points, complete: true);
         }
     }
 }

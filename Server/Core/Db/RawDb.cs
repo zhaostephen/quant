@@ -33,7 +33,7 @@ namespace Trade.Db
             if (!data.Any())
                 return null;
 
-            return new StkDataSeries(code, new DataSeries(data.NetPctChange()));
+            return new StkDataSeries(code, data, complete:true);
         }
 
         private DataPoint ParseData(string line, PeriodEnum period)

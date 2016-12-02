@@ -10,6 +10,7 @@ using Trade.Utility;
 using log4net;
 using ServiceStack;
 using Trade.Cfg;
+using Interace.Mixin;
 
 namespace Trade.Db
 {
@@ -27,63 +28,17 @@ namespace Trade.Db
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
         {
             var file = Path.Combine(period.Path(level), code + ".csv");
-
-            return Query(file);
+            var p = file.ReadCsv<DataPoint>();
+            return new StkDataSeries(code, p);
         }
 
         public void Save(IEnumerable<StkDataSeries> dataset, PeriodEnum period = PeriodEnum.Daily)
         {
-            var path = period.Path(level);
+            var path = period.Path(level).EnsurePathCreated();
             foreach (var d in dataset)
             {
-                Save(d, Path.Combine(path, d.Code + ".csv"));
+                File.WriteAllText(Path.Combine(path, d.Code + ".csv"), d.ToCsv(), Encoding.UTF8);
             }
-        }
-
-        private void Save(IEnumerable<object> data, string path)
-        {
-            while (true)
-            {
-                var dir = Path.GetDirectoryName(path);
-                if (string.IsNullOrEmpty(dir) || Directory.Exists(dir))
-                    break;
-                Directory.CreateDirectory(dir);
-            }
-
-            File.WriteAllText(path, data.ToCsv(), Encoding.UTF8);
-        }
-
-        private StkDataSeries Query(string path)
-        {
-            if (!File.Exists(path)) return null;
-
-            var name = Path.GetFileNameWithoutExtension(path).Replace("SH", "").Replace("SZ", "").Replace("#", "");
-            var lines = File.ReadAllLines(path);
-
-            var data = lines
-                .Select(p =>
-                {
-                    var splits = p.Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
-                    if (!isDate) return null;
-
-                    return new DataPoint
-                    {
-                        Date = splits[0].Date(),
-                        Open = splits[1].Double(),
-                        High = splits[2].Double(),
-                        Low = splits[3].Double(),
-                        Close = splits[4].Double()
-                    };
-                })
-                .Where(p => p != null && p.Open > 0d && p.Close > 0d)
-                .OrderBy(p => p.Date)
-                .ToArray();
-
-            if (!data.Any())
-                return null;
-
-            return new StkDataSeries(name, new DataSeries(data.NetPctChange()));
         }
     }
 }

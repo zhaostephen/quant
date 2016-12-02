@@ -27,6 +27,8 @@ namespace Trade
             svc = new Service();
             if(args.Length > 2)
                 svc.Start(Tuple.Create((int?)int.Parse(args[1]), (int?)int.Parse(args[2])));
+            else if (args.Length > 0)
+                svc.Start(args[0]);
             else
                 svc.Start();
 
