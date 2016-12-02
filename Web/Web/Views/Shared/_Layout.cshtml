@@ -9,9 +9,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/highstock")
-    @*<script type="text/javascript" src="http://cdn.hcharts.cn/highstock/highstock.js"></script>
-    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
-    <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/themes/sand-signika.js"></script>*@
+    @Scripts.Render("~/bundles/app")
     <script type="text/javascript">
         var root = '@Url.Content("~")';
     </script>
@@ -25,24 +23,24 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("量化时代", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("量化先锋", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("首页", "Index", "Home")</li>
-                    <li>
+                    @*<li>
                         @Html.ActionLink("数据服务", "Data", "Home")
                         <ul class="dropdown-menu">
                             @Html.ActionLink("行情数据", "Data", "Home")
                             @Html.ActionLink("关键价位", "Data", "Home")
                         </ul>
-                    </li>
+                    </li>*@
                     <li>@Html.ActionLink("量化选股", "Selection", "Home")</li>
                     <li>@Html.ActionLink("量化策略", "Strategy", "Home")</li>
                 </ul>
-                <p class="nav navbar-text navbar-right">
+                @*<p class="nav navbar-text navbar-right">
                     @Html.ActionLink("系统管理", "Index", "Home")
-                </p>
+                </p>*@
             </div>
         </div>
     </div>

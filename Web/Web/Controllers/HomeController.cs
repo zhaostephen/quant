@@ -13,16 +13,16 @@ namespace Web.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Selection()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "量化选股";
 
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Strategy()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "量化策略";
 
             return View();
         }
