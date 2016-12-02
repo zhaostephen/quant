@@ -23,9 +23,19 @@ namespace Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/angular").Include(
+                      "~/Scripts/angular.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/highstock").Include(
+                 "~/Scripts/highstock/highstock.js",
+                 "~/Scripts/highstock/exporting.js",
+                 "~/Scripts/highstock/sand-signika.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            BundleTable.EnableOptimizations = false;
         }
     }
 }
