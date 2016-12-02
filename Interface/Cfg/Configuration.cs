@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,48 +11,48 @@ namespace Trade.Cfg
     {
         public class Raw
         {
-            const string PATH = @"D:\quant\data\raw";
+            public static readonly string PATH = ConfigurationManager.AppSettings["quant"] + @"\raw";
 
-            public const string min_5 = PATH + @"\5mins";
-            public const string min_15 = PATH + @"\15mins";
-            public const string min_30 = PATH + @"\30mins";
-            public const string min_60 = PATH + @"\60mins";
-            public const string daily = PATH + @"\daily";
-            public const string month = PATH + @"\month";
-            public const string week = PATH + @"\week";
-            public const string fundamental = PATH + @"\fundamental";
-            public const string index = PATH + @"\index";
+            public static readonly string min_5 = PATH + @"\5mins";
+            public static readonly string min_15 = PATH + @"\15mins";
+            public static readonly string min_30 = PATH + @"\30mins";
+            public static readonly string min_60 = PATH + @"\60mins";
+            public static readonly string daily = PATH + @"\daily";
+            public static readonly string month = PATH + @"\month";
+            public static readonly string week = PATH + @"\week";
+            public static readonly string fundamental = PATH + @"\fundamental";
+            public static readonly string index = PATH + @"\index";
         }
 
         public class level1
         {
-            const string PATH = @"D:\quant\data\analytic";
+            public static readonly string PATH = ConfigurationManager.AppSettings["quant"] + @"\analytic";
 
-            public const string min_5 = PATH + @"\5mins";
-            public const string min_15 = PATH + @"\15mins";
-            public const string min_30 = PATH + @"\30mins";
-            public const string min_60 = PATH + @"\60mins";
-            public const string daily = PATH + @"\daily";
-            public const string month = PATH + @"\month";
-            public const string week = PATH + @"\week";
+            public static readonly string min_5 = PATH + @"\5mins";
+            public static readonly string min_15 = PATH + @"\15mins";
+            public static readonly string min_30 = PATH + @"\30mins";
+            public static readonly string min_60 = PATH + @"\60mins";
+            public static readonly string daily = PATH + @"\daily";
+            public static readonly string month = PATH + @"\month";
+            public static readonly string week = PATH + @"\week";
 
-            public const string fundamental = PATH + @"\fundamental\fundamental.csv";
-            public const string index = PATH + @"\index";
+            public static readonly string fundamental = PATH + @"\fundamental\fundamental.csv";
+            public static readonly string index = PATH + @"\index";
         }
 
         public class attribution
         {
-            const string PATH = @"D:\quant\data\attribution";
+            public static readonly string PATH = ConfigurationManager.AppSettings["quant"] + @"\attribution";
 
-            public const string root = PATH;
+            public static readonly string root = PATH;
         }
 
         public class oms
         {
-            const string PATH = @"D:\quant\data";
+            public static readonly string PATH = ConfigurationManager.AppSettings["quant"];
 
-            public const string selection = PATH + @"\selection";
-            public const string trade = PATH + @"\trade";
+            public static readonly string selection = PATH + @"\selection";
+            public static readonly string trade = PATH + @"\trade";
         }
     }
 
