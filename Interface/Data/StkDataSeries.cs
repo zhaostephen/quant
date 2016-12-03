@@ -10,25 +10,22 @@ namespace Trade.Data
     {
         public string Code { get; set; }
 
-        public StkDataSeries(string code, DataSeries d, bool complete = false)
+        public StkDataSeries(string code, DataSeries d)
         {
             Code = code;
             AddRange(d);
-            if (complete)
-                this.complete();
         }
-        public StkDataSeries(string code, IEnumerable<DataPoint> d, bool complete = false)
+        public StkDataSeries(string code, IEnumerable<DataPoint> d)
         {
             Code = code;
             AddRange(d);
-            if (complete)
-                this.complete();
         }
 
-        private void complete()
+        public StkDataSeries complete()
         {
             completeChange();
             completeIndicators();
+            return this;
         }
         private void completeIndicators()
         {
@@ -94,13 +91,13 @@ namespace Trade.Data
                 switch (followingPeriod)
                 {
                     case PeriodEnum.Daily:
-                        return this;
+                        return this.complete();
                     case PeriodEnum.Weekly:
-                        return Roll(this,(d) => Tuple.Create(d.AddDays(DayOfWeek.Monday - d.DayOfWeek), d.AddDays(DayOfWeek.Friday - d.DayOfWeek)));
+                        return Roll(this,(d) => Tuple.Create(d.AddDays(DayOfWeek.Monday - d.DayOfWeek), d.AddDays(DayOfWeek.Friday - d.DayOfWeek))).complete();
                     case PeriodEnum.Monthly:
                         return Roll(this, (d) => Tuple.Create(
                             new DateTime(d.Year, d.Month, 1),
-                            new DateTime(d.Year, d.Month, 1).AddMonths(1).AddDays(-1)));
+                            new DateTime(d.Year, d.Month, 1).AddMonths(1).AddDays(-1))).complete();
                 }
             }
             else if (basePeriod == PeriodEnum.Min5)
@@ -108,13 +105,13 @@ namespace Trade.Data
                 switch (followingPeriod)
                 {
                     case PeriodEnum.Min5:
-                        return new StkDataSeries(this.Code,this.Take(720).ToArray());
+                        return new StkDataSeries(this.Code,this.Take(720).ToArray()).complete();
                     case PeriodEnum.Min15:
-                        return RollMinutes(15, 720);
+                        return RollMinutes(15, 480).complete();
                     case PeriodEnum.Min30:
-                        return RollMinutes(30, 720);
+                        return RollMinutes(30, 240).complete();
                     case PeriodEnum.Min60:
-                        return RollMinutes(60, 720);
+                        return RollMinutes(60, 120).complete();
                 }
             }
 
@@ -172,7 +169,7 @@ namespace Trade.Data
             var points = r.Select(p1 => new DataPoint { Close = p1.Close, Date = p1.Date, Open = p1.Open, High = p1.High, Low = p1.Low })
                           .ToArray();
 
-            return new StkDataSeries(data.Code, points, complete: true);
+            return new StkDataSeries(data.Code, points);
         }
     }
 }

@@ -33,14 +33,14 @@ namespace Trade.Db
             if (!data.Any())
                 return null;
 
-            return new StkDataSeries(code, data, complete:true);
+            return new StkDataSeries(code, data);
         }
 
         private DataPoint ParseData(string line, PeriodEnum period)
         {
             var splits = line.Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
             if (!splits.Any()) return null;
-            var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
+            var isDate = splits[0].Contains("/");
             if (isDate)
             {
                 if (period.Daybase())

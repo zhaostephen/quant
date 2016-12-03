@@ -29,15 +29,15 @@ namespace Trade.Impl
 
         readonly MktDb _mktdb;
         readonly RawDb _rawdb;
-        readonly Lazy<Index> _mktIndex;
-        readonly Lazy<Index> _rawIndex;
+        readonly Lazy<Dictionary<string, DateTime>> _mktIndex;
+        readonly Lazy<Dictionary<string, DateTime>> _rawIndex;
 
         public MktDataImpl()
         {
             _mktdb = new MktDb();
             _rawdb = new RawDb();
-            _mktIndex = new Lazy<Index>(() => _mktdb.GetIdx());
-            _rawIndex = new Lazy<Index>(() => _rawdb.GetIdx());
+            _mktIndex = new Lazy<Dictionary<string, DateTime>>(() => _mktdb.GetIdx().LastUpdate.ToDictionary(p=>p.Code+p.Period, p=>p.Date.Date()));
+            _rawIndex = new Lazy<Dictionary<string, DateTime>>(() => _rawdb.GetIdx().LastUpdate.ToDictionary(p=>p.Code+p.Period, p=>p.Date.Date()));
         }
 
         public IEnumerable<Fundamental> MakeFundametals()
@@ -89,8 +89,8 @@ namespace Trade.Impl
 
         private void MakeByCode(string code, PeriodEnum rawPeriod, PeriodEnum[] followings)
         {
-            var rawUpdate = _rawIndex.Value.LastUpdate(code, rawPeriod);
-            var followingUpdates = followings.Select(p => _mktIndex.Value.LastUpdate(code, p)).ToArray();
+            var rawUpdate = _rawIndex.Value.ContainsKey(code+rawPeriod) ? _rawIndex.Value[code + rawPeriod] : (DateTime?)null;
+            var followingUpdates = followings.Select(p => _mktIndex.Value.ContainsKey(code+p) ? _mktIndex.Value[code+p] : (DateTime?)null).ToArray();
 
             if (rawUpdate.HasValue && followingUpdates.All(p => p.HasValue && p.Value >= rawUpdate.Value))
             {
@@ -98,6 +98,7 @@ namespace Trade.Impl
                 return;
             }
 
+            log.InfoFormat("Query raw data {0}", code);
             var dataset =
                 new[] { _rawdb.Query(code, rawPeriod) }
                 .Where(p => p != null)
