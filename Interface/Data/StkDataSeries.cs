@@ -107,11 +107,11 @@ namespace Trade.Data
                     case PeriodEnum.Min5:
                         return new StkDataSeries(this.Code,this.Take(720).ToArray()).complete();
                     case PeriodEnum.Min15:
-                        return RollMinutes(15, 480).complete();
+                        return RollMinutes(15, 480 * 15 / 5).complete();
                     case PeriodEnum.Min30:
-                        return RollMinutes(30, 240).complete();
+                        return RollMinutes(30, 240 * 30 / 5).complete();
                     case PeriodEnum.Min60:
-                        return RollMinutes(60, 120).complete();
+                        return RollMinutes(60, 120 * 60 / 5).complete();
                 }
             }
 
