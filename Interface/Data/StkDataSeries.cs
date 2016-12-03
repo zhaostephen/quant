@@ -89,12 +89,12 @@ namespace Trade.Data
 
         public StkDataSeries Make(PeriodEnum basePeriod, PeriodEnum followingPeriod)
         {
-            if (basePeriod == followingPeriod) return this;
-
             if(basePeriod == PeriodEnum.Daily)
             {
                 switch (followingPeriod)
                 {
+                    case PeriodEnum.Daily:
+                        return this;
                     case PeriodEnum.Weekly:
                         return Roll(this,(d) => Tuple.Create(d.AddDays(DayOfWeek.Monday - d.DayOfWeek), d.AddDays(DayOfWeek.Friday - d.DayOfWeek)));
                     case PeriodEnum.Monthly:
@@ -107,12 +107,14 @@ namespace Trade.Data
             {
                 switch (followingPeriod)
                 {
+                    case PeriodEnum.Min5:
+                        return new StkDataSeries(this.Code,this.Take(720).ToArray());
                     case PeriodEnum.Min15:
-                        return RollMinutes(15, 240);
+                        return RollMinutes(15, 720);
                     case PeriodEnum.Min30:
-                        return RollMinutes(30, 240);
+                        return RollMinutes(30, 720);
                     case PeriodEnum.Min60:
-                        return RollMinutes(60, 240);
+                        return RollMinutes(60, 720);
                 }
             }
 
