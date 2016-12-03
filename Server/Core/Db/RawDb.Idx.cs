@@ -52,7 +52,7 @@ namespace Trade.Db
                     var splits = reader.ReadLine().Split(new[] { '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
                     if (splits.Any())
                     {
-                        var isDate = splits[0].Contains("/");
+                        var isDate = Regex.IsMatch(splits[0], @"\d\d\d\d/\d\d/\d\d") || Regex.IsMatch(splits[0], @"\d\d/\d\d/\d\d\d\d");
                         if (isDate)
                             dt = splits[0].Date();
                     }
