@@ -27,3 +27,16 @@ textarea {
     background-color: white;
     padding-top: 20px;
 }
+
+.small-high-label{
+    font-size:x-small;
+    color:red;
+    font-weight:bold
+}
+
+.small-low-label{
+    font-size:x-small;
+    color:green;
+    font-weight:bold;
+    position:relative;
+}

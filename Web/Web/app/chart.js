@@ -1,11 +1,44 @@
 ﻿$(function () {
+    var keyhighdates = [];
+    var keylowdates = [];
+    function getData(code, callback) {
+        $.getJSON(root + 'api/MktData/' + code, function (result) {
+            var data = result.data;
+            var utc = function (d) {
+                var date = new Date(d);
+                return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
+            };
+
+            for (var i = 0; i < data.length; ++i) {
+                data[i][0] = utc(data[i][0]);
+            }
+
+            keyhighdates = [];
+            keylowdates = [];
+            var keyprices = result.keyprices;
+            for (var i = 0; i < keyprices.length; ++i) {
+                if (keyprices[i].Flag == "upper") {
+                    keyhighdates.push(utc(keyprices[i].Date));
+                }
+                else {
+                    keylowdates.push(utc(keyprices[i].Date));
+                }
+            }
+            callback({
+                name:name,
+                data: data,
+                keyhighdates: keyhighdates,
+                keylowdates: keylowdates
+            });
+        });
+    }
 
     $("#querybutton").click(function () {
         var code = $("#querycode").val();
         var chart = Highcharts.charts[0];
 
         chart.showLoading('请稍等...');
-        $.getJSON(root + 'api/MktData/' + code, function (result) {
+        getData(code, function (result) {
             chart.series[0].setData(result.data);
             chart.setTitle({
                 text: result.name
@@ -46,12 +79,8 @@
         //        });
     }
 
-    $.getJSON(root + 'api/MktData/600000', function (result) {
+    getData("600000", function (result) {
         var data = result.data;
-        for (var i = 0; i < data.length; ++i) {
-            var date = new Date(data[i][0]);
-            data[i][0] = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
-        }
 
         // Add a null value for the end date
         //data = [].concat(data, [[Date.UTC(2011, 9, 14, 19, 59), null, null, null, null]]);
@@ -61,16 +90,18 @@
             chart: {
                 type: 'candlestick',
                 zoomType: 'x',
-                backgroundColor: "#ffffff"
+                backgroundColor: "#ffffff",
+                height: 500,
+                width:1000
             },
-
-            //navigator: {
-            //    adaptToUpdatedData: false,
-            //    series: {
-            //        data: data
-            //    }
-            //},
-
+            credits: { enabled: false },
+            navigator: {
+                xAxis: {
+                    labels: {
+                        formatter: function () { return Highcharts.dateFormat('%m/%d', this.value); }
+                    }
+                }
+            },
             scrollbar: {
                 liveRedraw: false
             },
@@ -146,9 +177,27 @@
             //colors: ['#000000', '#0000ff', '#ff00ff', '#f7a35c', '#8085e9'],
             plotOptions: {
                 candlestick: {
-                    //color: '#54ffff',
                     color: '#00cc00',
-                    upColor: '#ff3232'
+                    upColor: '#ff3232',
+                    dataLabels: {
+                        enabled: true,
+                        useHTML: true,
+                        formatter: function () {
+                            console.log(this.point);
+                            var high = (keyhighdates.indexOf(this.x) != -1);
+                            var low = (keylowdates.indexOf(this.x) != -1);
+
+                            var label = high ? this.point.high : low ? this.point.low : "";
+                            if (label != "") {
+                                var css = high ? "small-high-label" : "small-low-label";
+                                var bottom = 0;
+                                if (low)
+                                    bottom = -1 * (this.point.shapeArgs.height+20) + "px";
+                                return "<span class=\"" + css + "\" style=\"bottom:" + bottom + "\">" + label + "</span>";
+                            }
+                            return label;
+                        }
+                    }
                 },
                 line: {
                     marker: {
@@ -171,8 +220,10 @@
             xAxis: {
                 events: {
                     afterSetExtremes: afterSetExtremes
+                },
+                labels: {
+                    formatter: function () { return Highcharts.dateFormat('%m/%d', this.value); }
                 }
-                //minRange: 3600 * 1000
             },
 
             yAxis: {
