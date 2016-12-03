@@ -23,20 +23,30 @@ namespace Trade.Cli.commands
 
         public override void exec()
         {
-            foreach(var file in Directory.GetFiles(param.path,"*.config"))
+            foreach (var file in Directory.GetFiles(param.path, "*.config"))
             {
                 log.InfoFormat("update " + file);
 
                 var e = XElement.Load(file);
-                var q = e.XPathSelectElement("//appSettings/add[@key='quant']");
-                if(q==null)
-                {
-                    log.WarnFormat("ignore " + file);
-                    continue;
-                }
-                q.SetAttributeValue("value", param.quant);
-                e.Save(file);
-            }            
+
+                if (setValue(e, "quant", param.quant) ||
+                    setValue(e, "nodes", param.nodes))
+
+                    e.Save(file);
+            }
+        }
+
+        static bool setValue(XElement e, string key, string value)
+        {
+            var q = e.XPathSelectElement("//appSettings/add[@key='" + key + "']");
+            if (q == null)
+            {
+                log.WarnFormat("ignore " + key);
+                return false;
+            }
+            q.SetAttributeValue("value", value);
+
+            return true;
         }
 
         public class Parameters
@@ -45,6 +55,8 @@ namespace Trade.Cli.commands
             public string path { get; set; }
             [Option('q', "quant", Required = true)]
             public string quant { get; set; }
+            [Option('n', "nodes", Required = true)]
+            public string nodes { get; set; }
         }
     }
 }

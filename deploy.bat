@@ -4,4 +4,4 @@ robocopy data/raw/fundamental \\139.199.73.92\c$\quant\data\raw\fundamental /PUR
 echo **********************deploy server**********************
 robocopy bin \\139.199.73.92\c$\quant\bin /PURGE
 echo **********************update server config**********************
-\\139.199.73.92\c$\quant\bin\server-cli updateconfig --p \\139.199.73.92\c$\quant\bin --q C:\quant\data
+\\139.199.73.92\c$\quant\bin\server-cli updateconfig --p \\139.199.73.92\c$\quant\bin --q C:\quant\data --n 0-1800,1800-3600
