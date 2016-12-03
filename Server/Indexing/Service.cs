@@ -28,7 +28,6 @@ namespace Trade
 
             log.Info("Make fundamental");
             var fundamentals = _rawdb.QueryFundamentals();
-            _mktdb.Save(fundamentals);
             log.InfoFormat("GOT, total {0}", fundamentals.Count());
 
             log.Info("Query codes");
