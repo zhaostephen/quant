@@ -24,9 +24,9 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\Interface\Interace.projitems*{0df75efd-9a54-4504-a6e7-c634e9047318}*SharedItemsImports = 13
+		..\Interface\Interace.projitems*{1bde39a1-3a03-4c37-8d22-c107965a3cff}*SharedItemsImports = 4
 		..\Core\cli\cli.projitems*{2f077019-73ab-434c-a936-24134349d3c8}*SharedItemsImports = 13
 		..\Core\cli\cli.projitems*{3ca28cf4-a008-41f4-875b-d5661d84b290}*SharedItemsImports = 4
-		..\Interface\Interace.projitems*{819907c5-1222-4409-8b1c-356efb783c0c}*SharedItemsImports = 4
 		..\Interface\Interace.projitems*{fddb42e9-f7d2-4b8a-b219-98e65a05a038}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
