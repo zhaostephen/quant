@@ -104,15 +104,12 @@ namespace Trade
             log.Info("**********START**********");
 
             log.Info("Make fundamental");
-            var fundamentals = _mktdata.MakeFundametals();
+            var fundamentals = _mktdata.QueryFundametals();
             log.InfoFormat("GOT, total {0}", fundamentals.Count());
 
             log.Info("Query codes");
             var codes = GetCodes(range, fundamentals);
             log.InfoFormat("GOT, total {0}", codes.Count());
-
-            log.Info("Make key price");
-            _attribution.MakeKeyPrice(codes, Configuration.bearcrossbull);
 
             log.Info("Make mkt data");
             var tasks = _mktdata.MakeAsync(codes);

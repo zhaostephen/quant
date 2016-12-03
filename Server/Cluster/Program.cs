@@ -24,11 +24,12 @@ namespace Cluster
 
             svc = new Service();
 
-            var code = HostFactory.Run(Go);
-            if (code != TopshelfExitCode.Ok)
-            {
-                throw new Exception(string.Format("Topshelf error code name: {0}, value: {1}", code.ToString(), (int)code));
-            }
+            svc.Start();
+            //var code = HostFactory.Run(Go);
+            //if (code != TopshelfExitCode.Ok)
+            //{
+            //    throw new Exception(string.Format("Topshelf error code name: {0}, value: {1}", code.ToString(), (int)code));
+            //}
         }
 
         static void Go(HostConfigurator svchost)

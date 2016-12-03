@@ -5,6 +5,7 @@ using log4net;
 using System;
 using System.Diagnostics;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace Cluster
 {
@@ -22,12 +23,20 @@ namespace Cluster
         {
             log.Info("**********START**********");
 
+            var tasks = new List<Task>();
             foreach (var node in _nodes)
             {
                 log.InfoFormat("start node {0}", node);
 
-                node.Process = Process.Start("server.exe", string.Format("console {0} {1}", node.From, node.To));
+                var t = Task.Run(() =>
+                {
+                    node.Process = Process.Start("server.exe", string.Format("console {0} {1}", node.From, node.To));
+                    node.Process.WaitForExit((int)TimeSpan.FromMinutes(45).TotalMilliseconds);
+                });
+                tasks.Add(t);
             }
+
+            Task.WaitAll(tasks.ToArray(), (int)TimeSpan.FromHours(2).TotalMilliseconds);
 
             log.Info("**********DONE**********");
         }
