@@ -242,11 +242,11 @@
                     + '</b><br />收盘:<b>'
                     + this.points[0].point.close
                     + '</b>';
-                    return s;
+                    return "<span>" + s + "</span>";
                 },
                 shared: true,
                 useHTML: true,
-                valueDecimals: 2, //有多少位数显示在每个系列的y值
+                valueDecimals: 2, 
                 crosshairs: [{
                     color: '#b9b9b0'
                 }, {
