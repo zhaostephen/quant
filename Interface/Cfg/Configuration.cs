@@ -9,7 +9,7 @@ namespace Trade.Cfg
 {
     public class Configuration
     {
-        public static readonly DateTime bearcrossbull = new DateTime(2015,6, 12);
+        public static readonly DateTime bearcrossbull = new DateTime(2015,5, 12);
 
         public class Raw
         {

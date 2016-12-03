@@ -1,8 +1,11 @@
 ﻿$(function () {
     var keyhighdates = [];
     var keylowdates = [];
-    function getData(code, callback) {
-        $.getJSON(root + 'api/MktData/' + code, function (result) {
+    var currentcode = "";
+    function getData(code, period, callback) {
+        period = period || "daily";
+        currentcode = code;
+        $.getJSON(root + 'api/MktData/' + code + "?period="+period, function (result) {
             var data = result.data;
             var utc = function (d) {
                 var date = new Date(d);
@@ -33,18 +36,21 @@
         });
     }
 
-    $("#querybutton").click(function () {
-        var code = $("#querycode").val();
+    function show(code, period) {
         var chart = Highcharts.charts[0];
 
         chart.showLoading('请稍等...');
-        getData(code, function (result) {
+        getData(code, period, function (result) {
             chart.series[0].setData(result.data);
             chart.setTitle({
                 text: result.name
             });
             chart.hideLoading();
         });
+    }
+
+    $("#querybutton").click(function () {
+        show($("#querycode").val(),"daily");
     });
 
     Highcharts.setOptions({
@@ -63,23 +69,14 @@
         },
     });
 
-    /**
-     * Load new data depending on the selected min and max
-     */
     function afterSetExtremes(e) {
         console.log(e);
-        //var chart = Highcharts.charts[0];
-
-        //chart.showLoading('Loading data from server...');
-        //$.getJSON('https://www.highcharts.com/samples/data/from-sql.php?start=' + Math.round(e.min) +
-        //        '&end=' + Math.round(e.max) + '&callback=?', function (data) {
-
-        //            chart.series[0].setData(data);
-        //            chart.hideLoading();
-        //        });
+        if (e.rangeSelectorButton) {
+            show(currentcode, e.rangeSelectorButton.value);
+        }
     }
 
-    getData("600000", function (result) {
+    getData("600000",'daily', function (result) {
         var data = result.data;
 
         // Add a null value for the end date
@@ -138,35 +135,37 @@
                     }
                 },
                 enabled: false,
-                selected: 0,
+                selected: 6,
                 inputEnabled: false,
                 buttons: [{
-                    type: 'day',
-                    count: 1,
-                    text: '日K'
+                    //type: 'day',
+                    //count: 1,
+                    text: '日K',
+                    value: 'daily'
                 }, {
-                    type: 'day',
-                    count: 7,
-                    text: '周K'
+                    //type: 'day',
+                    //count: 7,
+                    text: '周K',
+                    value:'weekly'
                 }, {
-                    type: 'month',
-                    count: 1,
+                    //type: 'month',
+                    //count: 1,
                     text: '月K'
                 }, {
-                    type: 'minute',
-                    count: 5,
+                    //type: 'minute',
+                    //count: 5,
                     text: '5分钟'
                 }, {
-                    type: 'minute',
-                    count: 15,
+                    //type: 'minute',
+                    //count: 15,
                     text: '15分钟'
                 }, {
-                    type: 'minute',
-                    count: 30,
+                    //type: 'minute',
+                    //count: 30,
                     text: '30分钟'
                 }, {
-                    type: 'hour',
-                    count: 1,
+                    //type: 'hour',
+                    //count: 1,
                     text: '60分钟'
                 }]
             },
@@ -183,7 +182,6 @@
                         enabled: true,
                         useHTML: true,
                         formatter: function () {
-                            console.log(this.point);
                             var high = (keyhighdates.indexOf(this.x) != -1);
                             var low = (keylowdates.indexOf(this.x) != -1);
 

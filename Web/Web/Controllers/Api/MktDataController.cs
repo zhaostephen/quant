@@ -7,16 +7,19 @@ using System.Net.Http;
 using System.Web.Http;
 using Trade;
 using Interace.Attribution;
+using Trade.Cfg;
 
 namespace Web.Controllers.Api
 {
     public class MktDataController : ApiController
     {
-        public chart Get(string id)
+        public chart Get(string id, string period)
         {
-            var d = new MktDataClient().Query(id, Trade.Cfg.PeriodEnum.Daily);
+            var per = (PeriodEnum)Enum.Parse(typeof(PeriodEnum), period, true);
+            var d = new MktDataClient().Query(id, per);
             var basic = new MktDataClient().QueryFundamental(id);
-            var since = d.Max(p => p.Date).AddDays(-250);
+            //var since = d.Max(p => p.Date).AddDays(-250);
+            var since = Trade.Cfg.Configuration.bearcrossbull;
 
             var data = d
                 .Where(p => p.Date >= since)
