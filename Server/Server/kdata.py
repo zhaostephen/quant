@@ -26,7 +26,8 @@ def make(code):
     kdata(code, "30")
     kdata(code, "60")
 
-codes = getCodes()
+codes = ['sh','sz','hs300','sz50','zxb','cyb']
+codes.extend(getCodes())
 count = len(codes)
 i = 0
 for code in codes:
