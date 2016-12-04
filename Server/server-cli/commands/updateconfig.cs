@@ -34,6 +34,10 @@ namespace Trade.Cli.commands
 
                     e.Save(file);
             }
+
+            var py = Path.Combine(param.path, "storage.py");
+            log.InfoFormat("update " + py);
+            File.WriteAllText(py, File.ReadAllText(py).Replace("D:/quant/data/raw/fundamental/", param.tushre));
         }
 
         static bool setValue(XElement e, string key, string value)
@@ -57,6 +61,8 @@ namespace Trade.Cli.commands
             public string quant { get; set; }
             [Option('n', "nodes", Required = true)]
             public string nodes { get; set; }
+            [Option('t', "tushre", Required = true)]
+            public string tushre { get; set; }
         }
     }
 }
