@@ -22,7 +22,7 @@ namespace Trade.Cfg
             public static readonly string daily = PATH + @"\daily";
             public static readonly string month = PATH + @"\month";
             public static readonly string week = PATH + @"\week";
-            public static readonly string fundamental = PATH + @"\fundamental";
+            public static readonly string fundamental = PATH + @"\basics";
             public static readonly string index = PATH + @"\index";
         }
 
@@ -38,7 +38,7 @@ namespace Trade.Cfg
             public static readonly string month = PATH + @"\month";
             public static readonly string week = PATH + @"\week";
 
-            public static readonly string fundamental = PATH + @"\fundamental\fundamental.csv";
+            public static readonly string basics = PATH + @"\basics\basics.csv";
             public static readonly string index = PATH + @"\index";
         }
 

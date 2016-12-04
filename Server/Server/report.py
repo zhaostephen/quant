@@ -23,32 +23,32 @@ def get_report_data(year,season):
         r = ts.get_report_data(year,season)
         if r is None:
             return r
-        storage.save(ts.get_report_data(year,season),"report_data"+"_"+csv)
+        storage.save(ts.get_report_data(year,season),"raw/basics/report_data"+"_"+csv)
 
     filename = "profit_data"+"_"+csv
     if not storage.fileExists(filename):
         print("get_profit_data")
-        storage.save(ts.get_profit_data(year,season),"profit_data"+"_"+csv)
+        storage.save(ts.get_profit_data(year,season),"raw/basics/profit_data"+"_"+csv)
 
     filename = "operation_data"+"_"+csv
     if not storage.fileExists(filename):
         print("get_operation_data")
-        storage.save(ts.get_operation_data(year,season),"operation_data"+"_"+csv)
+        storage.save(ts.get_operation_data(year,season),"raw/basics/operation_data"+"_"+csv)
 
     filename = "growth_data"+"_"+csv
     if not storage.fileExists(filename):
         print("get_growth_data")
-        storage.save(ts.get_growth_data(year,season),"growth_data"+"_"+csv)
+        storage.save(ts.get_growth_data(year,season),"raw/basics/growth_data"+"_"+csv)
 
     filename = "get_debtpaying_data"+"_"+csv
     if not storage.fileExists(filename):
         print("get_debtpaying_data")
-        storage.save(ts.get_debtpaying_data(year,season),"debtpaying_data"+"_"+csv)
+        storage.save(ts.get_debtpaying_data(year,season),"raw/basics/debtpaying_data"+"_"+csv)
 
     filename = "get_debtpaying_data"+"_"+csv
     if not storage.fileExists(filename):
         print("get_cashflow_data")
-        storage.save(ts.get_cashflow_data(year,season),"cashflow_data"+"_"+csv)
+        storage.save(ts.get_cashflow_data(year,season),"raw/basics/cashflow_data"+"_"+csv)
 
 (year, season) = get_year_season(0)
 print("get report data for season ",year, "/", season)

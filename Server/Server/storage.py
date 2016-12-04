@@ -1,7 +1,7 @@
 ﻿import tushare as ts
 import os
 
-storage = "D:/quant/data/raw/fundamental/"
+storage = "D:/quant/data/"
 
 def fileExists(filename):
     return os.path.exists(getPath(filename))
@@ -14,4 +14,12 @@ def save(df, file):
         return
     
     path = storage+file
+
+    ensure_dir(path);
+
     df.to_csv(path)
+
+def ensure_dir(f):
+    d = os.path.dirname(f)
+    if not os.path.exists(d):
+        os.makedirs(d)

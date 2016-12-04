@@ -37,7 +37,7 @@ namespace Trade.Cli.commands
 
             var py = Path.Combine(param.path, "storage.py");
             log.InfoFormat("update " + py);
-            File.WriteAllText(py, File.ReadAllText(py).Replace("D:/quant/data/raw/fundamental/", param.tushre));
+            File.WriteAllText(py, File.ReadAllText(py).Replace("D:/quant/data/", param.tushre));
         }
 
         static bool setValue(XElement e, string key, string value)

@@ -40,7 +40,7 @@ namespace Trade
             {
                 case "fundamental":
                     {
-                        log.Info("Make fundamental");
+                        log.Info("Make basics");
                         var fundamentals = _mktdata.MakeFundametals();
                         log.InfoFormat("GOT, total {0}", fundamentals.Count());
                     }

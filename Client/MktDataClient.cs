@@ -33,7 +33,7 @@ namespace Trade
 
         public IEnumerable<Fundamental> QueryFundamentals()
         {
-            return Configuration.level1.fundamental.ReadCsv<Fundamental>();
+            return Configuration.level1.basics.ReadCsv<Fundamental>();
         }
 
         public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)

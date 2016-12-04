@@ -17,7 +17,7 @@ namespace Trade.Db
     {
         public void Save(IEnumerable<Fundamental> data)
         {
-            var path = Configuration.level1.fundamental;
+            var path = Configuration.level1.basics;
             while (true)
             {
                 var dir = Path.GetDirectoryName(path);
