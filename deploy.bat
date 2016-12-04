@@ -1,6 +1,6 @@
 @echo off
 echo **********************copy data**********************
-robocopy data/raw/fundamental \\139.199.73.92\c$\quant\data\raw\fundamental *.xls /PURGE
+robocopy data/raw/basics \\139.199.73.92\c$\quant\data\raw\basics *.xls /PURGE
 echo **********************deploy server**********************
 robocopy bin \\139.199.73.92\c$\quant\bin /PURGE
 echo **********************update server config**********************
