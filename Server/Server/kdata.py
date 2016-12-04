@@ -11,16 +11,13 @@ def getCodes():
     return stocks['code']
 
 def kdata(code, ktype):
-    file = "raw/kdata/" + ktype +"/" + code + ".csv";
+    file = "raw/kdata/" + datetime.datetime.now().strftime('%Y-%m-%d') + "/"  + ktype +"/" + code + ".csv";
     if(not storage.fileExists(file)):
         data = ts.get_k_data(code,"","",ktype)
         if(not data is None):
-            storage.save(ts.get_k_data(code,"","",ktype),"raw/kdata/" + ktype +"/" + code + ".csv")
+            storage.save(ts.get_k_data(code,"","",ktype),file)
 
-codes = getCodes()
-
-for code in codes:
-    print("make "+code)
+def make(code):
     kdata(code, "D")
     kdata(code, "W")
     kdata(code, "M")
@@ -28,3 +25,11 @@ for code in codes:
     kdata(code, "15")
     kdata(code, "30")
     kdata(code, "60")
+
+codes = getCodes()
+count = len(codes)
+i = 0
+for code in codes:
+    i = i + 1
+    print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + " - ", i, "/", count, "make "+code)
+    make(code)
