@@ -5,7 +5,13 @@ import sys
 import os
 
 def getCodes():
-    stocks = ts.get_area_classified()
+    stocks = None
+    try:
+        stocks = ts.get_area_classified()
+    except:
+        file = storage.getPath('raw/basics/area_classified.csv')
+        print("get codes from file ", file)
+        stocks = pd.read_csv(file, encoding="gbk")
     if(stocks is None):
         return []
     return stocks['code']
@@ -26,6 +32,7 @@ def make(code):
     kdata(code, "30")
     kdata(code, "60")
 
+print("get codes")
 codes = ['sh','sz','hs300','sz50','zxb','cyb']
 codes.extend(getCodes())
 count = len(codes)
