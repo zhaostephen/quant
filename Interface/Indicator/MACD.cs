@@ -10,7 +10,7 @@ namespace Trade.Indicator
 {
     public class MACD : MACDSeries
     {
-        public MACD(DataSeries data, int MID = 9, int SHORT = 12, int LONG = 26)
+        public MACD(kdata data, int MID = 9, int SHORT = 12, int LONG = 26)
         {
             var EMA_SHORT = new EMA(data.CloseTimeSeries(), SHORT);
             var EMA_MID = new EMA(data.CloseTimeSeries(), MID);

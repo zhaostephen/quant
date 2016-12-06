@@ -7,6 +7,11 @@ namespace Interace.Mixin
 {
     public static class PathMixin
     {
+        public static string file(this string path, string file)
+        {
+            return Path.Combine(path.EnsurePathCreated(), file);
+        }
+
         public static string EnsurePathCreated(this string path)
         {
             var s = new Stack<string>();

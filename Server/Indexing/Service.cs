@@ -27,11 +27,11 @@ namespace Trade
             log.Info("**********START**********");
 
             log.Info("Make fundamental");
-            var fundamentals = _rawdb.QueryFundamentals();
+            var fundamentals = _rawdb.QueryBasics();
             log.InfoFormat("GOT, total {0}", fundamentals.Count());
 
             log.Info("Query codes");
-            var codes = fundamentals.Select(p => p.代码).Distinct().ToArray();
+            var codes = fundamentals.Select(p => p.code).Distinct().ToArray();
             log.InfoFormat("GOT, total {0}", codes.Count());
 
             log.Info("Build index");

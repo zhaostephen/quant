@@ -9,16 +9,16 @@ namespace Trade.Factors
 {
     public class jun_xian_dou_tout : factor<bool>
     {
-        public jun_xian_dou_tout(StkDataSeries series)
+        public jun_xian_dou_tout(kdata series)
             : base(series)
         {
             if (series.Any())
             {
                 var current = series.Last();
 
-                value = current.MA5 >= current.MA30 
-                    && current.MA30 >= current.MA55
-                    && current.MA55 >= current.MA120;
+                value = current.ma5 >= current.ma0 
+                    && current.ma0 >= current.ma55
+                    && current.ma55 >= current.ma120;
             }
         }
     }

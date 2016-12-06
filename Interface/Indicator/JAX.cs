@@ -13,7 +13,7 @@ namespace Trade.Indicator
         {
             var MA = new MA(data.CloseTimeSeries(), N);
             var MA3 = new MA(data.TimeSeries(d => (2 * d.Close + d.Low + d.High) / 4), M);
-            var func = new Func<DataPoint, double, double>((d, salt) => d.Close/salt * (2 * d.Close + d.Low + d.High) / 4);
+            var func = new Func<kdatapoint, double, double>((d, salt) => d.Close/salt * (2 * d.Close + d.Low + d.High) / 4);
             var dmaPrevValue = 0d;
 
             for (int i = M - 1; i < data.Count; i++)

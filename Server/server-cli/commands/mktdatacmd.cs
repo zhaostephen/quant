@@ -20,7 +20,7 @@ namespace Trade.Cli.commands
         public override void exec()
         {
             var client = new MktDataClient();
-            IEnumerable<DataPoint> query = null;
+            IEnumerable<kdatapoint> query = null;
             switch (param.period)
             {
                 case "min5":

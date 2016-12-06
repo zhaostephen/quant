@@ -1,29 +1,53 @@
-﻿using Trade.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Trade.Data;
 
 namespace Trade.Indicator
 {
+    public enum PEAK_TYPE { low, high }
     public class PEAK : TimeSeries<double>
     {
-        public PEAK(TimeSeries<double> data)
+        public PEAK(kdata data, PEAK_TYPE type, int distance = 5)
         {
-            for (int i = 1; i < data.Count - 1; i++)
+            switch (type)
             {
-                var cur = data[i];
-                var prev = data[i - 1];
-                var next = data[i + 1];
-                if (cur.Value > prev.Value && cur.Value > next.Value)
-                {
-                    this.Add(new TimePoint<double>
+                case PEAK_TYPE.low:
                     {
-                        Date = cur.Date,
-                        Value = cur.Value,
-                    });
+                        peak(data,
+                            (a, prev, next) => a.Low <= prev.Low && a.Low <= next.Low,
+                            p => new TimePoint<double>(p.Date, p.Low),
+                            distance);
+                        break;
+                    }
+                case PEAK_TYPE.high:
+                    {
+                        peak(data,
+                            (a, prev, next) => a.High >= prev.High && a.High >= next.High,
+                            p => new TimePoint<double>(p.Date, p.High),
+                            distance);
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+
+        static void peak(
+            kdata points,
+            Func<kdatapoint, kdatapoint, kdatapoint, bool> cmp,
+            Action<kdatapoint> add,
+            int distance = 5)
+        {
+            var count = points.Count;
+            for (var i = distance + 1; i < count - distance; ++i)
+            {
+                var j = 1;
+                for (; j <= distance; ++j)
+                {
+                    if (!cmp(points[i], points[i - j], points[i + j]))
+                        break;
                 }
+                if (j > distance)
+                    add(points[i]);
             }
         }
     }

@@ -28,7 +28,7 @@ namespace Trade.Factors
     {
         public T value { get; set; }
 
-        public factor(StkDataSeries series)
+        public factor(kdata series)
         {
         }
 

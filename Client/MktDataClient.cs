@@ -14,37 +14,37 @@ namespace Trade
 {
     public class MktDataClient
     {
-        public Fundamental QueryFundamental(string code)
+        public Basics QueryFundamental(string code)
         {
             return QueryFundamentals()
-                .FirstOrDefault(p=>string.Equals(p.代码, code, StringComparison.InvariantCultureIgnoreCase));
+                .FirstOrDefault(p=>string.Equals(p.code, code, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public IEnumerable<Fundamental> QueryFundamentals(IEnumerable<string> codes)
+        public IEnumerable<Basics> QueryFundamentals(IEnumerable<string> codes)
         {
             var set = QueryFundamentals();
 
             var q = from f in set
-                    join c in codes on f.代码 equals c
+                    join c in codes on f.code equals c
                     select f;
 
             return q.ToArray();
         }
 
-        public IEnumerable<Fundamental> QueryFundamentals()
+        public IEnumerable<Basics> QueryFundamentals()
         {
-            return Configuration.level1.basics.ReadCsv<Fundamental>();
+            return Configuration.level1.basics.ReadCsv<Basics>();
         }
 
-        public StkDataSeries Query(string code, PeriodEnum period = PeriodEnum.Daily)
+        public kdata Query(string code, PeriodEnum period = PeriodEnum.Daily)
         {
             var path = Path.Combine(period.Path(LevelEnum.Analytic), code + ".csv");
-            var p = path.ReadCsv<DataPoint>();
+            var p = path.ReadCsv<kdatapoint>();
 
-            return new StkDataSeries(code, p);
+            return new kdata(code, p);
         }
 
-        public IEnumerable<StkDataSeries> Query(IEnumerable<string> codes, PeriodEnum period = PeriodEnum.Daily)
+        public IEnumerable<kdata> Query(IEnumerable<string> codes, PeriodEnum period = PeriodEnum.Daily)
         {
             return codes.Distinct().Select(p => Query(p, period)).ToArray();
         }

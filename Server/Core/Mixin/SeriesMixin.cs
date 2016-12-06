@@ -61,36 +61,5 @@ namespace Trade.Mixin
             Console.WriteLine("total {0}", @this.Count);
             Console.WriteLine("-----------------------------------------------------------------");
         }
-
-        public static void Dump(this BREAKSeries @this)
-        {
-            const string format = "{0,-15:MM/dd/yyyy}{1,-10}{2,-15:MM/dd/yyyy}{3,-10}";
-            Console.WriteLine(format, "日期", "值", "前高日", "前高值");
-            foreach (var i in @this)
-            {
-                Console.WriteLine(format, i.Date, i.Value, i.Peak.Date, i.Peak.Value);
-            }
-            Console.WriteLine("-----------------------------------------------------------------");
-            Console.WriteLine("total {0}", @this.Count);
-            Console.WriteLine("-----------------------------------------------------------------");
-        }
-
-        public static void Dump(this BREAKBACKSeries @this)
-        {
-            const string format = "{0,-15:MM/dd/yyyy}{1,-10}{2,-15:MM/dd/yyyy}{3,-10}{4,-15:MM/dd/yyyy}{5,-10}{6,-15:MM/dd/yyyy}{7,-10}";
-            Console.WriteLine(format, "日期", "值", "突破日", "突破值", "前高日", "前高值", "前低日", "前低值");
-            foreach (var i in @this)
-            {
-                Console.WriteLine(format, i.Date, i.Value, i.Break.Date, i.Break.Value, i.Break.Peak.Date, i.Break.Peak.Value, i.Bottom.Date, i.Bottom.Value);
-            }
-            Console.WriteLine("-----------------------------------------------------------------");
-            Console.WriteLine("total {0}", @this.Count);
-            Console.WriteLine("-----------------------------------------------------------------");
-        }
-
-        public static IEnumerable<StkDataSeries> Make(this IEnumerable<StkDataSeries> @this, PeriodEnum basePeriod, PeriodEnum followingPeriod)
-        {
-            return @this.Select(p => p.Make(basePeriod, followingPeriod)).ToArray();
-        }
     }
 }

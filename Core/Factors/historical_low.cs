@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Trade.Factors
 {
-    public class historical_low : factor<DataPoint>
+    public class historical_low : factor<kdatapoint>
     {
-        public historical_low(StkDataSeries series, DateTime since)
+        public historical_low(kdata series, DateTime since)
             : base(series)
         {
             var s = series.Where(p1 => p1.Date >= since);

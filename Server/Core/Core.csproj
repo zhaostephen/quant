@@ -56,15 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Db\AttributionDb.cs" />
-    <Compile Include="Db\MktDb.cs" />
-    <Compile Include="Db\MktDb.Idx.cs" />
-    <Compile Include="Db\MktDb.Ref.cs" />
-    <Compile Include="Db\RawDb.cs" />
-    <Compile Include="Db\RawDb.Idx.cs" />
-    <Compile Include="Db\RawDb.Ref.cs" />
-    <Compile Include="Impl\AttributionImpl.cs" />
-    <Compile Include="Impl\MktDataImpl.cs" />
+    <Compile Include="Db\db.cs" />
     <Compile Include="Mixin\DictMixin.cs" />
     <Compile Include="Mixin\Logging.cs" />
     <Compile Include="Mixin\SeriesMixin.cs" />
@@ -79,6 +71,7 @@
       <Name>Factors</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\Interface\Interace.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

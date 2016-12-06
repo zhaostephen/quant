@@ -10,7 +10,7 @@ namespace Trade
 {
     public static class MktDataClientMixin
     {
-        public static IEnumerable<StkDataSeries> QueryAll(this MktDataClient client, PeriodEnum period = PeriodEnum.Daily, string sector = null)
+        public static IEnumerable<kdata> QueryAll(this MktDataClient client, PeriodEnum period = PeriodEnum.Daily, string sector = null)
         {
             var codes = client.Codes(sector).ToArray();
             var results = codes
@@ -23,12 +23,12 @@ namespace Trade
 
         public static IEnumerable<string> Codes(this MktDataClient client, string sector = Sector.any)
         {
-            return client.QueryFundamentals().Where(p => InSector(p, sector)).Select(p => p.代码).Distinct().ToArray();
+            return client.QueryFundamentals().Where(p => InSector(p, sector)).Select(p => p.code).Distinct().ToArray();
         }
 
-        static bool InSector(Fundamental f, string sector)
+        static bool InSector(Basics f, string sector)
         {
-            var code = f.代码;
+            var code = f.code;
             if (string.IsNullOrEmpty(sector)) return true;
 
             switch (sector)
@@ -448,7 +448,7 @@ namespace Trade
                         return codes.Contains(code);
                     }
                 default:
-                    return f.所属行业 == sector;
+                    return f.industry == sector;
             }
         }
     }
