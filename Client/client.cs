@@ -14,13 +14,13 @@ namespace Trade
 {
     public class client
     {
-        public Basics basics(string code)
+        public Basic basics(string code)
         {
             return basics()
                 .FirstOrDefault(p=>string.Equals(p.code, code, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public IEnumerable<Basics> basics(IEnumerable<string> codes)
+        public IEnumerable<Basic> basics(IEnumerable<string> codes)
         {
             var set = basics();
 
@@ -31,10 +31,10 @@ namespace Trade
             return q.ToArray();
         }
 
-        public IEnumerable<Basics> basics()
+        public IEnumerable<Basic> basics()
         {
             var file = Configuration.data.basics.file("stock_basics.csv");
-            return file.ReadCsv<Basics>(Configuration.encoding.gbk);
+            return file.ReadCsv<Basic>(Configuration.encoding.gbk);
         }
 
         public kdata kdata(string code, string ktype)
@@ -60,7 +60,7 @@ namespace Trade
             return basics().Where(p => InSector(p, sector)).Select(p => p.code).Distinct().ToArray();
         }
 
-        private bool InSector(Basics f, string sector)
+        private bool InSector(Basic f, string sector)
         {
             var code = f.code;
             if (string.IsNullOrEmpty(sector)) return true;

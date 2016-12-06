@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,32 @@ namespace Interace.Mixin
 {
     public static class CsvMixin
     {
+        public static IEnumerable<dynamic> ReadCsv(this string path, Encoding encoding = null)
+        {
+            if (!File.Exists(path))
+                return Enumerable.Empty<dynamic>();
+
+            var lines = encoding != null ? File.ReadAllLines(path, encoding) : File.ReadAllLines(path);
+            if (!lines.Any())
+                return Enumerable.Empty<dynamic>();
+            var columns = lines[0].Split(new[] { ',' });
+            return lines
+                .Skip(1)
+                .Select(p =>
+                {
+                    var splits = p.Split(new[] { ',' });
+                    var obj = new ExpandoObject() as IDictionary<string, object>;
+                    for (var i = 0; i < columns.Length; ++i)
+                    {
+                        var column = columns[i];
+                        if (!string.IsNullOrEmpty(column))
+                            obj[column] = splits[i];
+                    }
+                    return obj;
+                })
+                .ToArray();
+        }
+
         public static IEnumerable<T> ReadCsv<T>(this string path, Encoding encoding=null) where T:new()
         {
             if (!File.Exists(path))
