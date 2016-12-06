@@ -18,10 +18,10 @@ def getCodes():
 
 def kdata(code, ktype):
     file = "kdata/" + ktype +"/" + code + ".csv";
-    if(not storage.fileExists(file)):
-        data = ts.get_k_data(code,"","",ktype)
-        if(not data is None):
-            storage.save(ts.get_k_data(code,"","",ktype),file)
+    #if(not storage.fileExists(file)):
+    data = ts.get_k_data(code,"","",ktype)
+    if(not data is None):
+        storage.save(ts.get_k_data(code,"","",ktype),file)
 
 def make(code):
     kdata(code, "D")
