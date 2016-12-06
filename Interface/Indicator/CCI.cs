@@ -10,7 +10,7 @@ namespace Trade.Indicator
 {
     public class CCI : TimeSeries<double>
     {
-        public CCI(DataSeries data, int N)
+        public CCI(kdata data, int N)
         {
             for (int i = N - 1; i < data.Count; i++)
             {
@@ -19,9 +19,9 @@ namespace Trade.Indicator
                 if (section.Count() < N)
                     break;
 
-                var TYP = (point.Close + point.High + point.Low) / 3;
-                var MA = section.Select(d => (d.Close + d.High + d.Low) / 3).MA();
-                var AVEDEV = section.Select(d => (d.Close + d.High + d.Low) / 3).AVEDEV();
+                var TYP = (point.close + point.high + point.low) / 3;
+                var MA = section.Select(d => (d.close + d.high + d.low) / 3).MA();
+                var AVEDEV = section.Select(d => (d.close + d.high + d.low) / 3).AVEDEV();
                 var CCI = (TYP - MA) / (0.015 * AVEDEV);
 
                 //TYP:=(HIGH+LOW+CLOSE)/3;
@@ -29,7 +29,7 @@ namespace Trade.Indicator
 
                 this.Add(new TimePoint<double>
                 {
-                    Date = point.Date,
+                    Date = point.date,
                     Value = Math.Round(CCI, 2),
                 });
             }

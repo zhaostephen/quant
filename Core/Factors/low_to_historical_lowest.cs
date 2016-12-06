@@ -12,13 +12,13 @@ namespace Trade.Factors
         public low_to_historical_lowest(kdata series, DateTime since)
             : base(series)
         {
-            var s = series.Where(p1 => p1.Date >= since);
+            var s = series.Where(p1 => p1.date >= since);
             if (s.Any())
             {
                 var current = series.Last();
-                var lowest = s.Min(p1 => p1.Low);
+                var lowest = s.Min(p1 => p1.low);
 
-                value = Math.Truncate((current.Low / lowest - 1) * 100);
+                value = Math.Truncate((current.low / lowest - 1) * 100);
             }
         }
     }

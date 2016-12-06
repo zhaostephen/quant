@@ -11,17 +11,17 @@ using Trade.Data;
 
 namespace Trade.Cli.commands
 {
-    [command("fundamental","basic")]
-    class fundamentalcmd : command<fundamentalcmd.Parameters>
+    [command("basics")]
+    class basicscmd : command<basicscmd.Parameters>
     {
-        static ILog log = LogManager.GetLogger(typeof(fundamentalcmd));
+        static ILog log = LogManager.GetLogger(typeof(basicscmd));
 
-        public fundamentalcmd(string[] args) : base(args) { }
+        public basicscmd(string[] args) : base(args) { }
 
         public override void exec()
         {
-            var client = new MktDataClient();
-            var f = new[] { client.QueryFundamental(param.code) }.Where(p => p != null).ToArray();
+            var client = new client();
+            var f = new[] { client.basics(param.code) }.Where(p => p != null).ToArray();
             log.Info(f.ToCsv());
         }
 

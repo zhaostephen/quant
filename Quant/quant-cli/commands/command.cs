@@ -40,7 +40,7 @@ namespace Quant.commands
         protected IEnumerable<string> codes(string sector)
         {
             log.InfoFormat("query codes from sector {0}", string.IsNullOrEmpty(sector) ? "any" : sector);
-            var client = new MktDataClient();
+            var client = new client();
             return client.Codes(sector ?? string.Empty);
         }
 
@@ -50,7 +50,7 @@ namespace Quant.commands
             if (account.Trades.Any())
             {
                 log.Info("save down trades");
-                var path = Configuration.oms.trade.EnsurePathCreated();
+                var path = Configuration.data.trade.EnsurePathCreated();
 
                 File.WriteAllText(Path.Combine(path, DateTime.Today.ToString("yyyy-MM-dd") + ".csv"), account.Trades.ToCsv(), Encoding.UTF8);
             }

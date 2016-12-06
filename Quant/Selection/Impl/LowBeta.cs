@@ -23,18 +23,18 @@ namespace Trade.Selections.Impl
 
         public override StockPool Pass(IEnumerable<string> stocks)
         {
-            var client = new MktDataClient();
+            var client = new client();
 
             log.Info("query market data");
             var data = stocks
                 .AsParallel()
-                .Select(code => client.Query(code, Cfg.PeriodEnum.Daily))
+                .Select(code => client.kdata(code, "D"))
                 .Where(p => p != null)
                 .ToArray();
             log.InfoFormat("total {0}", data.Count());
 
             log.Info("query fundamentals");
-            var basics = client.QueryFundamentals(data.Select(p => p.Code).Distinct().ToArray());
+            var basics = client.basics(data.Select(p => p.Code).Distinct().ToArray());
 
             var stat = data
                             .Select(series => new factorset(series.Code)
@@ -54,23 +54,20 @@ namespace Trade.Selections.Impl
                 .ToArray();
 
             var q = from s in stat
-                    join b in basics on s.代码 equals b.代码
+                    join b in basics on s.代码 equals b.code
                     join d in data on s.代码 equals d.Code
                     select new Stock(s.代码,
                     new
                     {
                         s.代码,
-                        b.名称,
+                        b.name,
                         s.收阳百分比,
                         s.低点反弹高度,
                         s.均线多头,
-                        b.市盈率,
-                        b.总市值,
-                        b.所属行业,
-                        b.流通市值,
-                        b.营业总收入同比,
-                        b.销售毛利率,
-                        b.净利润同比
+                        b.pe,
+                        b.totalAssets,
+                        b.industry,
+                        b.liquidAssets
                     });
             //var result = q
             //      .Where(p => p.Data.Any() &&

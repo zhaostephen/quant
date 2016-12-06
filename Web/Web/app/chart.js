@@ -3,9 +3,9 @@
     var keylowdates = [];
     var currentcode = "";
     function getData(code, period, callback) {
-        period = period || "daily";
+        period = period || "D";
         currentcode = code;
-        $.getJSON(root + 'api/MktData/' + code + "?period="+period, function (result) {
+        $.getJSON(root + 'api/kdata/' + code + "?ktype=" + period, function (result) {
             var data = result.data;
             var utc = function (d) {
                 var date = new Date(d);
@@ -50,7 +50,7 @@
     }
 
     $("#querybutton").click(function () {
-        show($("#querycode").val(),"daily");
+        show($("#querycode").val(),"D");
     });
 
     Highcharts.setOptions({
@@ -76,7 +76,7 @@
         }
     }
 
-    getData("600000",'daily', function (result) {
+    getData("600000",'D', function (result) {
         var data = result.data;
 
         // Add a null value for the end date

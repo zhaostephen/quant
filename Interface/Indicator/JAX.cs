@@ -9,21 +9,21 @@ namespace Trade.Indicator
 {
     public class JAX : JAXSeries
     {
-        public JAX(DataSeries data, int N, int M)
+        public JAX(kdata data, int N, int M)
         {
             var MA = new MA(data.CloseTimeSeries(), N);
-            var MA3 = new MA(data.TimeSeries(d => (2 * d.Close + d.Low + d.High) / 4), M);
-            var func = new Func<kdatapoint, double, double>((d, salt) => d.Close/salt * (2 * d.Close + d.Low + d.High) / 4);
+            var MA3 = new MA(data.TimeSeries(d => (2 * d.close + d.low + d.high) / 4), M);
+            var func = new Func<kdatapoint, double, double>((d, salt) => d.close/salt * (2 * d.close + d.low + d.high) / 4);
             var dmaPrevValue = 0d;
 
             for (int i = M - 1; i < data.Count; i++)
             {
                 var curr = data[i];
 
-                if (MA.WHICH(curr.Date) == 0d) continue;
+                if (MA.WHICH(curr.date) == 0d) continue;
 
-                var AA = Math.Abs((2 * curr.Close + curr.High + curr.Low) / 4 - MA.WHICH(curr.Date)) / MA.WHICH(curr.Date);
-                var dmaValue = (2 * curr.Close + curr.Low + curr.High) / 4;
+                var AA = Math.Abs((2 * curr.close + curr.high + curr.low) / 4 - MA.WHICH(curr.date)) / MA.WHICH(curr.date);
+                var dmaValue = (2 * curr.close + curr.low + curr.high) / 4;
                 var jax = AA * dmaValue + (1 - AA) * dmaPrevValue;
                 dmaPrevValue = jax;
 
@@ -34,7 +34,7 @@ namespace Trade.Indicator
                 var A = TMP;
                 var X = TMP <= jax ? TMP : 0d;
 
-                this.Add(new JAXPoint { Date = curr.Date, JAX = Math.Round(jax, 2), J = Math.Round(J, 2), A = Math.Round(A, 2), X = Math.Round(X, 2) });
+                this.Add(new JAXPoint { Date = curr.date, JAX = Math.Round(jax, 2), J = Math.Round(J, 2), A = Math.Round(A, 2), X = Math.Round(X, 2) });
             }
 
             //AA:=ABS((2*CLOSE+HIGH+LOW)/4-MA(CLOSE,N))/MA(CLOSE,N);

@@ -16,8 +16,8 @@ namespace Trade.Factors
             {
                 var current = series.Last();
 
-                value = current.ma5 >= current.ma0 
-                    && current.ma0 >= current.ma55
+                value = current.ma5 >= current.ma30 
+                    && current.ma30 >= current.ma55
                     && current.ma55 >= current.ma120;
             }
         }

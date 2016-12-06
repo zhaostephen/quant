@@ -43,7 +43,7 @@ namespace Trade.Data
                 p.ma5 = MA5.ContainsKey(date) ? MA5[date].Value : (double?)null;
                 p.ma10 = MA10.ContainsKey(date) ? MA10[date].Value : (double?)null;
                 p.ma20 = MA20.ContainsKey(date) ? MA20[date].Value : (double?)null;
-                p.ma0 = MA30.ContainsKey(date) ? MA30[date].Value : (double?)null;
+                p.ma30 = MA30.ContainsKey(date) ? MA30[date].Value : (double?)null;
                 p.ma55 = MA55.ContainsKey(date) ? MA55[date].Value : (double?)null;
                 p.ma60 = MA60.ContainsKey(date) ? MA60[date].Value : (double?)null;
                 p.ma120 = MA120.ContainsKey(date) ? MA120[date].Value : (double?)null;
@@ -78,5 +78,27 @@ namespace Trade.Data
         {
             return TimeSeries(p => p.high);
         }
+    }
+
+    public class kdatapoint
+    {
+        public DateTime date { get; set; }
+        public double open { get; set; }
+        public double close { get; set; }
+        public double high { get; set; }
+        public double low { get; set; }
+        public double? macd { get; set; }
+        public double? dif { get; set; }
+        public double? dea { get; set; }
+        public double? ma5 { get; set; }
+        public double? ma10 { get; set; }
+        public double? ma20 { get; set; }
+        public double? ma30 { get; set; }
+        public double? ma55 { get; set; }
+        public double? ma60 { get; set; }
+        public double? ma120 { get; set; }
+        public double? ma250 { get; set; }
+        public double? peak_l { get; set; }
+        public double? peak_h { get; set; }
     }
 }

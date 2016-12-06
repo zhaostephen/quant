@@ -55,10 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="commands\keypricecmd.cs" />
-    <Compile Include="commands\fundamentalcmd.cs" />
+    <Compile Include="commands\basicscmd.cs" />
     <Compile Include="commands\updateconfig.cs" />
-    <Compile Include="commands\mktdatacmd.cs" />
+    <Compile Include="commands\kdatacmd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,32 +1,66 @@
 ﻿using Trade.Cfg;
 using Trade.Data;
+using Trade.Mixin;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Interace.Mixin;
 
 namespace Trade
 {
-    public static class MktDataClientMixin
+    public class client
     {
-        public static IEnumerable<kdata> QueryAll(this MktDataClient client, PeriodEnum period = PeriodEnum.Daily, string sector = null)
+        public Basics basics(string code)
         {
-            var codes = client.Codes(sector).ToArray();
+            return basics()
+                .FirstOrDefault(p=>string.Equals(p.code, code, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public IEnumerable<Basics> basics(IEnumerable<string> codes)
+        {
+            var set = basics();
+
+            var q = from f in set
+                    join c in codes on f.code equals c
+                    select f;
+
+            return q.ToArray();
+        }
+
+        public IEnumerable<Basics> basics()
+        {
+            var file = Configuration.data.basics.file("stock_basics.csv");
+            return file.ReadCsv<Basics>(Configuration.encoding.gbk);
+        }
+
+        public kdata kdata(string code, string ktype)
+        {
+            var file = Configuration.data.kdata.file(ktype + "/" + code + ".csv");
+            var p = file.ReadCsv<kdatapoint>(Configuration.encoding.gbk);
+            return new kdata(code, p);
+        }
+
+        public IEnumerable<kdata> kdataall(string ktype, string sector = null)
+        {
+            var codes = Codes(sector).ToArray();
             var results = codes
                 .AsParallel()
-                .Select(code => client.Query(code, period))
+                .Select(code => kdata(code, ktype))
                 .Where(p => p != null)
                 .ToArray();
             return results;
         }
 
-        public static IEnumerable<string> Codes(this MktDataClient client, string sector = Sector.any)
+        public IEnumerable<string> Codes(string sector = Sector.any)
         {
-            return client.QueryFundamentals().Where(p => InSector(p, sector)).Select(p => p.code).Distinct().ToArray();
+            return basics().Where(p => InSector(p, sector)).Select(p => p.code).Distinct().ToArray();
         }
 
-        static bool InSector(Basics f, string sector)
+        private bool InSector(Basics f, string sector)
         {
             var code = f.code;
             if (string.IsNullOrEmpty(sector)) return true;

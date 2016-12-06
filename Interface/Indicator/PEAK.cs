@@ -13,16 +13,16 @@ namespace Trade.Indicator
                 case PEAK_TYPE.low:
                     {
                         peak(data,
-                            (a, prev, next) => a.Low <= prev.Low && a.Low <= next.Low,
-                            p => new TimePoint<double>(p.Date, p.Low),
+                            (a, prev, next) => a.low <= prev.low && a.low <= next.low,
+                            p => new TimePoint<double>(p.date, p.low),
                             distance);
                         break;
                     }
                 case PEAK_TYPE.high:
                     {
                         peak(data,
-                            (a, prev, next) => a.High >= prev.High && a.High >= next.High,
-                            p => new TimePoint<double>(p.Date, p.High),
+                            (a, prev, next) => a.high >= prev.high && a.high >= next.high,
+                            p => new TimePoint<double>(p.date, p.high),
                             distance);
                         break;
                     }
@@ -31,10 +31,10 @@ namespace Trade.Indicator
             }
         }
 
-        static void peak(
+        private void peak(
             kdata points,
             Func<kdatapoint, kdatapoint, kdatapoint, bool> cmp,
-            Action<kdatapoint> add,
+            Func<kdatapoint, TimePoint<double>> ret,
             int distance = 5)
         {
             var count = points.Count;
@@ -47,7 +47,7 @@ namespace Trade.Indicator
                         break;
                 }
                 if (j > distance)
-                    add(points[i]);
+                    Add(ret(points[i]));
             }
         }
     }

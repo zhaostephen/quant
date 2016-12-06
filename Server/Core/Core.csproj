@@ -59,7 +59,6 @@
     <Compile Include="Db\db.cs" />
     <Compile Include="Mixin\DictMixin.cs" />
     <Compile Include="Mixin\Logging.cs" />
-    <Compile Include="Mixin\SeriesMixin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

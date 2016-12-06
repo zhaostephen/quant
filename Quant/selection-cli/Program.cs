@@ -45,7 +45,7 @@ namespace Quant
                 case "lowbetavalue":
                     {
                         log.InfoFormat("query data from sector {0}", string.IsNullOrEmpty(parameters.sector) ? "any" : parameters.sector);
-                        var client = new MktDataClient();
+                        var client = new client();
                         var codes = client.Codes(parameters.sector??string.Empty);
 
                         log.Info("run selection");
@@ -54,7 +54,7 @@ namespace Quant
                         if (o.Any())
                         {
                             log.Info("save down selections");
-                            var path = Path.Combine(parameters.output ?? Configuration.oms.selection, DateTime.Today.ToString("yyyy-MM-dd")).EnsurePathCreated();
+                            var path = Path.Combine(parameters.output ?? Configuration.data.selection, DateTime.Today.ToString("yyyy-MM-dd")).EnsurePathCreated();
 
                             File.WriteAllLines(Path.Combine(path, "lowbetavalue"), o.Codes, Encoding.UTF8);
                             File.WriteAllText(Path.Combine(path, "lowbetavalue+a.csv"), o.Attributes.ToCsv(), Encoding.UTF8);

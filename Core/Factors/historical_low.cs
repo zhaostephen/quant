@@ -12,15 +12,15 @@ namespace Trade.Factors
         public historical_low(kdata series, DateTime since)
             : base(series)
         {
-            var s = series.Where(p1 => p1.Date >= since);
+            var s = series.Where(p1 => p1.date >= since);
             if (s.Any())
             {
                 var min = double.MaxValue;
                 foreach(var d in s)
                 {
-                    if (d.Low < min)
+                    if (d.low < min)
                     {
-                        min = d.Low;
+                        min = d.low;
                         value = d;
                     }
                 }

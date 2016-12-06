@@ -9,7 +9,7 @@ def getCodes():
     try:
         stocks = ts.get_area_classified()
     except:
-        file = storage.getPath('raw/basics/area_classified.csv')
+        file = storage.getPath('basics/area_classified.csv')
         print("get codes from file ", file)
         stocks = pd.read_csv(file, encoding="gbk")
     if(stocks is None):
@@ -17,7 +17,7 @@ def getCodes():
     return stocks['code']
 
 def kdata(code, ktype):
-    file = "raw/kdata/" + datetime.datetime.now().strftime('%Y-%m-%d') + "/"  + ktype +"/" + code + ".csv";
+    file = "kdata/" + ktype +"/" + code + ".csv";
     if(not storage.fileExists(file)):
         data = ts.get_k_data(code,"","",ktype)
         if(not data is None):
