@@ -46,7 +46,7 @@ namespace Quant
                     {
                         log.InfoFormat("query data from sector {0}", string.IsNullOrEmpty(parameters.sector) ? "any" : parameters.sector);
                         var client = new client();
-                        var codes = client.Codes(parameters.sector??string.Empty);
+                        var codes = client.codes(parameters.sector??string.Empty);
 
                         log.Info("run selection");
                         var o = new LowBeta().Pass(codes);

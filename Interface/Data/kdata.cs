@@ -10,10 +10,11 @@ namespace Trade.Data
     {
         public string Code { get; set; }
 
-        public kdata(string code, IEnumerable<kdatapoint> d)
+        public kdata(string code, IEnumerable<kdatapoint> d = null)
         {
             Code = code;
-            AddRange(d);
+            if(d != null)
+                AddRange(d);
         }
 
         public kdata complete()

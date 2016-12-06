@@ -14,6 +14,12 @@ namespace Trade.commands
     {
         static ILog log = typeof(calckdatacmd).Log();
 
+        public calckdatacmd(string[] args)
+            :base(args)
+        {
+
+        }
+
         public override void exec()
         {
             log.Info("**********START**********");

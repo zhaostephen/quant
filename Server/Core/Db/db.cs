@@ -14,11 +14,26 @@ namespace Trade.Db
 {
     public class db
     {
+        public string[] sectors()
+        {
+            return basics()
+                .Select(p => p.sectors)
+                .Where(p => !string.IsNullOrEmpty(p))
+                .SelectMany(p => p.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries))
+                .Distinct()
+                .ToArray();
+        }
+
         public kdata kdata(string code, string ktype)
         {
             var file = Configuration.data.kdata.file(ktype + "/" + code + ".csv");
             var p = file.ReadCsv<kdatapoint>(Configuration.encoding.gbk);
             return new kdata(code, p);
+        }
+
+        public IEnumerable<kdata> kdata(IEnumerable<string> codes, string ktype)
+        {
+            return codes.AsParallel().Select(code => kdata(code, ktype)).ToArray();
         }
 
         public void save(kdata data, string ktype)
@@ -37,7 +52,7 @@ namespace Trade.Db
 
         public IEnumerable<Basic> basics()
         {
-            var file = Configuration.data.basics.file("stock_basics.csv");
+            var file = Configuration.data.basics.file("basics.csv");
             return file.ReadCsv<Basic>(Configuration.encoding.gbk);
         }
 
@@ -113,9 +128,13 @@ namespace Trade.Db
             return file.ReadCsv(Configuration.encoding.gbk);
         }
 
-        public IEnumerable<string> codes()
+        public IEnumerable<string> codes(string secorOrIndex = null)
         {
-            return basics().Select(p => p.code).Distinct().ToArray();
+            return basics()
+                .Where(p => string.IsNullOrEmpty(secorOrIndex) || p.belongtoindex(secorOrIndex) || p.belongtosector(secorOrIndex))
+                .Select(p => p.code)
+                .Distinct()
+                .ToArray();
         }
     }
 }

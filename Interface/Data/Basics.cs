@@ -52,13 +52,13 @@ namespace Trade.Data
         public void addindex(params string[] i)
         {
             indexes = indexes ?? string.Empty;
-            indexes = string.Join(",",new[] {indexes}.Concat(i).Where(p => !string.IsNullOrEmpty(p)).ToArray());
+            indexes = string.Join("|",new[] {indexes}.Concat(i).Where(p => !string.IsNullOrEmpty(p)).ToArray());
         }
 
         public void addsector(params string[] s)
         {
             sectors = sectors ?? string.Empty;
-            sectors = string.Join(",", new[] { sectors }.Concat(s).Where(p=>!string.IsNullOrEmpty(p)).ToArray());
+            sectors = string.Join("|", new[] { sectors }.Concat(s).Where(p=>!string.IsNullOrEmpty(p)).ToArray());
         }
     }
 

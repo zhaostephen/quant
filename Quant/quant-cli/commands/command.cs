@@ -41,7 +41,7 @@ namespace Quant.commands
         {
             log.InfoFormat("query codes from sector {0}", string.IsNullOrEmpty(sector) ? "any" : sector);
             var client = new client();
-            return client.Codes(sector ?? string.Empty);
+            return client.codes(sector ?? string.Empty);
         }
 
         protected void save(Account account)

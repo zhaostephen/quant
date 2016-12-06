@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="commands\basicscmd.cs" />
+    <Compile Include="commands\calcsectorskdatacmd.cs" />
     <Compile Include="commands\calckdatacmd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
