@@ -20,7 +20,7 @@ namespace Trade
                 .FirstOrDefault(p=>string.Equals(p.code, code, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public IEnumerable<Basic> basics(IEnumerable<string> codes)
+        public Basics basics(IEnumerable<string> codes)
         {
             var set = basics();
 
@@ -28,13 +28,13 @@ namespace Trade
                     join c in codes on f.code equals c
                     select f;
 
-            return q.ToArray();
+            return new Basics(q.ToArray());
         }
 
-        public IEnumerable<Basic> basics()
+        public Basics basics()
         {
-            var file = Configuration.data.basics.file("stock_basics.csv");
-            return file.ReadCsv<Basic>(Configuration.encoding.gbk);
+            var file = Configuration.data.basics.file("basics.csv");
+            return new Basics(file.ReadCsv<Basic>(Configuration.encoding.gbk));
         }
 
         public kdata kdata(string code, string ktype)
