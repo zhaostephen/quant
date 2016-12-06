@@ -28,7 +28,7 @@
                 }
             }
             callback({
-                name:name,
+                name: result.name,
                 data: data,
                 keyhighdates: keyhighdates,
                 keylowdates: keylowdates
@@ -53,6 +53,12 @@
         show($("#querycode").val(),"D");
     });
 
+    $("#index a").click().click(function (e) {
+        e.preventDefault();
+        $("#querycode").val($(this).attr("href"));
+        show($("#querycode").val(), "D");
+    });
+
     Highcharts.setOptions({
         global: {
             useUTC: true
@@ -70,13 +76,12 @@
     });
 
     function afterSetExtremes(e) {
-        console.log(e);
         if (e.rangeSelectorButton) {
             show(currentcode, e.rangeSelectorButton.value);
         }
     }
 
-    getData("600000",'D', function (result) {
+    getData("sh",'D', function (result) {
         var data = result.data;
 
         // Add a null value for the end date
