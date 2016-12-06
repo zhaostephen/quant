@@ -9,9 +9,14 @@ namespace Cli
 {
     static class LogMixin
     {
+        static bool configured = false;
         public static ILog Log(this object obj)
         {
-            log4net.Config.XmlConfigurator.Configure();
+            if (!configured)
+            {
+                log4net.Config.XmlConfigurator.Configure();
+                configured = true;
+            }
 
             return LogManager.GetLogger(obj.ToString());
         }

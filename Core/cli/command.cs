@@ -1,18 +1,9 @@
 ﻿using CommandLine;
-using Interace.Mixin;
-using Interace.Quant;
 using log4net;
 using ServiceStack;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Trade;
-using Trade.Cfg;
-using Trade.Cli.commands;
 
 namespace Cli
 {
@@ -34,10 +25,13 @@ namespace Cli
         public command(string[] args)
         {
             param = new Tparam();
-            if (!Parser.Default.ParseArguments(args, param))
+            if (args.Any())
             {
-                help();
-                return;
+                if (!Parser.Default.ParseArguments(args, param))
+                {
+                    help();
+                    return;
+                }
             }
         }
 

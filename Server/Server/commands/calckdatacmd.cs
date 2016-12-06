@@ -1,25 +1,28 @@
-﻿using Trade.Utility;
+﻿using Cli;
 using log4net;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
-namespace Trade
+namespace Trade.commands
 {
-    class Program
+    [command("calckdata")]
+    class calckdatacmd : command<object>
     {
-        static ILog log = typeof(Program).Log();
+        static ILog log = typeof(calckdatacmd).Log();
 
-        static void Main(string[] args)
+        public override void exec()
         {
-            log4net.Config.XmlConfigurator.Configure();
-
             log.Info("**********START**********");
 
             var db = new Db.db();
             var codes = db.codes();
             var i = 0;
             var count = codes.Count();
-            foreach(var code in codes.AsParallel())
+            foreach (var code in codes.AsParallel())
             {
                 Interlocked.Increment(ref i);
                 log.InfoFormat("{0}/{1} complete code", i, count);
