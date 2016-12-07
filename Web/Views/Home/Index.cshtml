@@ -3,20 +3,20 @@
 }
 
 <div class="jumbotron-condense jumbotron">
-    <p class="lead" style="font-size:medium">
-        <span style="font-size:small" id="index">
-            <a href="sh">上证指数</a>|
-            <a href="sz">深圳成指</a>|
-            <a href="zxb">中小板指</a>|
-            <a href="cyb">创业板指</a>|
-            <a href="hs300">沪深300</a>|
-            <a href="sz50">上证50</a>
+    <p class="lead" style="font-size:medium" ng-controller="searchCtrl">
+        <span style="font-size:small">
+            <a href="" ng-click="select('sh')">上证指数</a>|
+            <a href="" ng-click="select('sz')">深圳成指</a>|
+            <a href="" ng-click="select('zxb')">中小板指</a>|
+            <a href="" ng-click="select('cyb')">创业板指</a>|
+            <a href="" ng-click="select('hs300')">沪深300</a>|
+            <a href="" ng-click="select('sz50')">上证50</a>
         </span>
-        <input id="querycode" type="text" />
-        &nbsp;&nbsp;<a id="querybutton" class="btn btn-primary">搜索</a>
+        <input id="querycode" type="text" kendo-auto-complete k-template="'#= code # | #= name #'" ng-model="code" k-data-text-field="'code'" k-data-source="basicnames" />
+        &nbsp;&nbsp;<a ng-click="search()" class="btn btn-primary">搜索</a>
     </p>
     <div id="container"></div>
-    <table style="font-size:small">
+    @*<table style="font-size:small">
         <tr>
             <th>主板:</th>
             <td>
@@ -89,5 +89,5 @@
             <th>市盈率:</th>
             <td>29</td>
         </tr>
-    </table>
+    </table>*@
 </div>

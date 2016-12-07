@@ -63,6 +63,13 @@ namespace Trade.Data
         }
     }
 
+    public class basicname
+    {
+        public string code { get; set; }
+        public string name { get; set; }
+        public string nameabbr { get; set; }
+    }
+
     public static class assettypes
     {
         public const string index = "index";

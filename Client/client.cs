@@ -47,6 +47,12 @@ namespace Trade
             return new Basics(file.ReadCsv<Basic>(Configuration.encoding.gbk));
         }
 
+        public IEnumerable<basicname> basicnames()
+        {
+            var file = Configuration.data.basics.file("basicnames.csv");
+            return file.ReadCsv<basicname>(Configuration.encoding.gbk);
+        }
+
         public kdata kdata(string code, string ktype)
         {
             var file = Configuration.data.kdata.file(ktype + "/" + code + ".csv");

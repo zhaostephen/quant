@@ -1,64 +1,54 @@
-﻿$(function () {
-    var keyhighdates = [];
-    var keylowdates = [];
-    var currentcode = "";
-    function getData(code, period, callback) {
-        period = period || "D";
-        currentcode = code;
-        $.getJSON(root + 'api/kdata/' + code + "?ktype=" + period, function (result) {
-            var data = result.data;
-            var utc = function (d) {
-                var date = new Date(d);
-                return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
-            };
+﻿var keyhighdates = [];
+var keylowdates = [];
+var currentcode = "";
+function getData(code, period, callback) {
+    period = period || "D";
+    currentcode = code;
+    $.getJSON(root + 'api/kdata/' + code + "?ktype=" + period, function (result) {
+        var data = result.data;
+        var utc = function (d) {
+            var date = new Date(d);
+            return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
+        };
 
-            for (var i = 0; i < data.length; ++i) {
-                data[i][0] = utc(data[i][0]);
+        for (var i = 0; i < data.length; ++i) {
+            data[i][0] = utc(data[i][0]);
+        }
+
+        keyhighdates = [];
+        keylowdates = [];
+        var keyprices = result.keyprices;
+        for (var i = 0; i < keyprices.length; ++i) {
+            if (keyprices[i].Flag == "upper") {
+                keyhighdates.push(utc(keyprices[i].Date));
             }
-
-            keyhighdates = [];
-            keylowdates = [];
-            var keyprices = result.keyprices;
-            for (var i = 0; i < keyprices.length; ++i) {
-                if (keyprices[i].Flag == "upper") {
-                    keyhighdates.push(utc(keyprices[i].Date));
-                }
-                else {
-                    keylowdates.push(utc(keyprices[i].Date));
-                }
+            else {
+                keylowdates.push(utc(keyprices[i].Date));
             }
-            callback({
-                name: result.name,
-                data: data,
-                keyhighdates: keyhighdates,
-                keylowdates: keylowdates
-            });
+        }
+        callback({
+            name: result.name,
+            data: data,
+            keyhighdates: keyhighdates,
+            keylowdates: keylowdates
         });
-    }
+    });
+}
 
-    function show(code, period) {
-        var chart = Highcharts.charts[0];
+function candlestick(code, period) {
+    var chart = Highcharts.charts[0];
 
-        chart.showLoading('请稍等...');
-        getData(code, period, function (result) {
-            chart.series[0].setData(result.data);
-            chart.setTitle({
-                text: result.name
-            });
-            chart.hideLoading();
+    chart.showLoading('请稍等...');
+    getData(code, period, function (result) {
+        chart.series[0].setData(result.data);
+        chart.setTitle({
+            text: result.name
         });
-    }
-
-    $("#querybutton").click(function () {
-        show($("#querycode").val(),"D");
+        chart.hideLoading();
     });
+}
 
-    $("#index a").click().click(function (e) {
-        e.preventDefault();
-        $("#querycode").val($(this).attr("href"));
-        show($("#querycode").val(), "D");
-    });
-
+$(function () {
     Highcharts.setOptions({
         global: {
             useUTC: true
@@ -77,7 +67,7 @@
 
     function afterSetExtremes(e) {
         if (e.rangeSelectorButton) {
-            show(currentcode, e.rangeSelectorButton.value);
+            candlestick(currentcode, e.rangeSelectorButton.value);
         }
     }
 

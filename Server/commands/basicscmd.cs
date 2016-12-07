@@ -162,6 +162,8 @@ namespace Trade.commands
 
             db.save(basiscs);
 
+            db.save(basiscs.Select(p => new basicname { name = p.name, code = p.code, nameabbr = p.nameabbr }).ToArray());
+
             log.Info("**********DONE**********");
         }
 

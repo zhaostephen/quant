@@ -1,14 +1,18 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Quant</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/kendo/2016.3.1118/kendo.default.min.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/kendo/2016.3.1118/jquery.min.js"></script>
+    <script src="~/Scripts/kendo/2016.3.1118/angular.min.js"></script>
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/highstock")
+    <script src="~/Scripts/kendo/2016.3.1118/kendo.ui.core.min.js"></script>
     @Scripts.Render("~/bundles/app")
     <script type="text/javascript">
         var root = '@Url.Content("~")';

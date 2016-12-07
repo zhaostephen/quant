@@ -50,6 +50,13 @@ namespace Trade.Db
             File.WriteAllText(file, p, Configuration.encoding.gbk);
         }
 
+        public void save(IEnumerable<basicname> data)
+        {
+            var file = Configuration.data.basics.file("basicnames.csv");
+            var p = data.ToArray().ToCsv();
+            File.WriteAllText(file, p, Configuration.encoding.gbk);
+        }
+
         public IEnumerable<Basic> basics()
         {
             var file = Configuration.data.basics.file("basics.csv");

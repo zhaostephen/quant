@@ -10,9 +10,10 @@ namespace Web
         {
             bundles.Add(new ScriptBundle("~/bundles/app")
                 .Include("~/app/chart.js")
+                .Include("~/app/application.js")
                 //.IncludeDirectory("~/app/services", "*.js", true)
                 //.IncludeDirectory("~/app/directives", "*.js", true)
-                //.IncludeDirectory("~/app/controllers", "*.js", true)
+                .IncludeDirectory("~/app/controllers", "*.js", true)
                 );
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -38,9 +39,7 @@ namespace Web
                  "~/Scripts/highstock/exporting.js",
                  "~/Scripts/highstock/sand-signika.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
             BundleTable.EnableOptimizations = false;
         }
