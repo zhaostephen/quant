@@ -10,6 +10,7 @@ namespace Trade.Data
     {
         public string code { get; set; }
         public string name{ get; set; }
+        public string nameabbr { get; set; }
         public string industry{ get; set; }
         public string area{ get; set; }
         public string pe{ get; set; }

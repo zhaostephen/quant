@@ -1,5 +1,6 @@
 ﻿using Cli;
 using log4net;
+using Pinyin4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,7 @@ namespace Trade.commands
             foreach (var stockbasic in stock_basics)
             {
                 stockbasic.assettype = assettypes.stock;
+                stockbasic.nameabbr = pinyin(stockbasic.name);
 
                 if (suspended.ContainsKey(stockbasic.code))
                     stockbasic.suspended = true;
@@ -71,36 +73,42 @@ namespace Trade.commands
             basiscs.Add(new Basic {
                 code = index.hs300,
                 name = "沪深300",
+                nameabbr = "hs300",
                 assettype = assettypes.index
             });
             basiscs.Add(new Basic
             {
                 code = index.sz50,
                 name = "上证50",
+                nameabbr = "sz50",
                 assettype = assettypes.index
             });
             basiscs.Add(new Basic
             {
                 code = index.sz,
                 name = "深圳成指",
+                nameabbr = "sz",
                 assettype = assettypes.index
             });
             basiscs.Add(new Basic
             {
                 code = index.sh,
                 name = "上证综指",
+                nameabbr = "sh",
                 assettype = assettypes.index
             });
             basiscs.Add(new Basic
             {
                 code = index.cyb,
                 name = "创业板指",
+                nameabbr="cyb",
                 assettype = assettypes.index
             });
             basiscs.Add(new Basic
             {
                 code = index.zxb,
                 name = "中小板指",
+                nameabbr = "zxb",
                 assettype = assettypes.index
             });
 
@@ -115,6 +123,7 @@ namespace Trade.commands
                 {
                     code = i,
                     name = i,
+                    nameabbr = pinyin(i),
                     assettype = assettypes.sector
                 });
             }
@@ -130,6 +139,7 @@ namespace Trade.commands
                 {
                     code = i,
                     name = i,
+                    nameabbr = pinyin(i),
                     assettype = assettypes.sector
                 });
             }
@@ -153,6 +163,22 @@ namespace Trade.commands
             db.save(basiscs);
 
             log.Info("**********DONE**********");
+        }
+
+        private string pinyin(string chinese)
+        {
+            var a = chinese.ToCharArray()
+                .Select(p =>
+                {
+                    var v = PinyinHelper.ToHanyuPinyinStringArray(p);
+                    if (v == null || !v.Any())
+                        return p;
+
+                    return v.First().First();
+                })
+                .ToArray();
+
+            return string.Join("", a);
         }
 
         private void calc(Dictionary<Basic, Basic[]> dict)
