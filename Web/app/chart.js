@@ -37,6 +37,7 @@ function getData(code, period, callback) {
 
 function candlestick(code, period) {
     var chart = Highcharts.charts[0];
+    if(!chart) return;
 
     chart.showLoading('请稍等...');
     getData(code, period, function (result) {

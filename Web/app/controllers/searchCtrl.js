@@ -7,6 +7,8 @@
         };
 
         $scope.select = function (code) {
+            if (!code || code == "")
+                return;
             $scope.code = code;
             candlestick($scope.code, "D");
         };

@@ -12,8 +12,13 @@
             <a href="" ng-click="select('hs300')">沪深300</a>|
             <a href="" ng-click="select('sz50')">上证50</a>
         </span>
-        <input id="querycode" type="text" kendo-auto-complete k-template="'#= code # | #= name #'" ng-model="code" k-data-text-field="'code'" k-data-source="basicnames" />
-        &nbsp;&nbsp;<a ng-click="search()" class="btn btn-primary">搜索</a>
+        <input id="querycode" 
+               type="text" 
+               kendo-auto-complete k-template="'#= code # | #= name #'" 
+               ng-model="code" 
+               k-data-text-field="'code'" 
+               k-data-source="basicnames" 
+               k-on-change="search()"/>
     </p>
     <div id="container"></div>
     @*<table style="font-size:small">
