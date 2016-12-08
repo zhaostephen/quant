@@ -18,7 +18,6 @@ namespace Web.Controllers.Api
             var d = new client().kdata(id, ktype);
             var basic = new client().basics(id);
             var since = Trade.Cfg.Configuration.data.bearcrossbull;
-
             var q = d.Where(p => p.date >= since).ToArray();
             var data = q.Select(p => new object[] { p.date, p.open, p.high, p.low, p.close })
                 .ToArray();

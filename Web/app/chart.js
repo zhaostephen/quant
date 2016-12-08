@@ -1,6 +1,20 @@
 ﻿var keyhighdates = [];
 var keylowdates = [];
 var currentcode = "";
+
+function kperiod(period) {
+    switch(period)
+    {
+        case "D": return "日K";
+        case "W": return "周K";
+        case "M": return "月K";
+        case "5": return "5分钟";
+        case "15": return "15分钟";
+        case "30": return "30分钟";
+        case "60": return "60分钟";
+        default: return period;
+    }
+}
 function getData(code, period, callback) {
     period = period || "D";
     currentcode = code;
@@ -27,14 +41,13 @@ function getData(code, period, callback) {
             }
         }
         callback({
-            name: result.name,
+            name: result.name + " - " + kperiod(period),
             data: data,
             keyhighdates: keyhighdates,
             keylowdates: keylowdates
         });
     });
 }
-
 function candlestick(code, period) {
     var chart = Highcharts.charts[0];
     if(!chart) return;
@@ -48,7 +61,6 @@ function candlestick(code, period) {
         chart.hideLoading();
     });
 }
-
 $(function () {
     Highcharts.setOptions({
         global: {
@@ -66,7 +78,8 @@ $(function () {
         },
     });
 
-    function afterSetExtremes(e) {
+    function setExtremes(e) {
+        console.log(e.rangeSelectorButton);
         if (e.rangeSelectorButton) {
             candlestick(currentcode, e.rangeSelectorButton.value);
         }
@@ -130,39 +143,30 @@ $(function () {
                         }
                     }
                 },
-                enabled: false,
+                enabled: true,
                 selected: 6,
                 inputEnabled: false,
                 buttons: [{
-                    //type: 'day',
-                    //count: 1,
                     text: '日K',
-                    value: 'daily'
+                    value: 'D'
                 }, {
-                    //type: 'day',
-                    //count: 7,
                     text: '周K',
-                    value:'weekly'
+                    value:'W'
                 }, {
-                    //type: 'month',
-                    //count: 1,
-                    text: '月K'
+                    text: '月K',
+                    value: 'M'
                 }, {
-                    //type: 'minute',
-                    //count: 5,
-                    text: '5分钟'
+                    text: '5分钟',
+                    value: '5'
                 }, {
-                    //type: 'minute',
-                    //count: 15,
-                    text: '15分钟'
+                    text: '15分钟',
+                    value: '15'
                 }, {
-                    //type: 'minute',
-                    //count: 30,
-                    text: '30分钟'
+                    text: '30分钟',
+                    value: '30'
                 }, {
-                    //type: 'hour',
-                    //count: 1,
-                    text: '60分钟'
+                    text: '60分钟',
+                    value: '60'
                 }]
             },
 
@@ -213,7 +217,7 @@ $(function () {
             },
             xAxis: {
                 events: {
-                    afterSetExtremes: afterSetExtremes
+                    setExtremes: setExtremes
                 },
                 labels: {
                     formatter: function () { return Highcharts.dateFormat('%m/%d', this.value); }
