@@ -1,15 +1,22 @@
-﻿using Interace.Quant;
+﻿using Cli;
+using CommandLine;
+using Interace.Mixin;
+using Interace.Quant;
 using log4net;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trade.Cfg;
 using Trade.Selections.Impl;
 
 namespace Quant.commands
 {
-    class ma120cmd : command<Parameters>
+    [command("ma120")]
+    class ma120cmd : command<ma120cmd.Parameters>
     {
         static ILog log = LogManager.GetLogger(typeof(lowbetacmd));
 
@@ -22,8 +29,19 @@ namespace Quant.commands
 
             log.Info("run strategy");
             new strategies.MA120().Run(account);
+        }
 
-            save(account);
+        protected IEnumerable<string> codes(string sector)
+        {
+            log.InfoFormat("query codes from sector {0}", string.IsNullOrEmpty(sector) ? "any" : sector);
+            var client = new Trade.client();
+            return client.codes(sector ?? string.Empty);
+        }
+
+        public class Parameters
+        {
+            [Option('s', "sector", DefaultValue = "", Required = true)]
+            public string sector { get; set; }
         }
     }
 }
