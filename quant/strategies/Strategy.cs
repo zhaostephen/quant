@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace Trade.Strategies
+namespace Quant.strategies
 {
     public abstract class Strategy
     {

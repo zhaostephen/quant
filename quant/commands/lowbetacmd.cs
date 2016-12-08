@@ -23,7 +23,7 @@ namespace Quant.commands
             var account = new Account("lowbeta", pool);
 
             log.Info("run strategy");
-            new Trade.Strategies.Impl.LowBeta().Run(account);
+            new strategies.LowBeta().Run(account);
 
             save(account);
         }

@@ -21,7 +21,7 @@ namespace Quant.commands
             var account = new Account("ma120", pool);
 
             log.Info("run strategy");
-            new Trade.Strategies.Impl.MA120().Run(account);
+            new strategies.MA120().Run(account);
 
             save(account);
         }

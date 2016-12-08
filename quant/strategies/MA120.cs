@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Interace.Quant;
 using log4net;
 
-namespace Trade.Strategies.Impl
+namespace Quant.strategies
 {
     public class MA120 : Strategy
     {
@@ -14,7 +14,7 @@ namespace Trade.Strategies.Impl
 
         public override void Run(Account account)
         {
-            var client = new client();
+            var client = new Trade.client();
 
             log.InfoFormat("total {0}", account.universe.Count);
             foreach (var stock in account.universe.AsParallel())

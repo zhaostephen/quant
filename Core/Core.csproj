@@ -65,13 +65,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Factors\Factors.csproj">
+    <ProjectReference Include="..\Factors\factors.csproj">
       <Project>{819907c5-1222-4409-8b1c-356efb783c0c}</Project>
-      <Name>Factors</Name>
+      <Name>factors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interface\interface.csproj">
+      <Project>{0c5efa4e-486e-42d8-8ecd-73b1377ee59d}</Project>
+      <Name>interface</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <Import Project="..\Interface\Interace.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -43,8 +43,12 @@
     <Compile Include="client.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="..\Interface\Interace.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\Interface\interface.csproj">
+      <Project>{0c5efa4e-486e-42d8-8ecd-73b1377ee59d}</Project>
+      <Name>interface</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
