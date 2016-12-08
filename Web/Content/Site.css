@@ -40,3 +40,7 @@ textarea {
     font-weight:bold;
     position:relative;
 }
+
+.k-list-scroller ul{
+    list-style-type:none
+}
