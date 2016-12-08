@@ -28,7 +28,6 @@ namespace Quant.flex
 
         string smsUrl(string content)
         {
-            content = content;
             return url + Uid + key + smsMob + smsText + HttpUtility.UrlEncode(content);
         }
 
