@@ -46,6 +46,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,6 +57,7 @@
     <Compile Include="commands\kdj15mincmd.cs" />
     <Compile Include="commands\ma120cmd.cs" />
     <Compile Include="commands\lowbetacmd.cs" />
+    <Compile Include="flex\sms.cs" />
     <Compile Include="strategies\KDJ15minStrategy.cs" />
     <Compile Include="strategies\LowBeta.cs" />
     <Compile Include="strategies\MA120.cs" />
