@@ -9,6 +9,7 @@
     <Import_RootNamespace>Interace</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Attribution\DEVIATION.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Attribution\KeyPrice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Cfg\Configuration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Basics.cs" />
@@ -16,6 +17,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\MACDSeries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\kdata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\TimeSeries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\KDJ.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\RSV.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\SMA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Indicator\STDP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Indicator\CCI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Indicator\DMA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Indicator\EMA.cs" />
