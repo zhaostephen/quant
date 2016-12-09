@@ -84,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="kdata-sql.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="todayall.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
