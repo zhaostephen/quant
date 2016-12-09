@@ -3,19 +3,20 @@
     ViewBag.Title = "量化选股";
 }
 
-<h4>量化选股</h4>
-<table class="table">
-    <tr>
-        <th>指数</th>
-        <th>阶段</th>
-        <th>状态</th>
-        <th>5分钟</th>
-        <th>15分钟</th>
-        <th>30分钟</th>
-        <th>日K</th>
-        <th>周K</th>
-        <th>月K</th>
-    </tr>
-</table>
+<div ng-controller="selectionCtrl">
+    <h4>量化选股</h4>
+    <table class="table">
+        <tr>
+            <th>策略</th>
+            <th>代码</th>
+            <th>名称</th>
+        </tr>
+        <tr ng-repeat="d in universe">
+            <td>{{d.name}}</td>
+            <td>{{d.code}}</td>
+            <td>{{d.stockname}}</td>
+        </tr>
+    </table>
+</div>
 
 
