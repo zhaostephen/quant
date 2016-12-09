@@ -55,7 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="commands\kdj15mincmd.cs" />
+    <Compile Include="commands\selectioncmd.cs" />
     <Compile Include="flex\sms.cs" />
+    <Compile Include="selections\LowBeta.cs" />
+    <Compile Include="selections\macd60.cs" />
+    <Compile Include="selections\Selection.cs" />
     <Compile Include="strategies\KDJ15minStrategy.cs" />
     <Compile Include="strategies\LowBeta.cs" />
     <Compile Include="strategies\MA120.cs" />
@@ -81,10 +85,6 @@
     <ProjectReference Include="..\Interface\interface.csproj">
       <Project>{0c5efa4e-486e-42d8-8ecd-73b1377ee59d}</Project>
       <Name>interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Selection\selection.csproj">
-      <Project>{a994889f-6199-49ba-ba05-37c0da5af09a}</Project>
-      <Name>selection</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

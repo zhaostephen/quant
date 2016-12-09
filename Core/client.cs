@@ -17,6 +17,25 @@ namespace Trade
 {
     public class client
     {
+        public void save(universe universe)
+        {
+            var connString = Configuration.env == "dev"
+                ? @"Server=584a482f41204.gz.cdb.myqcloud.com;Port=17020;Database=quant;Uid=quant;Pwd=Woaiquant123"
+                : @"Server=10.66.111.191;Port=3306 ;Database=quant;Uid=quant;Pwd=Woaiquant123";
+            using (var conn = new MySqlConnection(connString))
+            {
+                conn.Open();
+
+                var upserts = universe
+                    .codes
+                    .Select(p => string.Format("INSERT INTO universe (code,name) VALUES ('{0}','{1}') ON DUPLICATE KEY UPDATE ts=CURRENT_TIMESTAMP", p, universe.name))
+                    .ToArray();
+                var sql = string.Join(Environment.NewLine+";", upserts);
+
+                conn.Execute(sql);
+            }
+        }
+
         public universe universe(string name)
         {
             var connString = Configuration.env == "dev" 
@@ -93,11 +112,30 @@ namespace Trade
 
         public IEnumerable<string> codes(string secorOrIndex = null)
         {
-            return basics()
-                .Where(p => string.IsNullOrEmpty(secorOrIndex) || p.belongtoindex(secorOrIndex) || p.belongtosector(secorOrIndex))
-                .Select(p => p.code)
-                .Distinct()
-                .ToArray();
+            var basics = this.basics().AsEnumerable();
+            if(!string.IsNullOrEmpty(secorOrIndex))
+            {
+                switch(secorOrIndex)
+                {
+                    case assettypes.index:
+                        basics = basics.Where(p => p.assettype == assettypes.index).ToArray();
+                        break;
+                    case assettypes.stock:
+                        basics = basics.Where(p => p.assettype == assettypes.stock).ToArray();
+                        break;
+                    case assettypes.sector:
+                        basics = basics.Where(p => p.assettype == assettypes.sector).ToArray();
+                        break;
+                    default:
+                        basics = basics
+                            .Where(p => string.IsNullOrEmpty(secorOrIndex) 
+                                        || p.belongtoindex(secorOrIndex) 
+                                        || p.belongtosector(secorOrIndex))
+                            .ToArray();
+                        break;
+                }
+            }
+            return basics.Select(p => p.code).Distinct().ToArray();
         }
 
         public Interace.Quant.Trade[] trades(string porflio)

@@ -3,13 +3,7 @@ using CommandLine;
 using Interace.Quant;
 using Interface.Quant;
 using log4net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Trade;
-using Trade.Selections.Impl;
 
 namespace Quant.commands
 {
