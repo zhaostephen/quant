@@ -17,11 +17,12 @@ namespace Trade
 {
     public class client
     {
+        readonly string connString = Configuration.env == "dev"
+            ? @"Server=584a482f41204.gz.cdb.myqcloud.com;Port=17020;Database=quant;Uid=quant;Pwd=Woaiquant123"
+            : @"Server=10.66.111.191;Port=3306 ;Database=quant;Uid=quant;Pwd=Woaiquant123";
+
         public void save(universe universe)
         {
-            var connString = Configuration.env == "dev"
-                ? @"Server=584a482f41204.gz.cdb.myqcloud.com;Port=17020;Database=quant;Uid=quant;Pwd=Woaiquant123"
-                : @"Server=10.66.111.191;Port=3306 ;Database=quant;Uid=quant;Pwd=Woaiquant123";
             using (var conn = new MySqlConnection(connString))
             {
                 conn.Open();
@@ -38,9 +39,6 @@ namespace Trade
 
         public universe universe(string name)
         {
-            var connString = Configuration.env == "dev" 
-                ? @"Server=584a482f41204.gz.cdb.myqcloud.com;Port=17020;Database=quant;Uid=quant;Pwd=Woaiquant123" 
-                : @"Server=10.66.111.191;Port=3306 ;Database=quant;Uid=quant;Pwd=Woaiquant123";
             using (var conn = new MySqlConnection(connString))
             {
                 conn.Open();
