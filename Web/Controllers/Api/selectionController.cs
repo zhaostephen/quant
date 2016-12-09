@@ -17,10 +17,18 @@ namespace Web.Controllers.Api
         [Route("api/selections")]
         public object[] Get()
         {
-            var codenames = new client().basicnames().GroupBy(p=>p.code).ToDictionary(p => p.Key, p => p.First().name);
+            var codenames = new client().basics().GroupBy(p => p.code).ToDictionary(p => p.Key, p => p.First());
             var universe = new client().universe("macd60");
             return universe.codes
-                .Select(p => new { universe.name, code = p, stockname = codenames[p] })
+                .Select(p => new
+                {
+                    universe.name,
+                    code = p,
+                    stockname = codenames[p].name,
+                    pe = codenames[p].pe.ToDouble()
+                })
+                .Where(p => p.pe > 0 && p.pe < 30)
+                .OrderBy(p => p.pe)
                 .ToArray();
         }
     }
