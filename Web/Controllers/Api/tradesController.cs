@@ -14,6 +14,7 @@ namespace Web.Controllers.Api
 {
     public class tradesController : ApiController
     {
+        [Route("api/trades/{id}")]
         public Interace.Quant.Trade[] Get(string id)
         {
             return new client().trades(id).OrderByDescending(p=>p.Ts).ToArray();

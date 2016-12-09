@@ -14,6 +14,7 @@ namespace Web.Controllers.Api
 {
     public class basicsController : ApiController
     {
+        [Route("api/basics/names/{id}")]
         public basicname[] Get(string id)
         {
             if (id == "all")

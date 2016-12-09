@@ -68,6 +68,7 @@ namespace Trade.Data
         public string code { get; set; }
         public string name { get; set; }
         public string nameabbr { get; set; }
+        public string assettype { get; set; }
     }
 
     public static class assettypes

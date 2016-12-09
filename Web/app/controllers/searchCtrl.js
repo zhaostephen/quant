@@ -18,7 +18,7 @@
             transport: {
                 read: function (options) {
                     $http
-                        .get(root + 'api/basics/' + $("#querycode").val())
+                        .get(root + 'api/basics/names/' + $("#querycode").val())
                         .then(function (res) {
                             options.success(res.data);
                         }, function (res) {

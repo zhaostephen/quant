@@ -88,8 +88,9 @@ namespace Trade
 
         public IEnumerable<basicname> basicnames()
         {
-            var file = Configuration.data.basics.file("basicnames.csv");
-            return file.ReadCsv<basicname>(Configuration.encoding.gbk);
+            return basics()
+                .Select(p => new basicname { name = p.name, code = p.code, assettype = p.assettype, nameabbr = p.nameabbr })
+                .ToArray();
         }
 
         public kdata kdata(string code, string ktype)

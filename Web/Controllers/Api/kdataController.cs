@@ -13,6 +13,7 @@ namespace Web.Controllers.Api
 {
     public class kdataController : ApiController
     {
+        [Route("api/kdata/{id}")]
         public chart Get(string id, string ktype)
         {
             var d = new client().kdata(id, ktype);
