@@ -49,10 +49,6 @@
     <Compile Include="factor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Client\client.csproj">
-      <Project>{fddb42e9-f7d2-4b8a-b219-98e65a05a038}</Project>
-      <Name>client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Interface\interface.csproj">
       <Project>{0c5efa4e-486e-42d8-8ecd-73b1377ee59d}</Project>
       <Name>interface</Name>

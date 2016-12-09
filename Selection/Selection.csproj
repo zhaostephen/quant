@@ -50,9 +50,9 @@
     <Compile Include="selection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Client\client.csproj">
-      <Project>{fddb42e9-f7d2-4b8a-b219-98e65a05a038}</Project>
-      <Name>client</Name>
+    <ProjectReference Include="..\Core\core.csproj">
+      <Project>{1bde39a1-3a03-4c37-8d22-c107965a3cff}</Project>
+      <Name>core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Factors\factors.csproj">
       <Project>{819907c5-1222-4409-8b1c-356efb783c0c}</Project>

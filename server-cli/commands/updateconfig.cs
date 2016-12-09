@@ -30,9 +30,11 @@ namespace Trade.Cli.commands
                 var e = XElement.Load(file);
 
                 if (setValue(e, "quant", param.quant) ||
-                    setValue(e, "nodes", param.nodes))
-
+                    setValue(e, "nodes", param.nodes) ||
+                    setValue(e, "env", "prod"))
+                {
                     e.Save(file);
+                }
             }
 
             var py = Path.Combine(param.path, "storage.py");

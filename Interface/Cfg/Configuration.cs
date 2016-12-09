@@ -9,6 +9,8 @@ namespace Trade.Cfg
 {
     public class Configuration
     {
+        public static readonly string env = ConfigurationManager.AppSettings["env"];
+
         public class data
         {
             public static readonly string PATH = ConfigurationManager.AppSettings["quant"];

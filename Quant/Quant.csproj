@@ -70,10 +70,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Client\client.csproj">
-      <Project>{fddb42e9-f7d2-4b8a-b219-98e65a05a038}</Project>
-      <Name>client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Core\core.csproj">
       <Project>{1BDE39A1-3A03-4C37-8D22-C107965A3CFF}</Project>
       <Name>core</Name>
