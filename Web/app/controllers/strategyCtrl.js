@@ -16,7 +16,7 @@
 
         $scope.refresh();
 
-        $interval(function () { $scope.refresh(); }, 5 * 60 * 1000);
+        $interval(function () { $scope.refresh(); }, 1 * 60 * 1000);
     }];
 
     angular.module('app').controller('strategyCtrl', ctrl)
