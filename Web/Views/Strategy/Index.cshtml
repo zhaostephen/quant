@@ -3,8 +3,8 @@
     ViewBag.Title = "量化策略";
 }
 
-<h4>交易信息</h4>
 <div ng-controller="strategyCtrl">
+    <h4>交易信息(最新更新 - {{lastupdate| date:'yyyy-MM-dd HH:mm:ss'}})</h4>
     <table class="table">
         <tr>
             <th>策略</th>
@@ -17,10 +17,10 @@
         <tr ng-repeat="trade in trades">
             <td>{{trade.Portflio}}</td>
             <td>{{trade.Stock}}</td>
-            <td>{{trade.Date}}</td>
-            <td>{{trade.Dir}}</td>
+            <td>{{trade.Date| date:'yyyy-MM-dd'}}</td>
+            <td ng-style="{color:trade.Dir=='buy' ? 'red' : 'green'}">{{trade.Dir=='buy' ? '买入' : '卖出'}}</td>
             <td>{{trade.Quantity}}</td>
-            <td>{{trade.Ts}}</td>
+            <td>{{trade.Ts| date:'yyyy-MM-dd HH:mm:ss'}}</td>
         </tr>
     </table>
 </div>

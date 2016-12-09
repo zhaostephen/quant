@@ -12,11 +12,11 @@ using Trade.Data;
 
 namespace Web.Controllers.Api
 {
-    public class trades : ApiController
+    public class tradesController : ApiController
     {
         public Interace.Quant.Trade[] Get(string id)
         {
-            return new client().trades(id);
+            return new client().trades(id).OrderByDescending(p=>p.Ts).ToArray();
         }
     }
 }
