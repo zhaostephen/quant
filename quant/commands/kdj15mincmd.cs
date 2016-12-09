@@ -13,7 +13,7 @@ namespace Quant.commands
     [command("kdj15min")]
     class kdj15mincmd : command<object>
     {
-        static ILog log = LogManager.GetLogger(typeof(lowbetacmd));
+        static ILog log = LogManager.GetLogger(typeof(kdj15mincmd));
 
         public kdj15mincmd(string[] args) : base(args) { }
 

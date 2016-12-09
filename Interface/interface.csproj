@@ -72,6 +72,7 @@
     <Compile Include="Quant\Stock.cs" />
     <Compile Include="Quant\StockPool.cs" />
     <Compile Include="Quant\Trade.cs" />
+    <Compile Include="Quant\universe.cs" />
     <Compile Include="Utility\FinanceUtil.cs" />
     <Compile Include="Utility\MathUtil.cs" />
   </ItemGroup>

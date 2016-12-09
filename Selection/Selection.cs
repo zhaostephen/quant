@@ -1,10 +1,11 @@
 ﻿using Interace.Quant;
+using Interface.Quant;
 using System.Collections.Generic;
 
 namespace Trade.Selections
 {
-    public abstract class Selection
+    public abstract class selection
     {
-        public abstract StockPool Pass(IEnumerable<string> stocks);
+        public abstract universe Pass(IEnumerable<string> stocks);
     }
 }

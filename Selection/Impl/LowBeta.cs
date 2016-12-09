@@ -4,24 +4,25 @@ using System.Linq;
 using log4net;
 using Trade.Factors;
 using Interace.Quant;
+using Interface.Quant;
 
 namespace Trade.Selections.Impl
 {
-    public class LowBeta : Selection
+    public class lowbeta : selection
     {
-        static ILog log = LogManager.GetLogger(typeof(LowBeta));
+        static ILog log = LogManager.GetLogger(typeof(lowbeta));
 
         double benchmark = 20;
         double beta = 0.5;
         bool junxianduotou = false;
 
-        public LowBeta(bool junxianduotou = true, double beta = 0.5)
+        public lowbeta(bool junxianduotou = true, double beta = 0.5)
         {
             this.junxianduotou = junxianduotou;
             this.beta = beta;
         }
 
-        public override StockPool Pass(IEnumerable<string> stocks)
+        public override universe Pass(IEnumerable<string> stocks)
         {
             var client = new client();
 
@@ -69,29 +70,8 @@ namespace Trade.Selections.Impl
                         b.industry,
                         b.liquidAssets
                     });
-            //var result = q
-            //      .Where(p => p.Data.Any() &&
-            //          //new jun_xian_dou_tout(p).value &&
-            //          p.Data.Last().MA120.HasValue &&
-            //          (p.Data.Last().Low / p.Data.Last().MA120.Value - 1) * 100 >= 0 &&
-            //          (p.Data.Last().Low / p.Data.Last().MA120.Value - 1) * 100 < 1)
-            //      .ToArray();
 
-            //var q = from s in result
-            //        join b in basics on s.Code equals b.代码
-            //        let c = s.Last()
-            //        select new
-            //        {
-            //            b.代码,
-            //            b.名称,
-            //            b.市盈率,
-            //            c.Date,
-            //            c.Low,
-            //            c.MA120,
-            //            MaxLossPct = (c.Low / c.MA120.Value - 1) * 100
-            //        };
-
-            return new StockPool(q.ToArray());
+            return new universe("lowbeta", q.Select(p => p.Code).Distinct().ToArray());
         }
     }
 }
