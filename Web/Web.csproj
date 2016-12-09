@@ -171,6 +171,7 @@
     <Compile Include="Controllers\Api\basicsController.cs" />
     <Compile Include="Controllers\Api\kdataController.cs" />
     <Compile Include="Controllers\SelectionController.cs" />
+    <Compile Include="Controllers\AnalysisController.cs" />
     <Compile Include="Controllers\StrategyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -553,6 +554,9 @@
     <Content Include="Scripts\kendo\2016.3.1118\messages\kendo.messages.zh-CN.min.js.map" />
     <Content Include="Views\Strategy\Index.cshtml" />
     <Content Include="Views\Selection\Index.cshtml" />
+    <Content Include="Views\Analysis\Index.cshtml" />
+    <Content Include="Views\Analysis\sector.cshtml" />
+    <Content Include="Views\Analysis\singlename.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\directives\" />
