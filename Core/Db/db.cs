@@ -143,5 +143,30 @@ namespace Trade.Db
                 .Distinct()
                 .ToArray();
         }
+
+        public void save(string porflio, IEnumerable<Interace.Quant.Trade> trades)
+        {
+            if (!trades.Any()) return;
+
+            var path = Configuration.data.trade.EnsurePathCreated();
+            var file = Path.Combine(path, porflio + ".csv");
+            var csv = trades.ToCsv();
+            if (File.Exists(file))
+            {
+                csv = string.Join(Environment.NewLine,
+                    csv.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray());
+            }
+            File.AppendAllText(
+                file,
+                csv,
+                Encoding.UTF8);
+        }
+
+        public Interace.Quant.Trade[] trades(string porflio)
+        {
+            var path = Configuration.data.trade.EnsurePathCreated();
+            var file = Path.Combine(path, porflio + ".csv");
+            return file.ReadCsv< Interace.Quant.Trade>().ToArray();
+        }
     }
 }

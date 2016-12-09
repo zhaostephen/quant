@@ -79,5 +79,12 @@ namespace Trade
                 .Distinct()
                 .ToArray();
         }
+
+        public Interace.Quant.Trade[] trades(string porflio)
+        {
+            var path = Configuration.data.trade.EnsurePathCreated();
+            var file = Path.Combine(path, porflio + ".csv");
+            return file.ReadCsv<Interace.Quant.Trade>().ToArray();
+        }
     }
 }

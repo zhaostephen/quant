@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "量化策略";
+}
+
+<h4>交易信息</h4>
+<div ng-controller="strategyCtrl">
+    <table class="table">
+        <tr>
+            <th>策略</th>
+            <th>股票</th>
+            <th>日期</th>
+            <th>买/卖</th>
+            <th>数量</th>
+            <th>时间戳</th>
+        </tr>
+        <tr ng-repeat="trade in trades">
+            <td>{{trade.Portflio}}</td>
+            <td>{{trade.Stock}}</td>
+            <td>{{trade.Date}}</td>
+            <td>{{trade.Dir}}</td>
+            <td>{{trade.Quantity}}</td>
+            <td>{{trade.Ts}}</td>
+        </tr>
+    </table>
+</div>
+

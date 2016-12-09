@@ -11,10 +11,11 @@ namespace Interace.Quant
         public DateTime Date { get; set; }
         public string Dir { get; set; }
         public double Quantity { get; set; }
+        public DateTime Ts { get; set; }
 
         public Trade()
         {
-
+            Ts = DateTime.Now;
         }
 
         public Trade(string portflio, string stock, DateTime date, string dir, double quantity)
@@ -24,6 +25,7 @@ namespace Interace.Quant
             Date = date;
             Dir = dir;
             Quantity = quantity;
+            Ts = DateTime.Now;
         }
 
         public override string ToString()

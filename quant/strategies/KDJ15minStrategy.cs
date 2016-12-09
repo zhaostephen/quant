@@ -45,7 +45,7 @@ namespace Quant.strategies
                 }
                 else
                 {
-
+                    log.InfoFormat("no signal {0}", stock.Code);
                 }
             }
         }

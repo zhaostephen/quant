@@ -16,7 +16,7 @@ namespace Interace.Mixin
             if (!File.Exists(path))
                 return Enumerable.Empty<dynamic>();
 
-            var lines = encoding != null ? File.ReadAllLines(path, encoding) : File.ReadAllLines(path);
+            var lines = ReadAllLines(path, encoding);
             if (!lines.Any())
                 return Enumerable.Empty<dynamic>();
             var columns = lines[0].Split(new[] { ',' });
@@ -42,7 +42,7 @@ namespace Interace.Mixin
             if (!File.Exists(path))
                 return Enumerable.Empty<T>();
 
-            var lines = encoding != null ? File.ReadAllLines(path, encoding) : File.ReadAllLines(path);
+            var lines = ReadAllLines(path, encoding);
             if (!lines.Any())
                 return Enumerable.Empty<T>();
 
@@ -62,6 +62,22 @@ namespace Interace.Mixin
                     return f;
                 })
                 .ToArray();
+        }
+
+        static string[] ReadAllLines(string file, Encoding encoding = null)
+        {
+            using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var r = (encoding != null ? new StreamReader(stream, encoding) : new StreamReader(stream)))
+            {
+                var lines = new List<string>();
+                while (!r.EndOfStream)
+                {
+                    var line = r.ReadLine();
+                    if (line != null)
+                        lines.Add(line);
+                }
+                return lines.ToArray();
+            }
         }
     }
 }
