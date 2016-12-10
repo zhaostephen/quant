@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="commands\kdj15mincmd.cs" />
+    <Compile Include="commands\strategycmd.cs" />
     <Compile Include="commands\selectioncmd.cs" />
     <Compile Include="flex\sms.cs" />
     <Compile Include="selections\LowBeta.cs" />
