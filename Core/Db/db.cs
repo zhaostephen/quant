@@ -170,74 +170,146 @@ namespace Trade.Db
 
         public IEnumerable<basics> stock_basics()
         {
-            var file = Configuration.data.basics.file("stock_basics.csv");
-            return file.ReadCsv<basics>(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<basics>("select * from stock_basics")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> area_classified()
         {
-            var file = Configuration.data.basics.file("area_classified.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from area_classified")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> concept_classified()
         {
-            var file = Configuration.data.basics.file("concept_classified.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from concept_classified")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> gem_classified()
         {
-            var file = Configuration.data.basics.file("gem_classified.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from gem_classified")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> hs300s()
         {
-            var file = Configuration.data.basics.file("hs300s.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from hs300s")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> industry_classified()
         {
-            var file = Configuration.data.basics.file("industry_classified.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from industry_classified")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> sme_classified()
         {
-            var file = Configuration.data.basics.file("sme_classified.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from sme_classified")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> st_classified()
         {
-            var file = Configuration.data.basics.file("st_classified.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from st_classified")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> suspended()
         {
-            var file = Configuration.data.basics.file("suspended.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from suspended")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> sz50s()
         {
-            var file = Configuration.data.basics.file("sz50s.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from sz50s")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> terminated()
         {
-            var file = Configuration.data.basics.file("terminated.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("SELECT * FROM `terminated`")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<dynamic> zz500s()
         {
-            var file = Configuration.data.basics.file("zz500s.csv");
-            return file.ReadCsv(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from zz500s")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public void save(string porflio, IEnumerable<Interace.Quant.Trade> trades)

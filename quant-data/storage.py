@@ -1,5 +1,9 @@
 ﻿import tushare as ts
+import storage as storage
+import datetime as datetime
+import sys
 import os
+from sqlalchemy import create_engine
 
 storage = "D:/quant/data/"
 
@@ -24,14 +28,15 @@ def ensure_dir(f):
     if not os.path.exists(d):
         os.makedirs(d)
 
-def save_sql(data, file, mode='replace'):
-    if df is None:
+def save_sql(data, file, mode='replace', dtype=None):
+    if data is None:
         return
     
     splits = file.split('/', 1)
     db = splits[0]
     table = splits[1].replace(".csv","")
 
-    print(mode + " sql to ", db, "/", table)
+    engine = create_engine('mysql://quant:Woaiquant123@10.66.111.191/' + db + '?charset=utf8')
 
-    data.to_sql(table,engine,if_exists=mode)
+    print(mode + " sql to ", db, "/", table)
+    data.to_sql(table,engine,index=True,if_exists=mode, dtype=dtype)
