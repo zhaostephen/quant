@@ -19,7 +19,7 @@ namespace Trade.Cli.commands
 
         public override void exec()
         {
-            var client = new client();
+            var client = new Trade.Db.db();
             var query = 
                 client.kdata(param.code, param.ktype)
                         .Where(p => p.date == param.date || !param.date.HasValue);

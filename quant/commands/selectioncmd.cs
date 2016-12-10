@@ -26,7 +26,7 @@ namespace Quant.commands
             switch(param.name.ToLower())
             {
                 case "macd60":
-                    var client = new client();
+                    var client = new Trade.Db.db();
                     var universe = new macd60().Pass(client.codes(param.sector));
                     client.save(universe);
                     break;

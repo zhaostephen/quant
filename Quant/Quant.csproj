@@ -56,7 +56,9 @@
   <ItemGroup>
     <Compile Include="commands\strategycmd.cs" />
     <Compile Include="commands\selectioncmd.cs" />
-    <Compile Include="flex\sms.cs" />
+    <Compile Include="strategies\orders\order.cs" />
+    <Compile Include="strategies\orders\dbOrder.cs" />
+    <Compile Include="strategies\orders\smsOrder.cs" />
     <Compile Include="selections\LowBeta.cs" />
     <Compile Include="selections\macd60.cs" />
     <Compile Include="selections\Selection.cs" />

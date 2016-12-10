@@ -16,8 +16,8 @@ namespace Web.Controllers.Api
         [Route("api/kdata/{id}")]
         public chart Get(string id, string ktype)
         {
-            var d = new client().kdata(id, ktype);
-            var basic = new client().basics(id);
+            var d = new Trade.Db.db().kdata(id, ktype);
+            var basic = new Trade.Db.db().basics(id);
             var since = Trade.Cfg.Configuration.data.bearcrossbull;
             var q = d.Where(p => p.date >= since).ToArray();
             var data = q.Select(p => new object[] { p.date, p.open, p.high, p.low, p.close })

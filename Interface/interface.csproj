@@ -44,7 +44,7 @@
     <Compile Include="Attribution\DEVIATION.cs" />
     <Compile Include="Attribution\KeyPrice.cs" />
     <Compile Include="Cfg\Configuration.cs" />
-    <Compile Include="Data\Basics.cs" />
+    <Compile Include="Data\basics.cs" />
     <Compile Include="Data\JAXSeries.cs" />
     <Compile Include="Data\kdata.cs" />
     <Compile Include="Data\MACDSeries.cs" />

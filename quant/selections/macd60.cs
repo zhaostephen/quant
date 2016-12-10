@@ -14,7 +14,7 @@ namespace Trade.selections
 
         public override universe Pass(IEnumerable<string> stocks)
         {
-            var client = new client();
+            var client = new Db.db();
 
             log.Info("query market data");
             var data = stocks

@@ -18,9 +18,9 @@ namespace Web.Controllers.Api
         public basicname[] Get(string id)
         {
             if (id == "all")
-                return new client().basicnames().ToArray();
+                return new Trade.Db.db().basicnames().ToArray();
 
-            return new client()
+            return new Trade.Db.db()
                 .basicnames()
                 .Where(p => p.nameabbr.StartsWith(id, StringComparison.InvariantCultureIgnoreCase) ||
                           p.code.StartsWith(id))

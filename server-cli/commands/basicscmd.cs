@@ -20,7 +20,7 @@ namespace Trade.Cli.commands
 
         public override void exec()
         {
-            var client = new client();
+            var client = new Trade.Db.db();
             var f = new[] { client.basics(param.code) }.Where(p => p != null).ToArray();
             log.Info(f.ToCsv());
         }

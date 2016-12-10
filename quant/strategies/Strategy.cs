@@ -1,14 +1,8 @@
 ﻿using Cli;
-using Interace.Mixin;
 using Interace.Quant;
 using log4net;
-using Quant.flex;
-using ServiceStack;
+using Quant.strategies.orders;
 using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Trade.Cfg;
 using Trade.Db;
 
 namespace Quant.strategies
@@ -16,14 +10,11 @@ namespace Quant.strategies
     public abstract class Strategy
     {
         static ILog log = typeof(Strategy).Log();
-
-        readonly db db;
-        readonly sms sms;
+        readonly IOrder[] orders;
 
         protected Strategy()
         {
-            db = new db();
-            sms = new sms();
+            orders = new IOrder[] { new dbOrder(), new smsOrder() };
         }
 
         public abstract void Run(Account account);
@@ -40,14 +31,20 @@ namespace Quant.strategies
 
         protected void PostTrade(Account account, Interace.Quant.Trade trade)
         {
-            log.WarnFormat("trade | {0}", trade);
             account.Trades.Add(trade);
 
-            log.Info("save down");
-            db.save(account.Portflio, new[] { trade });
-
-            log.Info("sms order");
-            sms.order(trade);
+            foreach (var order in orders)
+            {
+                log.WarnFormat("{0} order trade | {1}", order, trade);
+                try
+                {
+                    order.order(account, trade);
+                }
+                catch (Exception ex)
+                {
+                    log.Error("ex @ "+ order, ex);
+                }
+            }
         }
     }
 }

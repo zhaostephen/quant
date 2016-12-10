@@ -17,8 +17,8 @@ namespace Web.Controllers.Api
         [Route("api/selections")]
         public object[] Get()
         {
-            var codenames = new client().basics().GroupBy(p => p.code).ToDictionary(p => p.Key, p => p.First());
-            var universe = new client().universe("macd60");
+            var codenames = new Trade.Db.db().basics().GroupBy(p => p.code).ToDictionary(p => p.Key, p => p.First());
+            var universe = new Trade.Db.db().universe("macd60");
             return universe.codes
                 .Select(p => new
                 {

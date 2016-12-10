@@ -38,7 +38,7 @@ namespace Trade.commands
             var concept_classified = code_cnames(() => db.concept_classified());
             var industry_classified = code_cnames(() => db.industry_classified());
 
-            var basiscs = new Basics(stock_basics);
+            var basiscs = stock_basics.ToList();
             foreach (var stockbasic in stock_basics)
             {
                 stockbasic.assettype = assettypes.stock;
@@ -70,41 +70,41 @@ namespace Trade.commands
                     stockbasic.addsector(industry_classified[stockbasic.code]);
             }
 
-            basiscs.Add(new Basic {
+            basiscs.Add(new basics {
                 code = index.hs300,
                 name = "沪深300",
                 nameabbr = "hs300",
                 assettype = assettypes.index
             });
-            basiscs.Add(new Basic
+            basiscs.Add(new basics
             {
                 code = index.sz50,
                 name = "上证50",
                 nameabbr = "sz50",
                 assettype = assettypes.index
             });
-            basiscs.Add(new Basic
+            basiscs.Add(new basics
             {
                 code = index.sz,
                 name = "深圳成指",
                 nameabbr = "sz",
                 assettype = assettypes.index
             });
-            basiscs.Add(new Basic
+            basiscs.Add(new basics
             {
                 code = index.sh,
                 name = "上证综指",
                 nameabbr = "sh",
                 assettype = assettypes.index
             });
-            basiscs.Add(new Basic
+            basiscs.Add(new basics
             {
                 code = index.cyb,
                 name = "创业板指",
                 nameabbr="cyb",
                 assettype = assettypes.index
             });
-            basiscs.Add(new Basic
+            basiscs.Add(new basics
             {
                 code = index.zxb,
                 name = "中小板指",
@@ -119,7 +119,7 @@ namespace Trade.commands
                 .ToArray();
             foreach(var i in concepts)
             {
-                basiscs.Add(new Basic
+                basiscs.Add(new basics
                 {
                     code = i,
                     name = i,
@@ -135,7 +135,7 @@ namespace Trade.commands
                 .ToArray();
             foreach (var i in industries)
             {
-                basiscs.Add(new Basic
+                basiscs.Add(new basics
                 {
                     code = i,
                     name = i,
@@ -183,7 +183,7 @@ namespace Trade.commands
             return string.Join("", a);
         }
 
-        private void calc(Dictionary<Basic, Basic[]> dict)
+        private void calc(Dictionary<basics, basics[]> dict)
         {   
             foreach(var basicP in dict)
             {

@@ -14,7 +14,7 @@ namespace Quant.strategies
 
         public override void Run(Account account)
         {
-            var client = new Trade.client();
+            var client = new Trade.Db.db();
 
             log.InfoFormat("total {0}", account.universe.Count);
             foreach (var stock in account.universe.AsParallel())

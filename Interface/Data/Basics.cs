@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Trade.Data
 {
-    public class Basic
+    public class basics
     {
         public string code { get; set; }
         public string name{ get; set; }
@@ -86,18 +86,5 @@ namespace Trade.Data
         public const string sz50 = "sz50";
         public const string zxb = "zxb";
         public const string cyb = "cyb";
-    }
-
-    public class Basics : List<Basic>
-    {
-        public Basics()
-        {
-
-        }
-        public Basics(IEnumerable<Basic> ba)
-            :base(ba)
-        {
-
-        }
     }
 }

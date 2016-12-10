@@ -21,7 +21,7 @@ namespace Quant.commands
 
             log.Info("get codes");
             var universe = param.asector 
-                ? new universe(param.universe, new client().codes(param.universe).ToArray())
+                ? new universe(param.universe, new Trade.Db.db().codes(param.universe).ToArray())
                 : getUniverse(param.universe);
             log.Info("total " + universe.codes.Length);
 
@@ -40,7 +40,7 @@ namespace Quant.commands
 
         private universe getUniverse(string name)
         {
-            return new client().universe(name);
+            return new Trade.Db.db().universe(name);
         }
 
         public class parameters
