@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Trade.Cli</RootNamespace>
-    <AssemblyName>server-cli</AssemblyName>
+    <AssemblyName>deploy</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -55,9 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="commands\basicscmd.cs" />
-    <Compile Include="commands\updateconfig.cs" />
-    <Compile Include="commands\kdatacmd.cs" />
+    <Compile Include="updateconfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
