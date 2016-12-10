@@ -30,6 +30,8 @@ namespace Trade.selections
                 .Distinct()
                 .ToArray();
 
+            log.InfoFormat("selected {0}", codes.Count());
+
             return new universe("macd60", codes);
         }
     }

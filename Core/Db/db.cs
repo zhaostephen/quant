@@ -23,13 +23,15 @@ namespace Trade.Db
             {
                 conn.Open();
 
+                conn.Execute("DELETE FROM universe WHERE name=@name", new { name = universe.name });
+
                 var upserts = universe
                     .codes
-                    .Select(p => string.Format("INSERT INTO universe (code,name) VALUES ('{0}','{1}') ON DUPLICATE KEY UPDATE ts=CURRENT_TIMESTAMP", p, universe.name))
+                    .Select(p => string.Format("INSERT INTO universe (code,name) VALUES ('{0}','{1}')", p, universe.name))
                     .ToArray();
-                var sql = string.Join(Environment.NewLine + ";", upserts);
 
-                conn.Execute(sql);
+                if (upserts.Any())
+                    conn.Execute(string.Join(";", upserts));
             }
         }
 

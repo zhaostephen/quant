@@ -27,7 +27,7 @@ namespace Web.Controllers.Api
                     stockname = codenames[p].name,
                     pe = codenames[p].pe.ToDouble()
                 })
-                .Where(p => p.pe > 0 && p.pe < 30)
+                //.Where(p => p.pe > 0 && p.pe < 30)
                 .OrderBy(p => p.pe)
                 .ToArray();
         }
