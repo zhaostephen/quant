@@ -33,6 +33,16 @@ namespace Web.Controllers.Api
                 result.state = cur.state;
                 result.position = cur.position;
                 result.strategy = cur.strategy;
+                if (string.IsNullOrEmpty(cur.state))
+                {
+                    var i = new QUOTATION(d);
+                    if (i.Any())
+                    {
+                        result.state = i.Last().state.ToString();
+                        result.position = i.Last().position;
+                        result.strategy = i.Last().strategy;
+                    }
+                }
             }
 
             var mainindex = basic.mainindex();
