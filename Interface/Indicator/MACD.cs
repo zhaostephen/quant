@@ -34,5 +34,30 @@ namespace Trade.Indicator
 
             this.AddRange(result);
         }
+        public MACDPoint[] cross_up()
+        {
+            return cross(ToArray(), (i, next) => i.MACD < 0 && next.MACD >= 0);
+        }
+        public MACDPoint[] cross_down()
+        {
+            return cross(ToArray(), (i, next) => i.MACD >= 0 && next.MACD < 0);
+        }
+
+        static MACDPoint[] cross(MACDPoint[] k, Func<MACDPoint, MACDPoint, bool> cmp)
+        {
+            var cross = new List<MACDPoint>();
+            for (var i = 1; i < k.Length; ++i)
+            {
+                if (cmp(k[i - 1], k[i]))
+                {
+                    if (Math.Abs(k[i - 1].DEA - k[i - 1].DIF) <
+                        Math.Abs(k[i].DEA - k[i].DIF))
+                        cross.Add(k[i - 1]);
+                    else
+                        cross.Add(k[i]);
+                }
+            }
+            return cross.ToArray();
+        }
     }
 }

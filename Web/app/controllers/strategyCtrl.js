@@ -3,7 +3,7 @@
 
     var ctrl = ['$scope', '$http', '$interval', function ($scope, $http, $interval) {
         $scope.trades = [];
-        $scope.portflio = "kdj15min";
+        $scope.portflio = "macd15min";
         $scope.lastupdate = new Date();
 
         $scope.refresh = function () {

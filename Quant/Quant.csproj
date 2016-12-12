@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="commands\strategycmd.cs" />
     <Compile Include="commands\selectioncmd.cs" />
+    <Compile Include="strategies\MACD15minStrategy.cs" />
     <Compile Include="strategies\orders\order.cs" />
     <Compile Include="strategies\orders\dbOrder.cs" />
     <Compile Include="strategies\orders\smsOrder.cs" />
