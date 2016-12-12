@@ -33,6 +33,9 @@ namespace Quant.commands
                 case "kdj15min":
                     new strategies.KDJ15minStrategy().Run(account);
                     break;
+                case "macd15min":
+                    new strategies.MACD15minStrategy().Run(account);
+                    break;
             }
 
             log.Info("**********DONE**********");
