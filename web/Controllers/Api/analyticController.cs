@@ -22,6 +22,10 @@ namespace Web.Controllers.Api
 
             var d = new Trade.Db.db().kdata(id, ktype);
             var basic = new Trade.Db.db().basics(id);
+
+            result.code = basic.code;
+            result.name = basic.name;
+
             if(d != null && d.Any())
             {
                 var cur = d.Last();
@@ -60,6 +64,8 @@ namespace Web.Controllers.Api
 
     public class analytic
     {
+        public string code { get; set; }
+        public string name { get; set; }
         public double? beta { get; set; }
         public string date { get; set; }
         public double? open { get; set; }
