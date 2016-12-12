@@ -2,8 +2,18 @@
     'use strict';
 
     var ctrl = ['$scope', '$http', function ($scope, $http) {
+        $scope.analytic = {};
+        $scope.getAnalytic = function (code, period) {
+            $http
+                .get(root + 'api/analytic/' + code + '/' + period)
+                .then(function (res) {
+                    $scope.analytic = res.data;
+                }, function (res) { });
+        }
+
         $scope.search = function () {
             candlestick($scope.code, "D");
+            $scope.getAnalytic($scope.code, "D");
         };
 
         $scope.select = function (code) {
@@ -11,6 +21,7 @@
                 return;
             $scope.code = code;
             candlestick($scope.code, "D");
+            $scope.getAnalytic($scope.code, "D");
         };
 
         $scope.basicnames = new kendo.data.DataSource({
@@ -27,6 +38,12 @@
                 }
             }
         });
+
+        $scope.code = 'sh';
+        setupcharts('sh', "D", function (code, period) {
+            $scope.getAnalytic(code, period);
+        });
+        $scope.getAnalytic('sh', "D");
     }];
 
     angular.module('app').controller('searchCtrl', ctrl)

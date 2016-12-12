@@ -40,6 +40,10 @@ namespace Trade.Data
         public string indexes { get; set; }
         public string sectors { get; set; }
 
+        public string mainindex()
+        {
+            return !string.IsNullOrEmpty(indexes) ? indexes.Split('|').First() : string.Empty;
+        }
         public bool belongtoindex(string index)
         {
             return !string.IsNullOrEmpty(indexes) && indexes.Contains(index);

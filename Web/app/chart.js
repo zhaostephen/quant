@@ -1,6 +1,8 @@
 ﻿var keyhighdates = [];
 var keylowdates = [];
 var currentcode = "";
+var currentperiod = "";
+var chartssetup = false;
 
 function kperiod(period) {
     switch(period)
@@ -18,6 +20,7 @@ function kperiod(period) {
 function getData(code, period, callback) {
     period = period || "D";
     currentcode = code;
+    currentperiod = period;
     $.getJSON(root + 'api/kdata/' + code + "?ktype=" + period, function (result) {
         var data = result.data;
         var utc = function (d) {
@@ -48,20 +51,18 @@ function getData(code, period, callback) {
         });
     });
 }
-function candlestick(code, period) {
-    var chart = Highcharts.charts[0];
-    if(!chart) return;
-
-    chart.showLoading('请稍等...');
-    getData(code, period, function (result) {
-        chart.series[0].setData(result.data);
-        chart.setTitle({
-            text: result.name
-        });
-        chart.hideLoading();
-    });
-}
-$(function () {
+function setupcharts(code, period, callback) {
+    if (chartssetup) {
+        return;
+    }
+    chartssetup = true;
+    function setExtremes(e) {
+        if (e.rangeSelectorButton) {
+            candlestick(currentcode, e.rangeSelectorButton.value);
+            if (callback)
+                callback(currentcode, e.rangeSelectorButton.value);
+        }
+    }
     Highcharts.setOptions({
         global: {
             useUTC: true
@@ -77,15 +78,7 @@ $(function () {
             //weekdays: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
         },
     });
-
-    function setExtremes(e) {
-        console.log(e.rangeSelectorButton);
-        if (e.rangeSelectorButton) {
-            candlestick(currentcode, e.rangeSelectorButton.value);
-        }
-    }
-
-    getData("sh",'D', function (result) {
+    getData(code,period, function (result) {
         var data = result.data;
 
         // Add a null value for the end date
@@ -263,4 +256,17 @@ $(function () {
             }]
         });
     });
-});
+}
+function candlestick(code, period) {
+    var chart = Highcharts.charts[0];
+    if (!chart) return;
+
+    chart.showLoading('请稍等...');
+    getData(code, period, function (result) {
+        chart.series[0].setData(result.data);
+        chart.setTitle({
+            text: result.name
+        });
+        chart.hideLoading();
+    });
+}

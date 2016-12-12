@@ -51,18 +51,18 @@ namespace Trade.commands
                 if (st_classified.ContainsKey(stockbasic.code))
                     stockbasic.st = true;
 
-                if(stockbasic.code.StartsWith("00") || stockbasic.code.StartsWith("30"))
-                    stockbasic.addindex(index.sz);
-                if (stockbasic.code.StartsWith("60"))
-                    stockbasic.addindex(index.sh);
-                if (hs300s.ContainsKey(stockbasic.code))
-                    stockbasic.addindex(index.hs300);
-                if (sz50s.ContainsKey(stockbasic.code))
-                    stockbasic.addindex(index.sz50);
                 if (sme_classified.ContainsKey(stockbasic.code))
                     stockbasic.addindex(index.zxb);
                 if (gem_classified.ContainsKey(stockbasic.code))
                     stockbasic.addindex(index.cyb);
+                if (stockbasic.code.StartsWith("60"))
+                    stockbasic.addindex(index.sh);
+                if (stockbasic.code.StartsWith("00") || stockbasic.code.StartsWith("30"))
+                    stockbasic.addindex(index.sz);
+                if (hs300s.ContainsKey(stockbasic.code))
+                    stockbasic.addindex(index.hs300);
+                if (sz50s.ContainsKey(stockbasic.code))
+                    stockbasic.addindex(index.sz50);
 
                 if (concept_classified.ContainsKey(stockbasic.code))
                     stockbasic.addsector(concept_classified[stockbasic.code]);

@@ -3,6 +3,7 @@ using Trade.Indicator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Interface.Indicator;
 
 namespace Trade.Data
 {
@@ -32,6 +33,7 @@ namespace Trade.Data
             var MA250 = new MA(close, 250).ToDictionary(p => p.Date, p => p);
             var PEAK_L = new PEAK(this, PEAK_TYPE.low).ToDictionary(p => p.Date, p => p);
             var PEAK_H = new PEAK(this, PEAK_TYPE.high).ToDictionary(p => p.Date, p => p);
+            var quotation = new QUOTATION(this).ToDictionary(p => p.date, p => p);
 
             foreach (var p in this)
             {
@@ -51,6 +53,9 @@ namespace Trade.Data
                 p.ma250 = MA250.ContainsKey(date) ? MA250[date].Value : (double?)null;
                 p.peak_l = PEAK_L.ContainsKey(date) ? PEAK_L[date].Value : (double?)null;
                 p.peak_h = PEAK_H.ContainsKey(date) ? PEAK_H[date].Value : (double?)null;
+                p.state = quotation.ContainsKey(date) ? quotation[date].state.ToString() : string.Empty;
+                p.position = quotation.ContainsKey(date) ? quotation[date].position : (double?)null;
+                p.strategy = quotation.ContainsKey(date) ? quotation[date].strategy : string.Empty;
             }
             return this;
         }
@@ -101,5 +106,8 @@ namespace Trade.Data
         public double? ma250 { get; set; }
         public double? peak_l { get; set; }
         public double? peak_h { get; set; }
+        public string state { get; set; }
+        public double? position { get; set; }
+        public string strategy { get; set; }
     }
 }

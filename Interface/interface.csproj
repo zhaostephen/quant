@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Numerics, Version=3.13.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.3.13.1\lib\net40\MathNet.Numerics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -49,6 +53,7 @@
     <Compile Include="Data\kdata.cs" />
     <Compile Include="Data\MACDSeries.cs" />
     <Compile Include="Data\TimeSeries.cs" />
+    <Compile Include="Indicator\ADJUST.cs" />
     <Compile Include="Indicator\CCI.cs" />
     <Compile Include="Indicator\DMA.cs" />
     <Compile Include="Indicator\EMA.cs" />
@@ -57,6 +62,8 @@
     <Compile Include="Indicator\MA.cs" />
     <Compile Include="Indicator\MACD.cs" />
     <Compile Include="Indicator\PEAK.cs" />
+    <Compile Include="Indicator\BETA.cs" />
+    <Compile Include="Indicator\QUOTATION.cs" />
     <Compile Include="Indicator\RSV.cs" />
     <Compile Include="Indicator\SMA.cs" />
     <Compile Include="Indicator\STDP.cs" />
@@ -75,6 +82,9 @@
     <Compile Include="Quant\universe.cs" />
     <Compile Include="Utility\FinanceUtil.cs" />
     <Compile Include="Utility\MathUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
