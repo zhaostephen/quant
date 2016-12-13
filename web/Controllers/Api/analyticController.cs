@@ -10,6 +10,7 @@ using Interace.Attribution;
 using Trade.Cfg;
 using Interface.Indicator;
 using Trade.Data;
+using Trade.Indicator;
 
 namespace Web.Controllers.Api
 {
@@ -54,6 +55,25 @@ namespace Web.Controllers.Api
                     else
                         result.deviation = string.Format("{0:MM/dd} ~ {1:MM/dd}({2})", deviation.d1, deviation.d2, deviation.cross);
                 }
+
+                var ma = new List<string>();
+                var close = k.close();
+                var ma5 = (double?)new MA(close, 5);
+                var ma30 = (double?)new MA(close, 30);
+                var ma55 = (double?)new MA(close, 55);
+                var ma120 = (double?)new MA(close, 120);
+                if (ma5 >= ma30 && ma30 >= ma55 && ma55 >= ma120)
+                    ma.Add("多头");
+                if (cur.close < ma5)
+                    ma.Add("破5日线");
+                if (cur.close < ma30)
+                    ma.Add("破30日生命线");
+                if (cur.close < ma55)
+                    ma.Add("破55日生命线");
+                if (cur.close < ma120)
+                    ma.Add("破半年线");
+                if (ma.Any())
+                    result.ma = string.Join(",",ma);
             }
 
             var mainindex = basic.mainindex();
@@ -84,5 +104,6 @@ namespace Web.Controllers.Api
         public string strategy { get; set; }
         public double? change { get; set; }
         public string deviation { get; set; }
+        public string ma { get; set; }
     }
 }
