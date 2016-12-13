@@ -26,6 +26,7 @@ namespace Web.Controllers.Api
 
             result.code = basic.code;
             result.name = basic.name;
+            result.PE = basic.pe;
 
             if(k != null && k.Any())
             {
@@ -105,5 +106,6 @@ namespace Web.Controllers.Api
         public double? change { get; set; }
         public string deviation { get; set; }
         public string ma { get; set; }
+        public string PE { get; set; }
     }
 }
