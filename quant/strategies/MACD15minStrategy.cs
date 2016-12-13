@@ -30,7 +30,7 @@ namespace Quant.strategies
                 if (crossup.Any())
                 {
                     var s = crossup.Last();
-                    if (s.Date == k.Last().date)
+                    if (s.Date == k.Last().date && s.Date.Date == DateTime.Today)
                     {
                         Buy(account, stock.Code, s.Date);
                     }
@@ -38,7 +38,7 @@ namespace Quant.strategies
                 else if(crossdown.Any())
                 {
                     var s = crossdown.Last();
-                    if (s.Date == k.Last().date)
+                    if (s.Date == k.Last().date && s.Date.Date == DateTime.Today)
                     {
                         Sell(account, stock.Code, s.Date);
                     }

@@ -30,7 +30,7 @@ namespace Interace.Quant
 
         public override string ToString()
         {
-            return string.Format("{0},{1},{2:yyyy-MM-dd},{3},{4}", Portflio, Stock, Date, Dir, Quantity);
+            return string.Format("{0},{1},{2:yyyy-MM-dd HH:mm:ss},{3},{4}", Portflio, Stock, Date, Dir, Quantity);
         }
 
         public static Trade Buy(string portflio, string stock, double quantity, DateTime? date = null)

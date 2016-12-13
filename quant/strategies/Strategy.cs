@@ -21,12 +21,12 @@ namespace Quant.strategies
 
         protected void Buy(Account account, string stock, DateTime date, double quantity = 0)
         {
-            PostTrade(account, Interace.Quant.Trade.Buy(account.Portflio, stock, quantity, date.Date));
+            PostTrade(account, Interace.Quant.Trade.Buy(account.Portflio, stock, quantity, date));
         }
 
         protected void Sell(Account account, string stock, DateTime date, double quantity = 0)
         {
-            PostTrade(account, Interace.Quant.Trade.Sell(account.Portflio, stock, quantity, date.Date));
+            PostTrade(account, Interace.Quant.Trade.Sell(account.Portflio, stock, quantity, date));
         }
 
         protected void PostTrade(Account account, Interace.Quant.Trade trade)
