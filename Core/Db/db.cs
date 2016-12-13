@@ -138,7 +138,7 @@ namespace Trade.Db
 
         public IEnumerable<kdata> kdata(IEnumerable<string> codes, string ktype)
         {
-            return codes.Select(code => kdata(code, ktype)).ToArray();
+            return codes.AsParallel().Select(code => kdata(code, ktype)).ToArray();
         }
 
         public void save(kdata data, string ktype)

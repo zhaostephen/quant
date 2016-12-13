@@ -33,7 +33,7 @@ namespace Trade.commands
             foreach (var sector in sectors)
             {
                 Interlocked.Increment(ref i);
-                log.InfoFormat("{0}/{1} calc sector", i, count);
+                log.InfoFormat("{0}/{1} calc sector {2}", i, count, sector);
 
                 var codes = db.codes(sector);
                 if (!codes.Any())
