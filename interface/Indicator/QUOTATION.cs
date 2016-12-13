@@ -45,7 +45,7 @@ namespace Interface.Indicator
                 {
                     date = item.date,
                     state = state,
-                    position = judgePosition(state),
+                    position = judgePosition(state, item.price),
                     strategy = judgeStrategy(state, item.price)
                 });
             }
@@ -70,12 +70,12 @@ namespace Interface.Indicator
             }
         }
 
-        private double judgePosition(quotationstate state)
+        private double judgePosition(quotationstate state, kdatapoint price)
         {
             switch (state)
             {
                 case quotationstate.调整:
-                    return 25;
+                    return price.close > price.ma120 ? 25 :0;
                 case quotationstate.反弹:
                     return 50;
                 case quotationstate.上升:
