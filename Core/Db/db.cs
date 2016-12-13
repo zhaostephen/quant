@@ -75,7 +75,7 @@ namespace Trade.Db
 
         public kdata kdata(string code, string ktype)
         {
-            var file = Configuration.data.kdata.file(ktype + "/" + code + ".csv");
+            var file = Configuration.data.kdata.file(ktype + "\\" + code + ".csv");
             var p = file.ReadCsv<kdatapoint>(Configuration.encoding.gbk);
             return new kdata(code, p);
         }
@@ -138,12 +138,12 @@ namespace Trade.Db
 
         public IEnumerable<kdata> kdata(IEnumerable<string> codes, string ktype)
         {
-            return codes.AsParallel().Select(code => kdata(code, ktype)).ToArray();
+            return codes.Select(code => kdata(code, ktype)).ToArray();
         }
 
         public void save(kdata data, string ktype)
         {
-            var file = Configuration.data.kdata.file(ktype + "/" + data.Code + ".csv");
+            var file = Configuration.data.kdata.file(ktype + "\\" + data.Code + ".csv");
             var p = data.ToArray().ToCsv();
             File.WriteAllText(file, p, Configuration.encoding.gbk);
         }

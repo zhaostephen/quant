@@ -25,6 +25,7 @@ namespace Trade.commands
         {
             log.Info("**********START**********");
 
+            var cache = new Dictionary<string, kdata>();
             var db = new Db.db();
             var sectors = db.sectors();
             var i = 0;
@@ -41,21 +42,48 @@ namespace Trade.commands
                     continue;
                 }
 
-                db.save(sum(sector, db.kdata(codes, "5")), "5");
-                db.save(sum(sector, db.kdata(codes, "15")), "15");
-                db.save(sum(sector, db.kdata(codes, "30")), "30");
-                db.save(sum(sector, db.kdata(codes, "60")), "60");
-                db.save(sum(sector, db.kdata(codes, "D")), "D");
-                db.save(sum(sector, db.kdata(codes, "W")), "W");
-                db.save(sum(sector, db.kdata(codes, "M")), "M");
+                db.save(sum(sector, kdata(db, cache, codes, "5")), "5");
+                db.save(sum(sector, kdata(db, cache, codes, "15")), "15");
+                db.save(sum(sector, kdata(db, cache, codes, "30")), "30");
+                db.save(sum(sector, kdata(db, cache, codes, "60")), "60");
+                db.save(sum(sector, kdata(db, cache, codes, "D")), "D");
+                db.save(sum(sector, kdata(db, cache, codes, "W")), "W");
+                db.save(sum(sector, kdata(db, cache, codes, "M")), "M");
             }
 
             log.Info("**********DONE**********");
         }
 
+        IEnumerable<kdata> kdata(Db.db db, Dictionary<string, kdata> cache, IEnumerable<string> codes, string ktype)
+        {
+            var list = new List<kdata>();
+            var notincache = new List<string>();
+            foreach(var code in codes)
+            {
+                var key = code + ktype;
+                if (cache.ContainsKey(key))
+                    list.Add(cache[key]);
+                else
+                    notincache.Add(code);
+            }
+
+            var data = db.kdata(notincache, ktype);
+            foreach (var d in data)
+            {
+                var key = d.Code + ktype;
+                cache[key] = d;
+            }
+
+            return list.Concat(data).ToArray();
+        }
+
         kdata sum(string code, IEnumerable<kdata> d)
         {
-            if (!d.Any()) return new kdata(code);
+            if (!d.Any())
+            {
+                log.WarnFormat("empty data set for {0}", code);
+                return new kdata(code);
+            }
 
             var dict = new Dictionary<DateTime, kdatapoint>();
 
