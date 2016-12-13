@@ -29,11 +29,14 @@ namespace Web.Controllers.Api
             if(d != null && d.Any())
             {
                 var cur = d.Last();
+                var prev = d.Count > 1 ? d[d.Count - 2] : null;
+
                 result.date = cur.date.ToString("yyyy-MM-dd");
                 result.high = cur.high;
                 result.low = cur.close;
                 result.open = cur.open;
                 result.close = cur.close;
+                result.change = prev == null ? (double?)null : ((cur.close - prev.close) / prev.close) * 100;
 
                 var q = (quotation)new QUOTATION(d);
                 if (q != null)
@@ -70,6 +73,6 @@ namespace Web.Controllers.Api
         public string state { get; set; }
         public double? position { get; set; }
         public string strategy { get; set; }
-        public double? change { get { return ((close - open) / open) * 100; } }
+        public double? change { get; set; }
     }
 }
