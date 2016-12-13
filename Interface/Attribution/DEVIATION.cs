@@ -19,7 +19,7 @@ namespace Interace.Attribution
 
             for (var i = 1; i < cross_up.Length; ++i)
             {
-                var c1 = cross_up[i].MACD - cross_up[i-1].MACD;
+                var c1 = cross_up[i].DIF - cross_up[i-1].DIF;
                 var c2 = close[cross_up[i].Date] - close[cross_up[i-1].Date];
                 var deviated = c1 >= 0 && c2 <= 0;
                 if (!deviated)
