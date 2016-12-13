@@ -184,6 +184,7 @@
   <ItemGroup>
     <Content Include="app\application.js" />
     <Content Include="app\chart.js" />
+    <Content Include="app\controllers\analyzeSectorCtrl.js" />
     <Content Include="app\controllers\analyzeIndexCtrl.js" />
     <Content Include="app\controllers\selectionCtrl.js" />
     <Content Include="app\controllers\strategyCtrl.js" />

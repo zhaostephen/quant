@@ -24,8 +24,19 @@ namespace Web.Controllers.Api
                 .basicnames()
                 .Where(p => p.nameabbr.StartsWith(id, StringComparison.InvariantCultureIgnoreCase) ||
                           p.code.StartsWith(id))
-                 .OrderBy(p=>p.nameabbr)
+                 .OrderBy(p => p.nameabbr)
                  .Take(10)
+                .ToArray();
+        }
+
+        [Route("api/basics/sectors")]
+        public string[] GetSectorCodes()
+        {
+            return new Trade.Db.db()
+                .basicnames()
+                .Where(p => p.assettype == assettypes.sector)
+                .Select(p => p.code)
+                .Distinct()
                 .ToArray();
         }
     }
