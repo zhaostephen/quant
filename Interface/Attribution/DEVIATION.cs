@@ -54,6 +54,11 @@ namespace Interace.Attribution
             }
             return cross.ToArray();
         }
+
+        public static implicit operator deviation(DEVIATION o)
+        {
+            return o != null && o.Any() ? o.Last() : null;
+        }
     }
 
     public class deviation

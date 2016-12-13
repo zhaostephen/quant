@@ -20,16 +20,16 @@ namespace Web.Controllers.Api
         {
             var result = new analytic();
 
-            var d = new Trade.Db.db().kdata(id, ktype);
+            var k = new Trade.Db.db().kdata(id, ktype);
             var basic = new Trade.Db.db().basics(id);
 
             result.code = basic.code;
             result.name = basic.name;
 
-            if(d != null && d.Any())
+            if(k != null && k.Any())
             {
-                var cur = d.Last();
-                var prev = d.Count > 1 ? d[d.Count - 2] : null;
+                var cur = k.Last();
+                var prev = k.Count > 1 ? k[k.Count - 2] : null;
 
                 result.date = cur.date.ToString("yyyy-MM-dd");
                 result.high = cur.high;
@@ -38,12 +38,21 @@ namespace Web.Controllers.Api
                 result.close = cur.close;
                 result.change = prev == null ? (double?)null : ((cur.close - prev.close) / prev.close) * 100;
 
-                var q = (quotation)new QUOTATION(d);
+                var q = (quotation)new QUOTATION(k);
                 if (q != null)
                 {
                     result.state = q.state.ToString();
                     result.position = q.position;
                     result.strategy = q.strategy;
+                }
+
+                var deviation = (deviation)new DEVIATION(k);
+                if(deviation != null && deviation.d2.Date == cur.date.Date)
+                {
+                    if(ktype == "5" || ktype == "15" || ktype == "30" || ktype == "60")
+                        result.deviation = string.Format("{0:MM/dd HH:mm} ~ {1:MM/dd HH:mm}({2})", deviation.d1, deviation.d2, deviation.cross);
+                    else
+                        result.deviation = string.Format("{0:MM/dd} ~ {1:MM/dd}({2})", deviation.d1, deviation.d2, deviation.cross);
                 }
             }
 
@@ -52,7 +61,7 @@ namespace Web.Controllers.Api
             {
                 var dindex = new Trade.Db.db().kdata(mainindex, ktype);
                 result.beta = new BETA(
-                    new kdata(id, d.Where(p => p.date >= Trade.Cfg.Configuration.data.bearcrossbull).ToArray()),
+                    new kdata(id, k.Where(p => p.date >= Trade.Cfg.Configuration.data.bearcrossbull).ToArray()),
                     new kdata(id, dindex.Where(p => p.date >= Trade.Cfg.Configuration.data.bearcrossbull).ToArray())).beta;
             }
 
@@ -74,5 +83,6 @@ namespace Web.Controllers.Api
         public double? position { get; set; }
         public string strategy { get; set; }
         public double? change { get; set; }
+        public string deviation { get; set; }
     }
 }
