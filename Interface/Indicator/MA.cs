@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Trade.Indicator
 {
-    public class MA : TimeSeries<double>
+    public class MA : Series<double>
     {
-        public MA(TimeSeries<double> data, int N)
+        public MA(Series<double> data, int N)
         {
             for (int i = N - 1; i < data.Count; i++)
             {
@@ -22,12 +22,17 @@ namespace Trade.Indicator
                 if (value == 0d)
                     continue;
 
-                this.Add(new TimePoint<double>
+                Add(new sValue<double>
                 {
                     Date = point.Date,
                     Value = value,
                 });
             }
+        }
+
+        public static implicit operator double?(MA o)
+        {
+            return o.Any() ? o.Last().Value : default(double?);
         }
     }
 }

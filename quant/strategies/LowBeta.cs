@@ -3,6 +3,8 @@ using Interace.Quant;
 using System.Linq;
 using Trade.Factors;
 using log4net;
+using Trade.Indicator;
+using Trade.Data;
 
 namespace Quant.strategies
 {
@@ -40,9 +42,11 @@ namespace Quant.strategies
                     {
                         var min60 = client.kdata(stock.Code, "60");
                         var min15 = client.kdata(stock.Code, "15");
-                        if (min60.Any() && min15.Any())
+                        var macd15 = (macd)new MACD(min15);
+                        var macd60 = (macd)new MACD(min60);
+                        if (macd15 != null && macd60 != null)
                         {
-                            if (min60.Last().macd >= 0 && min15.Last().macd >= 0)
+                            if (macd15.MACD >= 0 && macd60.MACD >= 0)
                             {
                                 log.InfoFormat("buy {0}", stock.Code);
                                 Buy(account, stock.Code, daily.Last().date);

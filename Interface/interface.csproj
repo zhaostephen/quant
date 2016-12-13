@@ -49,10 +49,10 @@
     <Compile Include="Attribution\KeyPrice.cs" />
     <Compile Include="Cfg\Configuration.cs" />
     <Compile Include="Data\basics.cs" />
-    <Compile Include="Data\JAXSeries.cs" />
+    <Compile Include="Data\jax.cs" />
     <Compile Include="Data\kdata.cs" />
-    <Compile Include="Data\MACDSeries.cs" />
-    <Compile Include="Data\TimeSeries.cs" />
+    <Compile Include="Data\macd.cs" />
+    <Compile Include="Data\Series.cs" />
     <Compile Include="Indicator\ADJUST.cs" />
     <Compile Include="Indicator\CCI.cs" />
     <Compile Include="Indicator\DMA.cs" />

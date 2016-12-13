@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Trade.Indicator
 {
-    public class DMA : TimeSeries<double>
+    public class DMA : Series<double>
     {
-        public DMA(TimeSeries<double> data, int N)
+        public DMA(Series<double> data, int N)
         {
             var prevDMA = 0d;
             for (int i = 0; i < data.Count; i++)
@@ -22,7 +22,7 @@ namespace Trade.Indicator
 
                 prevDMA = value;
 
-                this.Add(new TimePoint<double>
+                this.Add(new sValue<double>
                 {
                     Date = current.Date,
                     Value = value,

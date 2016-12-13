@@ -13,9 +13,10 @@ namespace Interface.Indicator
         public QUOTATION(kdata data)
         {
             var macd = new MACD(data);
+            var ma120 = new MA(data.close(), 120);
             var q = (from a in data
                      join m in macd on a.date equals m.Date
-                     select new { date = a.date, price = a, macd = m }).ToArray();
+                     select new { date = a.date, price = a, macd = m, ma120 = ma120[m.Date]}).ToArray();
 
             for (var i = 0; i < q.Length; ++i)
             {
@@ -45,18 +46,18 @@ namespace Interface.Indicator
                 {
                     date = item.date,
                     state = state,
-                    position = judgePosition(state, item.price),
-                    strategy = judgeStrategy(state, item.price)
+                    position = judgePosition(state, item.price, item.ma120),
+                    strategy = judgeStrategy(state, item.price, item.ma120)
                 });
             }
         }
 
-        private string judgeStrategy(quotationstate state, kdatapoint price)
+        private string judgeStrategy(quotationstate state, kdatapoint price, double ma120)
         {
             switch (state)
             {
                 case quotationstate.调整:
-                    return price.close > price.ma120 ? "减仓" : "清仓";
+                    return price.close > ma120 ? "减仓" : "清仓";
                 case quotationstate.反弹:
                     return "高抛低吸";
                 case quotationstate.上升:
@@ -70,12 +71,12 @@ namespace Interface.Indicator
             }
         }
 
-        private double judgePosition(quotationstate state, kdatapoint price)
+        private double judgePosition(quotationstate state, kdatapoint price, double ma120)
         {
             switch (state)
             {
                 case quotationstate.调整:
-                    return price.close > price.ma120 ? 25 :0;
+                    return price.close > ma120 ? 25 :0;
                 case quotationstate.反弹:
                     return 50;
                 case quotationstate.上升:
@@ -87,6 +88,11 @@ namespace Interface.Indicator
                 default:
                     return 0d;
             }
+        }
+
+        public static implicit operator quotation(QUOTATION o)
+        {
+            return o != null && o.Any() ? o.Last() : null;
         }
     }
 

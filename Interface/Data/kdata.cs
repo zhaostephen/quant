@@ -18,69 +18,27 @@ namespace Trade.Data
                 AddRange(d);
         }
 
-        public kdata complete()
+        public Series<double> TimeSeries(Func<kdatapoint, double> selector)
         {
-            var close = CloseTimeSeries();
-
-            var MACD = new MACD(this).ToDictionary(p => p.Date, p => p);
-            var MA5 = new MA(close, 5).ToDictionary(p => p.Date, p => p);
-            var MA10 = new MA(close, 10).ToDictionary(p => p.Date, p => p);
-            var MA20 = new MA(close, 20).ToDictionary(p => p.Date, p => p);
-            var MA30 = new MA(close, 30).ToDictionary(p => p.Date, p => p);
-            var MA55 = new MA(close, 55).ToDictionary(p => p.Date, p => p);
-            var MA60 = new MA(close, 60).ToDictionary(p => p.Date, p => p);
-            var MA120 = new MA(close, 120).ToDictionary(p => p.Date, p => p);
-            var MA250 = new MA(close, 250).ToDictionary(p => p.Date, p => p);
-            var PEAK_L = new PEAK(this, PEAK_TYPE.low).ToDictionary(p => p.Date, p => p);
-            var PEAK_H = new PEAK(this, PEAK_TYPE.high).ToDictionary(p => p.Date, p => p);
-            var quotation = new QUOTATION(this).ToDictionary(p => p.date, p => p);
-
-            foreach (var p in this)
-            {
-                var date = p.date;
-                var macd = MACD.ContainsKey(date) ? MACD[date] : null;
-
-                p.dea = macd != null ? macd.DEA : (double?)null;
-                p.dif = macd != null ? macd.DIF : (double?)null;
-                p.macd = macd != null ? macd.MACD : (double?)null;
-                p.ma5 = MA5.ContainsKey(date) ? MA5[date].Value : (double?)null;
-                p.ma10 = MA10.ContainsKey(date) ? MA10[date].Value : (double?)null;
-                p.ma20 = MA20.ContainsKey(date) ? MA20[date].Value : (double?)null;
-                p.ma30 = MA30.ContainsKey(date) ? MA30[date].Value : (double?)null;
-                p.ma55 = MA55.ContainsKey(date) ? MA55[date].Value : (double?)null;
-                p.ma60 = MA60.ContainsKey(date) ? MA60[date].Value : (double?)null;
-                p.ma120 = MA120.ContainsKey(date) ? MA120[date].Value : (double?)null;
-                p.ma250 = MA250.ContainsKey(date) ? MA250[date].Value : (double?)null;
-                p.peak_l = PEAK_L.ContainsKey(date) ? PEAK_L[date].Value : (double?)null;
-                p.peak_h = PEAK_H.ContainsKey(date) ? PEAK_H[date].Value : (double?)null;
-                p.state = quotation.ContainsKey(date) ? quotation[date].state.ToString() : string.Empty;
-                p.position = quotation.ContainsKey(date) ? quotation[date].position : (double?)null;
-                p.strategy = quotation.ContainsKey(date) ? quotation[date].strategy : string.Empty;
-            }
-            return this;
+            return new Series<double>(this.Select(p => new sValue<double> { Date = p.date, Value = selector(p) }).ToArray());
         }
 
-        public TimeSeries<double> TimeSeries(Func<kdatapoint, double> selector)
-        {
-            return new TimeSeries<double>(this.Select(p => new TimePoint<double> { Date = p.date, Value = selector(p) }).ToArray());
-        }
-
-        public TimeSeries<double> CloseTimeSeries()
+        public Series<double> close()
         {
             return TimeSeries(p => p.close);
         }
 
-        public TimeSeries<double> LowTimeSeries()
+        public Series<double> low()
         {
             return TimeSeries(p => p.low);
         }
 
-        public TimeSeries<double> OpenTimeSeries()
+        public Series<double> open()
         {
             return TimeSeries(p => p.open);
         }
 
-        public TimeSeries<double> HighTimeSeries()
+        public Series<double> high()
         {
             return TimeSeries(p => p.high);
         }
@@ -93,21 +51,5 @@ namespace Trade.Data
         public double close { get; set; }
         public double high { get; set; }
         public double low { get; set; }
-        public double? macd { get; set; }
-        public double? dif { get; set; }
-        public double? dea { get; set; }
-        public double? ma5 { get; set; }
-        public double? ma10 { get; set; }
-        public double? ma20 { get; set; }
-        public double? ma30 { get; set; }
-        public double? ma55 { get; set; }
-        public double? ma60 { get; set; }
-        public double? ma120 { get; set; }
-        public double? ma250 { get; set; }
-        public double? peak_l { get; set; }
-        public double? peak_h { get; set; }
-        public string state { get; set; }
-        public double? position { get; set; }
-        public string strategy { get; set; }
     }
 }

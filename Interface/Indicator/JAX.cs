@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Trade.Indicator
 {
-    public class JAX : JAXSeries
+    public class JAX : List<jax>
     {
         public JAX(kdata data, int N, int M)
         {
-            var MA = new MA(data.CloseTimeSeries(), N);
+            var MA = new MA(data.close(), N);
             var MA3 = new MA(data.TimeSeries(d => (2 * d.close + d.low + d.high) / 4), M);
             var func = new Func<kdatapoint, double, double>((d, salt) => d.close/salt * (2 * d.close + d.low + d.high) / 4);
             var dmaPrevValue = 0d;
@@ -20,9 +20,9 @@ namespace Trade.Indicator
             {
                 var curr = data[i];
 
-                if (MA.WHICH(curr.date) == 0d) continue;
+                if (MA[curr.date] == 0d) continue;
 
-                var AA = Math.Abs((2 * curr.close + curr.high + curr.low) / 4 - MA.WHICH(curr.date)) / MA.WHICH(curr.date);
+                var AA = Math.Abs((2 * curr.close + curr.high + curr.low) / 4 - MA[curr.date]) / MA[curr.date];
                 var dmaValue = (2 * curr.close + curr.low + curr.high) / 4;
                 var jax = AA * dmaValue + (1 - AA) * dmaPrevValue;
                 dmaPrevValue = jax;
@@ -34,18 +34,8 @@ namespace Trade.Indicator
                 var A = TMP;
                 var X = TMP <= jax ? TMP : 0d;
 
-                this.Add(new JAXPoint { Date = curr.date, JAX = Math.Round(jax, 2), J = Math.Round(J, 2), A = Math.Round(A, 2), X = Math.Round(X, 2) });
+                Add(new jax { Date = curr.date, JAX = Math.Round(jax, 2), J = Math.Round(J, 2), A = Math.Round(A, 2), X = Math.Round(X, 2) });
             }
-
-            //AA:=ABS((2*CLOSE+HIGH+LOW)/4-MA(CLOSE,N))/MA(CLOSE,N);
-            //JAX:DMA((2*CLOSE+LOW+HIGH)/4,AA),LINETHICK3,COLORMAGENTA;
-            //CC:=(CLOSE/JAX);
-            //MA1:=MA(CC*(2*CLOSE+HIGH+LOW)/4,3);
-            //MAAA:=((MA1-JAX)/JAX)/3;
-            //TMP:=MA1-MAAA*MA1;
-            //J:IF(TMP<=JAX,JAX,DRAWNULL),LINETHICK3,COLORCYAN;
-            //A:TMP,LINETHICK2,COLORYELLOW;
-            //X:IF(TMP<=JAX,TMP,DRAWNULL),LINETHICK2,COLORGREEN;
         }
     }
 }

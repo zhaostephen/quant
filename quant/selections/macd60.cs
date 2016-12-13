@@ -5,6 +5,8 @@ using log4net;
 using Trade.Factors;
 using Interace.Quant;
 using Interface.Quant;
+using Trade.Indicator;
+using Trade.Data;
 
 namespace Trade.selections
 {
@@ -25,7 +27,11 @@ namespace Trade.selections
             log.InfoFormat("total {0}", data.Count());
 
             var codes = data
-                .Where(p => p.Last().macd > 0 && p.Last().dif <= 0.01)
+                .Where(p =>
+                {
+                    var macd = (macd)new MACD(p);
+                    return macd != null && macd.MACD > 0 && macd.DIF <= 0.01;
+                })
                 .Select(p => p.Code)
                 .Distinct()
                 .ToArray();

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Linq;
 using Trade.Data;
 
 namespace Trade.Indicator
 {
     public enum PEAK_TYPE { low, high }
-    public class PEAK : TimeSeries<double>
+    public class PEAK : Series<double>
     {
         public PEAK(kdata data, PEAK_TYPE type, int distance = 5)
         {
@@ -14,7 +15,7 @@ namespace Trade.Indicator
                     {
                         peak(data,
                             (a, prev, next) => a.low <= prev.low && a.low <= next.low,
-                            p => new TimePoint<double>(p.date, p.low),
+                            p => new sValue<double>(p.date, p.low),
                             distance);
                         break;
                     }
@@ -22,7 +23,7 @@ namespace Trade.Indicator
                     {
                         peak(data,
                             (a, prev, next) => a.high >= prev.high && a.high >= next.high,
-                            p => new TimePoint<double>(p.date, p.high),
+                            p => new sValue<double>(p.date, p.high),
                             distance);
                         break;
                     }
@@ -34,7 +35,7 @@ namespace Trade.Indicator
         private void peak(
             kdata points,
             Func<kdatapoint, kdatapoint, kdatapoint, bool> cmp,
-            Func<kdatapoint, TimePoint<double>> ret,
+            Func<kdatapoint, sValue<double>> ret,
             int distance = 5)
         {
             var count = points.Count;
@@ -49,6 +50,11 @@ namespace Trade.Indicator
                 if (j > distance)
                     Add(ret(points[i]));
             }
+        }
+
+        public static implicit operator double?(PEAK o)
+        {
+            return o != null && o.Any() ? o.Last().Value : (double?)null;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trade.Indicator;
 
 namespace Trade.Factors
 {
@@ -16,9 +17,12 @@ namespace Trade.Factors
             {
                 var current = series.Last();
 
-                value = current.ma5 >= current.ma30 
-                    && current.ma30 >= current.ma55
-                    && current.ma55 >= current.ma120;
+                var ma5 = (double)new MA(series.close(),5);
+                var ma30 = (double)new MA(series.close(), 30);
+                var ma55 = (double)new MA(series.close(), 55);
+                var ma120 = (double)new MA(series.close(), 120);
+
+                value = ma5 >= ma30  && ma30 >= ma55 && ma55 >= ma120;
             }
         }
     }

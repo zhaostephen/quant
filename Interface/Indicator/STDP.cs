@@ -8,9 +8,9 @@ using Trade.Mixin;
 
 namespace Trade.Indicator
 {
-    public class STDP : TimeSeries<double>
+    public class STDP : Series<double>
     {
-        public STDP(TimeSeries<double> data, int N)
+        public STDP(Series<double> data, int N)
         {
             for (int i = N - 1; i < data.Count; i++)
             {
@@ -24,7 +24,7 @@ namespace Trade.Indicator
                     sum += Math.Pow(data[i - j].Value - average, 2);
                 var sqrt = Math.Sqrt(sum / N);
 
-                Add(new TimePoint<double>(data[i].Date, sqrt));
+                Add(new sValue<double>(data[i].Date, sqrt));
             }
         }
     }

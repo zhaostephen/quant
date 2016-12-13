@@ -8,6 +8,7 @@ using System.Web.Http;
 using Trade;
 using Interace.Attribution;
 using Trade.Cfg;
+using Trade.Indicator;
 
 namespace Web.Controllers.Api
 {
@@ -16,17 +17,21 @@ namespace Web.Controllers.Api
         [Route("api/kdata/{id}")]
         public chart Get(string id, string ktype)
         {
-            var d = new Trade.Db.db().kdata(id, ktype).complete();
+            var d = new Trade.Db.db().kdata(id, ktype);
             var basic = new Trade.Db.db().basics(id);
             var since = Trade.Cfg.Configuration.data.bearcrossbull;
             var q = d.Where(p => p.date >= since).ToArray();
             var data = q.Select(p => new object[] { p.date, p.open, p.high, p.low, p.close })
                 .ToArray();
+            var peak_h = new PEAK(d, PEAK_TYPE.high);
+            var peak_l = new PEAK(d, PEAK_TYPE.low);
 
             var keyprices = q.Select(p =>
             {
-                if (p.peak_h.HasValue) return KeyPrice.high(id, p.date, p.peak_h.Value, true);
-                else if (p.peak_l.HasValue) return KeyPrice.low(id, p.date, p.peak_l.Value, true);
+                var h = peak_h[p.date];
+                var l = peak_h[p.date];
+                if (h > 0) return KeyPrice.high(id, p.date, h, true);
+                else if (l > 0) return KeyPrice.low(id, p.date, l, true);
                 return null;
             })
             .Where(p => p != null)

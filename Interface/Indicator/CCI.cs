@@ -8,7 +8,7 @@ using Trade.Mixin;
 
 namespace Trade.Indicator
 {
-    public class CCI : TimeSeries<double>
+    public class CCI : Series<double>
     {
         public CCI(kdata data, int N)
         {
@@ -27,7 +27,7 @@ namespace Trade.Indicator
                 //TYP:=(HIGH+LOW+CLOSE)/3;
                 //CCI:(TYP-MA(TYP,N))/(0.015*AVEDEV(TYP,N));
 
-                this.Add(new TimePoint<double>
+                this.Add(new sValue<double>
                 {
                     Date = point.date,
                     Value = Math.Round(CCI, 2),

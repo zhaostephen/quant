@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Trade.Data;
 using System.Linq;
+using Trade.Indicator;
 
 namespace Interace.Attribution
 {
@@ -10,22 +11,25 @@ namespace Interace.Attribution
     {
         public DEVIATION(kdata k, int tolerance = 13)
         {
-            var cross_up = cross(k, (i, next) => i.macd < 0 && next.macd >= 0);
-            var cross_down = cross(k, (i, next) => i.macd >= 0 && next.macd < 0);
+            var macd = new MACD(k);
 
-            for (var i = 1; i < cross_up.Count; ++i)
+            var cross_up = cross(macd, (i, next) => i.MACD < 0 && next.MACD >= 0);
+            var cross_down = cross(macd, (i, next) => i.MACD >= 0 && next.MACD < 0);
+            var close = k.ToDictionary(p => p.date, p => p.close);
+
+            for (var i = 1; i < cross_up.Length; ++i)
             {
-                var c1 = cross_up[i].macd - cross_up[i-1].macd;
-                var c2 = cross_up[i].close - cross_up[i-1].close;
+                var c1 = cross_up[i].MACD - cross_up[i-1].MACD;
+                var c2 = close[cross_up[i].Date] - close[cross_up[i-1].Date];
                 var deviated = c1 >= 0 && c2 <= 0;
                 if (!deviated)
                     continue;
 
-                var units = k.Count(p => p.date >= cross_up[i-1].date && p.date <= cross_up[i].date);
+                var units = k.Count(p => p.date >= cross_up[i-1].Date && p.date <= cross_up[i].Date);
                 var deviation = new deviation
                 {
-                    d1 = cross_up[i-1].date,
-                    d2 = cross_up[i].date,
+                    d1 = cross_up[i-1].Date,
+                    d2 = cross_up[i].Date,
                     cross = units
                 };
 
@@ -34,27 +38,26 @@ namespace Interace.Attribution
             }
         }
 
-        static kdata cross(kdata k, Func<kdatapoint, kdatapoint, bool> cmp)
+        static macd[] cross(MACD k, Func<macd, macd, bool> cmp)
         {
-            var cross = new List<kdatapoint>();
+            var cross = new List<macd>();
             for (var i = 1; i < k.Count; ++i)
             {
                 if (cmp(k[i-1], k[i]))
                 {
-                    if (Math.Abs(k[i-1].dea.Value - k[i-1].dif.Value) <
-                        Math.Abs(k[i].dea.Value - k[i].dif.Value))
+                    if (Math.Abs(k[i-1].DEA - k[i-1].DIF) <
+                        Math.Abs(k[i].DEA - k[i].DIF))
                         cross.Add(k[i-1]);
                     else
                         cross.Add(k[i]);
                 }
             }
-            return new kdata(k.Code, cross);
+            return cross.ToArray();
         }
     }
 
     public class deviation
     {
-        //public double angle { get; set; }
         public double cross { get; set; }
         public DateTime d1 { get; set; }
         public DateTime d2 { get; set; }

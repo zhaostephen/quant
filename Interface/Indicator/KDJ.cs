@@ -16,7 +16,7 @@ namespace Trade.Indicator
             var D = new SMA(K, M2, 50);
             var J = (from k in K
                      join d in D on k.Date equals d.Date
-                     select new TimePoint<double>(k.Date, 3 * k.Value - 2 * d.Value)).ToArray();
+                     select new sValue<double>(k.Date, 3 * k.Value - 2 * d.Value)).ToArray();
             var p = from k in K
                     join d in D on k.Date equals d.Date
                     join j in J on k.Date equals j.Date

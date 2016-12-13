@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Trade.Indicator
 {
-    public class RSV : TimeSeries<double>
+    public class RSV : Series<double>
     {
         public RSV(kdata data, int N)
         {
@@ -29,7 +29,7 @@ namespace Trade.Indicator
 
                 RSVt_1 = RSVt;
 
-                Add(new TimePoint<double>(data[i].date, RSVt));
+                Add(new sValue<double>(data[i].date, RSVt));
             }
         }
     }

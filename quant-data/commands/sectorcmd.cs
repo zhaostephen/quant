@@ -10,12 +10,12 @@ using Trade.Data;
 
 namespace Trade.commands
 {
-    [command("calcsectorskdata")]
-    class calcsectorskdatacmd : command<object>
+    [command("sector")]
+    class sectorcmd : command<object>
     {
-        static ILog log = typeof(calckdatacmd).Log();
+        static ILog log = typeof(sectorcmd).Log();
 
-        public calcsectorskdatacmd(string[] args)
+        public sectorcmd(string[] args)
             :base(args)
         {
 
@@ -41,13 +41,13 @@ namespace Trade.commands
                     continue;
                 }
 
-                db.save(sum(sector, db.kdata(codes, "5")).complete(), "5");
-                db.save(sum(sector, db.kdata(codes, "15")).complete(), "15");
-                db.save(sum(sector, db.kdata(codes, "30")).complete(), "30");
-                db.save(sum(sector, db.kdata(codes, "60")).complete(), "60");
-                db.save(sum(sector, db.kdata(codes, "D")).complete(), "D");
-                db.save(sum(sector, db.kdata(codes, "W")).complete(), "W");
-                db.save(sum(sector, db.kdata(codes, "M")).complete(), "M");
+                db.save(sum(sector, db.kdata(codes, "5")), "5");
+                db.save(sum(sector, db.kdata(codes, "15")), "15");
+                db.save(sum(sector, db.kdata(codes, "30")), "30");
+                db.save(sum(sector, db.kdata(codes, "60")), "60");
+                db.save(sum(sector, db.kdata(codes, "D")), "D");
+                db.save(sum(sector, db.kdata(codes, "W")), "W");
+                db.save(sum(sector, db.kdata(codes, "M")), "M");
             }
 
             log.Info("**********DONE**********");

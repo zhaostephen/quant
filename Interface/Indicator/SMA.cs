@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Trade.Indicator
 {
-    public class SMA : TimeSeries<double>
+    public class SMA : Series<double>
     {
-        public SMA(TimeSeries<double> data, int N, double initValue = 0d)
+        public SMA(Series<double> data, int N, double initValue = 0d)
         {
             var pre = initValue;
             var a = (double)1 / N;
@@ -20,7 +20,7 @@ namespace Trade.Indicator
 
                 pre = value;
 
-                Add(new TimePoint<double>(data[i].Date, value));
+                Add(new sValue<double>(data[i].Date, value));
             }
         }
     }

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Interace.Quant;
 using log4net;
+using Trade.Indicator;
+using Trade.Data;
 
 namespace Quant.strategies
 {
@@ -23,15 +25,18 @@ namespace Quant.strategies
                 var daily = client.kdata(stock.Code, "D");
                 if (daily != null && daily.Any())
                 {
+                    var close = daily.close();
+                    var macdDaily = (macd)new MACD(daily);
+                    var ma120 = (double?)new MA(close, 120);
                     var current = daily.Last();
-                    var macd = current.macd >= 0;
+                    var macd = macdDaily != null && macdDaily.MACD >= 0;
 
                     var backma120 = false;
-                    if (current.ma120.HasValue)
+                    if (ma120.HasValue)
                     {
-                        var distance = Math.Abs((current.ma120.Value - current.low) / current.low * 100);
-                        if (current.close >= current.ma120 &&
-                            (distance <= 1 || current.low < current.ma120))
+                        var distance = Math.Abs((ma120.Value - current.low) / current.low * 100);
+                        if (current.close >= ma120 &&
+                            (distance <= 1 || current.low < ma120))
                         {
                             backma120 = true;
                         }
