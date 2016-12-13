@@ -22,17 +22,17 @@
         <br />
         <br />
         <span style="font-weight:bold; font-size:xx-small">今日:{{analytic.date ? analytic.date : '-' }}</span>
-        <span>|</span><span style="font-weight:bold;"  ng-style="{color:analytic.change>0 ? 'red' : 'green'}">
-            涨跌: <span>{{analytic.change ? analytic.change : '-'  | number:2}}%</span>
+        <span>|</span><span style="font-weight:bold; font-size:xx-small">涨跌:</span><span style="font-weight:bold;"  ng-style="{color:'red'}">
+            <span>{{analytic.change ? analytic.change : '-'  | number:2}}%</span>
         </span>
         <span>|</span><span style="font-weight:bold; font-size:xx-small">开盘:{{analytic.open ? analytic.open : '-'  | number:2}}</span>
         <span>|</span><span style="font-weight:bold; font-size:xx-small">最高:{{analytic.high ? analytic.high : '-'  | number:2}}</span>
         <span>|</span><span style="font-weight:bold; font-size:xx-small">最低:{{analytic.low ? analytic.low : '-'  | number:2}}</span>
         <span>|</span><span style="font-weight:bold; font-size:xx-small">收盘:{{analytic.close ? analytic.close : '-'  | number:2}}</span>
         <span>|</span><span style="font-weight:bold; font-size:xx-small">BETA:{{analytic.beta ? analytic.beta : '-' | number:2}}</span>
-        <span>|</span><span style="font-weight:bold; color:red">状态判断:{{analytic.state ? analytic.state : '-' }}</span>
-        <span>|</span><span style="font-weight:bold; color:red">推荐仓位:{{analytic.position ? analytic.position : '-' | number:2 }}%</span>
-        <span>|</span><span style="font-weight:bold; color:red">推荐策略:{{analytic.strategy ? analytic.strategy : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:xx-small">状态判断:</span><span style="font-weight:bold; color:red">{{analytic.state ? analytic.state : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:xx-small">推荐仓位:</span><span style="font-weight:bold; color:red">{{analytic.position ? analytic.position : '-' | number:0 }}%</span>
+        <span>|</span><span style="font-weight:bold; font-size:xx-small">推荐策略:</span><span style="font-weight:bold; color:red">{{analytic.strategy ? analytic.strategy : '-' }}</span>
     </p>
     <div id="container"></div>
 </div>
