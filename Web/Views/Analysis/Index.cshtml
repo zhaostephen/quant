@@ -32,7 +32,7 @@
                 <td><span style="font-weight:bold; font-size:xx-small">{{analytic.close ? analytic.close : '-'  | number:2}}</span></td>
                 <td><span style="font-weight:bold; font-size:xx-small">{{analytic.beta ? analytic.beta : '-' | number:2}}</span></td>
                 <td><span style="font-weight:bold; color:red">{{analytic.state ? analytic.state : '-' }}</span></td>
-                <td><span style="font-weight:bold; color:red">{{analytic.position ? analytic.position : '-' | number:0 }}%</span></td>
+                <td><span style="font-weight:bold; color:red">{{analytic.position | number:0 }}%</span></td>
                 <td><span style="font-weight:bold; color:red">{{analytic.strategy ? analytic.strategy : '-' }}</span></td>
             </tr>
         </table>
