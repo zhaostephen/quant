@@ -25,7 +25,7 @@ function getData(code, period, callback) {
         var data = result.data;
         var utc = function (d) {
             var date = new Date(d);
-            return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
+            return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()-8, date.getMinutes());
         };
 
         for (var i = 0; i < data.length; ++i) {
