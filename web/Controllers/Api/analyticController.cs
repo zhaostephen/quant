@@ -73,6 +73,15 @@ namespace Web.Controllers.Api
                     ma.Add("破半年线");
                 if (ma.Any())
                     result.ma = string.Join(",",ma);
+
+                var cross = new MACD(k.volume()).cross();
+                if(cross.Any())
+                {
+                    if(cross.Last().type == Interface.Data.crosstype.gold)
+                        result.buyorsell = cross.Last().value.Date.Date == DateTime.Today ? "买入" : "持有";
+                    else if (cross.Last().type == Interface.Data.crosstype.dead)
+                        result.buyorsell = "卖出";
+                }
             }
 
             var mainindex = basic.mainindex();
@@ -122,5 +131,6 @@ namespace Web.Controllers.Api
         public string deviation_down { get; set; }
         public string ma { get; set; }
         public string PE { get; set; }
+        public string buyorsell { get; set; }
     }
 }

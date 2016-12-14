@@ -30,40 +30,21 @@ namespace Trade.selections
             var codes = D
                 .Where(p =>
                 {
+                    if (!p.Any()) return false;
+
+                    var close = p.close();
                     var macd = (macd)new MACD(p.volume());
-                    return macd != null
-                    && macd.MACD > 0 && macd.DIF <= 0
-                    && macd.Date.Date == DateTime.Today;
+                    //var ma5 = new MA(close, 5);
+                    //var ma20 = new MA(close, 20);
+                    //var ma60 = new MA(close, 60);
+                    var ma120 = new MA(close, 120);
+
+                    return macd != null && macd.MACD > 0 && macd.DIF <= 0 && macd.Date.Date == DateTime.Today
+                    && (close.Last().Value>= ma120);
                 })
                 .Select(p => p.Code)
                 .Distinct()
                 .ToArray();
-
-            //if (codes.Any())
-            //{
-            //    log.Info("query k15");
-            //    var k15 = codes
-            //        .AsParallel()
-            //        .Select(code => client.kdata(code, "15"))
-            //        .Where(p => p != null && p.Any())
-            //        .ToArray();
-            //    log.InfoFormat("k15 total {0}", k15.Count());
-            //    codes = k15
-            //        .Where(p =>
-            //        {
-            //            var close = p.close();
-            //            var macd = (macd)new MACD(close);
-            //            var deviation = (deviation)new DEVIATION(close, deviationtype.底背离);
-            //            return macd != null
-            //            && macd.MACD > 0
-            //            && macd.Date.Date == DateTime.Today
-            //            && deviation != null
-            //            && deviation.d2.Date == DateTime.Today;
-            //        })
-            //        .Select(p => p.Code)
-            //        .Distinct()
-            //        .ToArray();
-            //}
 
             log.InfoFormat("selected {0}", codes.Count());
 
