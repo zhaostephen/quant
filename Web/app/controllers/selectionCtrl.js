@@ -5,10 +5,16 @@
         $scope.universe = [];
 
         $scope.refresh = function () {
-            $http.get(root + 'api/selections')
-               .then(function (res) {
-                   $scope.universe = res.data;
-               }, function (res) { });
+            $scope.universe = [];
+
+            var selections = ['volume','macd60'];
+
+            for (var i = 0; i < selections.length; ++i) {
+                $http.get(root + 'api/selections/' + selections[i])
+                   .then(function (res) {
+                       $scope.universe = $scope.universe.concat(res.data || []);
+                   }, function (res) { });
+            }
         }
 
         $scope.refresh();

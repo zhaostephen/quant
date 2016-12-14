@@ -14,11 +14,11 @@ namespace Web.Controllers.Api
 {
     public class selectionController : ApiController
     {
-        [Route("api/selections")]
-        public object[] Get()
+        [Route("api/selections/{id}")]
+        public object[] Get(string id)
         {
             var codenames = new Trade.Db.db().basics().GroupBy(p => p.code).ToDictionary(p => p.Key, p => p.First());
-            var universe = new Trade.Db.db().universe("macd60");
+            var universe = new Trade.Db.db().universe(id);
             return universe.codes
                 .Select(p => new
                 {
@@ -27,7 +27,6 @@ namespace Web.Controllers.Api
                     stockname = codenames[p].name,
                     pe = codenames[p].pe.ToDouble()
                 })
-                //.Where(p => p.pe > 0 && p.pe < 30)
                 .OrderBy(p => p.pe)
                 .ToArray();
         }

@@ -83,7 +83,7 @@ namespace Quant.commands
                         .OrderBy(p=>p.Date)
                         .ToArray();
 
-                    var backtest = new backtesting(stock.Code, k.open(), trades);
+                    var backtest = new backtesting(stock.Code, k.close(), trades);
 
                     if(backtest.pnl != null)
                         pnls.Add(backtest.pnl);

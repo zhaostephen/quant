@@ -32,6 +32,17 @@ namespace Trade.Indicator
 
             AddRange(result);
         }
+
+        public macd this[DateTime dt]
+        {
+            get
+            {
+                var v = this.SingleOrDefault(d => d.Date == dt);
+                if (v == null) return default(macd);
+                return v;
+            }
+        }
+
         public macd[] cross_gold()
         {
             return cross(gold: (i, next) => i.MACD < 0 && next.MACD >= 0)

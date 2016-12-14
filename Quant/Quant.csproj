@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="commands\strategycmd.cs" />
     <Compile Include="commands\selectioncmd.cs" />
+    <Compile Include="selections\volume.cs" />
     <Compile Include="strategies\macdstrategy.cs" />
     <Compile Include="strategies\volumestrategy.cs" />
     <Compile Include="strategies\macd15minstrategy.cs" />

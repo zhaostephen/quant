@@ -30,7 +30,8 @@ namespace Quant.strategies
                     continue;
                 }
                 var macd = new MACD(k.volume());
-                foreach(var p in macd.cross())
+                var macdclose = new MACD(k.close());
+                foreach (var p in macd.cross())
                 {
                     switch(p.type)
                     {
