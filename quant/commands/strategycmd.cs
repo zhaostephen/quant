@@ -5,8 +5,10 @@ using Interface.Quant;
 using log4net;
 using Quant.strategies.orders;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Trade;
+using Trade.backtest;
 
 namespace Quant.commands
 {
@@ -54,6 +56,45 @@ namespace Quant.commands
                 case "volume":
                     new strategies.volumestrategy().Run(account);
                     break;
+                case "macd":
+                    new strategies.macdstrategy().Run(account);
+                    break;
+            }
+
+            if(param.backtest)
+            {
+                log.Info("run back test");
+                var client = new Trade.Db.db();
+                log.InfoFormat("total {0}", account.universe.Count);
+                var pnls = new List<pnl>();
+                foreach (var stock in account.universe.AsParallel())
+                {
+                    log.InfoFormat("run {0}", stock.Code);
+                    var k = client.kdata(stock.Code, "D");
+                    if (k == null && !k.Any())
+                    {
+                        log.WarnFormat("empty data set for {0}", stock.Code);
+                        continue;
+                    }
+
+                    var trades = account.Trades
+                        .Where(p => p.Stock == stock.Code)
+                        //.Where(p=>p.Date >= new DateTime(2016,9,1))
+                        .OrderBy(p=>p.Date)
+                        .ToArray();
+
+                    var backtest = new backtesting(stock.Code, k.open(), trades);
+
+                    if(backtest.pnl != null)
+                        pnls.Add(backtest.pnl);
+                }
+
+                var format = "{0,-15}{1,-20}{2,10:N0}{3,10:N0}{4,10:N1}";
+                log.InfoFormat(format, "code", "date", "value", "capital", "ratio%");
+                foreach (var pnl in pnls)
+                {
+                    log.InfoFormat(format, pnl.code, pnl.date, pnl.value, pnl.capital, pnl.ratio);
+                }
             }
 
             log.Info("**********DONE**********");

@@ -64,6 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="backtest\backtesting.cs" />
+    <Compile Include="backtest\pnl.cs" />
     <Compile Include="Db\db.cs" />
     <Compile Include="Mixin\DictMixin.cs" />
     <Compile Include="Mixin\Logging.cs" />
