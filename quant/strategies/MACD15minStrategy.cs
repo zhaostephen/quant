@@ -23,7 +23,7 @@ namespace Quant.strategies
             {
                 log.InfoFormat("run {0}", stock.Code);
                 var k = client.kdata(stock.Code, "15");
-                var kdj = new MACD(k);
+                var kdj = new MACD(k.close());
                 var crossup = kdj.cross_up();
                 var crossdown = kdj.cross_down();
 

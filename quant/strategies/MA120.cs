@@ -26,7 +26,7 @@ namespace Quant.strategies
                 if (daily != null && daily.Any())
                 {
                     var close = daily.close();
-                    var macdDaily = (macd)new MACD(daily);
+                    var macdDaily = (macd)new MACD(close);
                     var ma120 = (double?)new MA(close, 120);
                     var current = daily.Last();
                     var macd = macdDaily != null && macdDaily.MACD >= 0;

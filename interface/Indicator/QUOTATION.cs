@@ -12,8 +12,9 @@ namespace Interface.Indicator
     {
         public QUOTATION(kdata data)
         {
-            var macd = new MACD(data);
-            var ma120 = new MA(data.close(), 120);
+            var close = data.close();
+            var macd = new MACD(close);
+            var ma120 = new MA(close, 120);
             var q = (from a in data
                      join m in macd on a.date equals m.Date
                      select new { date = a.date, price = a, macd = m, ma120 = ma120[m.Date]}).ToArray();

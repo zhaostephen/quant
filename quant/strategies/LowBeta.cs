@@ -42,8 +42,8 @@ namespace Quant.strategies
                     {
                         var min60 = client.kdata(stock.Code, "60");
                         var min15 = client.kdata(stock.Code, "15");
-                        var macd15 = (macd)new MACD(min15);
-                        var macd60 = (macd)new MACD(min60);
+                        var macd15 = (macd)new MACD(min15.close());
+                        var macd60 = (macd)new MACD(min60.close());
                         if (macd15 != null && macd60 != null)
                         {
                             if (macd15.MACD >= 0 && macd60.MACD >= 0)

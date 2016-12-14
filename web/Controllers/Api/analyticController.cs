@@ -95,7 +95,7 @@ namespace Web.Controllers.Api
                 var k = new Trade.Db.db().kdata(code, ktype);
                 if (k == null || !k.Any()) continue;
 
-                var deviation = (deviation)new DEVIATION(k, type);
+                var deviation = (deviation)new DEVIATION(k.close(), type);
                 if (deviation != null && deviation.d2.Date == date.Date)
                 {
                     yield return ktype;

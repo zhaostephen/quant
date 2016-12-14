@@ -9,10 +9,10 @@ namespace Interace.Attribution
 {
     public class DEVIATION : List<deviation>
     {
-        public DEVIATION(kdata k, deviationtype type, int tolerance = 13)
+        public DEVIATION(Series<double> k, deviationtype type, int tolerance = 13)
         {
             var macd = new MACD(k);
-            var close = k.ToDictionary(p => p.date, p => p.close);
+            var close = k.ToDictionary(p => p.Date, p => p.Value);
 
             if (type == deviationtype.底背离)
             {
@@ -25,7 +25,7 @@ namespace Interace.Attribution
                     if (!deviated)
                         continue;
 
-                    var units = k.Count(p => p.date >= cross_up[i - 1].Date && p.date <= cross_up[i].Date);
+                    var units = k.Count(p => p.Date >= cross_up[i - 1].Date && p.Date <= cross_up[i].Date);
                     var deviation = new deviation
                     {
                         d1 = cross_up[i - 1].Date,
@@ -48,7 +48,7 @@ namespace Interace.Attribution
                     if (!deviated)
                         continue;
 
-                    var units = k.Count(p => p.date >= cross_down[i - 1].Date && p.date <= cross_down[i].Date);
+                    var units = k.Count(p => p.Date >= cross_down[i - 1].Date && p.Date <= cross_down[i].Date);
                     var deviation = new deviation
                     {
                         d1 = cross_down[i - 1].Date,

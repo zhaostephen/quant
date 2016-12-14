@@ -30,7 +30,7 @@ namespace Trade.selections
             var codes = k60
                 .Where(p =>
                 {
-                    var macd = (macd)new MACD(p);
+                    var macd = (macd)new MACD(p.close());
                     return macd != null
                     && macd.MACD > 0 && macd.DIF <= 0.01
                     && macd.Date.Date == DateTime.Today;
@@ -51,8 +51,9 @@ namespace Trade.selections
                 codes = k15
                     .Where(p =>
                     {
-                        var macd = (macd)new MACD(p);
-                        var deviation = (deviation)new DEVIATION(p, deviationtype.底背离);
+                        var close = p.close();
+                        var macd = (macd)new MACD(close);
+                        var deviation = (deviation)new DEVIATION(close, deviationtype.底背离);
                         return macd != null
                         && macd.MACD > 0
                         && macd.Date.Date == DateTime.Today

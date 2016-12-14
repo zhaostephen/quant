@@ -10,11 +10,11 @@ namespace Trade.Indicator
 {
     public class MACD : List<macd>
     {
-        public MACD(kdata data, int MID = 9, int SHORT = 12, int LONG = 26)
+        public MACD(Series<double> data, int MID = 9, int SHORT = 12, int LONG = 26)
         {
-            var EMA_SHORT = new EMA(data.close(), SHORT);
-            var EMA_MID = new EMA(data.close(), MID);
-            var EMA_LONG = new EMA(data.close(), LONG);
+            var EMA_SHORT = new EMA(data, SHORT);
+            var EMA_MID = new EMA(data, MID);
+            var EMA_LONG = new EMA(data, LONG);
 
             var DIF = (from s in EMA_SHORT
                       join l in EMA_LONG on s.Date equals l.Date
