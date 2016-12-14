@@ -18,29 +18,34 @@ namespace Trade.Data
                 AddRange(d);
         }
 
-        public Series<double> TimeSeries(Func<kdatapoint, double> selector)
-        {
-            return new Series<double>(this.Select(p => new sValue<double> { Date = p.date, Value = selector(p) }).ToArray());
-        }
-
         public Series<double> close()
         {
-            return TimeSeries(p => p.close);
+            return series(p => p.close);
         }
 
         public Series<double> low()
         {
-            return TimeSeries(p => p.low);
+            return series(p => p.low);
         }
 
         public Series<double> open()
         {
-            return TimeSeries(p => p.open);
+            return series(p => p.open);
         }
 
         public Series<double> high()
         {
-            return TimeSeries(p => p.high);
+            return series(p => p.high);
+        }
+
+        public Series<double> volume()
+        {
+            return series(p => p.volume);
+        }
+
+        public Series<double> series(Func<kdatapoint, double> selector)
+        {
+            return new Series<double>(this.Select(p => new sValue<double> { Date = p.date, Value = selector(p) }).ToArray());
         }
     }
 
@@ -51,5 +56,6 @@ namespace Trade.Data
         public double close { get; set; }
         public double high { get; set; }
         public double low { get; set; }
+        public double volume { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Trade.Indicator
         public JAX(kdata data, int N, int M)
         {
             var MA = new MA(data.close(), N);
-            var MA3 = new MA(data.TimeSeries(d => (2 * d.close + d.low + d.high) / 4), M);
+            var MA3 = new MA(data.series(d => (2 * d.close + d.low + d.high) / 4), M);
             var func = new Func<kdatapoint, double, double>((d, salt) => d.close/salt * (2 * d.close + d.low + d.high) / 4);
             var dmaPrevValue = 0d;
 

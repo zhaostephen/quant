@@ -3,13 +3,14 @@ import storage as storage
 import datetime as datetime
 import sys
 import os
+import pandas as pd
 
 def getCodes():
     stocks = None
     try:
         stocks = ts.get_area_classified()
     except:
-        file = storage.getPath('basics/area_classified.csv')
+        file = storage.getPath('basics/basics.csv')
         print("get codes from file ", file)
         stocks = pd.read_csv(file, encoding="gbk")
     if(stocks is None):
