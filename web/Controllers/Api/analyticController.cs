@@ -48,14 +48,9 @@ namespace Web.Controllers.Api
                     result.strategy = q.strategy;
                 }
 
-                var deviation = (deviation)new DEVIATION(k);
-                if(deviation != null && deviation.d2.Date == cur.date.Date)
-                {
-                    if(ktype == "5" || ktype == "15" || ktype == "30" || ktype == "60")
-                        result.deviation = string.Format("{0:MM/dd HH:mm} ~ {1:MM/dd HH:mm}({2})", deviation.d1, deviation.d2, deviation.cross);
-                    else
-                        result.deviation = string.Format("{0:MM/dd} ~ {1:MM/dd}({2})", deviation.d1, deviation.d2, deviation.cross);
-                }
+                var devs = deviations(id, cur.date.Date);
+                if (devs.Any())
+                    result.deviation = string.Join(",", devs);
 
                 var ma = new List<string>();
                 var close = k.close();
@@ -87,6 +82,22 @@ namespace Web.Controllers.Api
             }
 
             return result;
+        }
+
+        private IEnumerable<string> deviations(string code, DateTime date)
+        {
+            var ktypes = new[] { "D","60","30","15","5" };
+            foreach (var ktype in ktypes)
+            {
+                var k = new Trade.Db.db().kdata(code, ktype);
+                if (k == null || !k.Any()) continue;
+
+                var deviation = (deviation)new DEVIATION(k);
+                if (deviation != null && deviation.d2.Date == date.Date)
+                {
+                    yield return ktype;
+                }
+            }
         }
     }
 
