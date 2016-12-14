@@ -9,32 +9,56 @@ namespace Interace.Attribution
 {
     public class DEVIATION : List<deviation>
     {
-        public DEVIATION(kdata k, int tolerance = 13)
+        public DEVIATION(kdata k, deviationtype type, int tolerance = 13)
         {
             var macd = new MACD(k);
-
-            var cross_up = cross(macd, (i, next) => i.MACD < 0 && next.MACD >= 0);
-            var cross_down = cross(macd, (i, next) => i.MACD >= 0 && next.MACD < 0);
             var close = k.ToDictionary(p => p.date, p => p.close);
 
-            for (var i = 1; i < cross_up.Length; ++i)
+            if (type == deviationtype.底背离)
             {
-                var c1 = cross_up[i].DIF - cross_up[i-1].DIF;
-                var c2 = close[cross_up[i].Date] - close[cross_up[i-1].Date];
-                var deviated = c1 >= 0 && c2 <= 0;
-                if (!deviated)
-                    continue;
-
-                var units = k.Count(p => p.date >= cross_up[i-1].Date && p.date <= cross_up[i].Date);
-                var deviation = new deviation
+                var cross_up = cross(macd, (i, next) => i.MACD < 0 && next.MACD >= 0);
+                for (var i = 1; i < cross_up.Length; ++i)
                 {
-                    d1 = cross_up[i-1].Date,
-                    d2 = cross_up[i].Date,
-                    cross = units
-                };
+                    var c1 = cross_up[i].DIF - cross_up[i - 1].DIF;
+                    var c2 = close[cross_up[i].Date] - close[cross_up[i - 1].Date];
+                    var deviated = c1 >= 0 && c2 <= 0;
+                    if (!deviated)
+                        continue;
 
-                if (deviation.cross > tolerance)
-                    Add(deviation);
+                    var units = k.Count(p => p.date >= cross_up[i - 1].Date && p.date <= cross_up[i].Date);
+                    var deviation = new deviation
+                    {
+                        d1 = cross_up[i - 1].Date,
+                        d2 = cross_up[i].Date,
+                        cross = units
+                    };
+
+                    if (deviation.cross > tolerance)
+                        Add(deviation);
+                }
+            }
+            else
+            {
+                var cross_down = cross(macd, (i, next) => i.MACD >= 0 && next.MACD < 0);
+                for (var i = 1; i < cross_down.Length; ++i)
+                {
+                    var c1 = cross_down[i].DIF - cross_down[i - 1].DIF;
+                    var c2 = close[cross_down[i].Date] - close[cross_down[i - 1].Date];
+                    var deviated = c1 < 0 && c2 >= 0;
+                    if (!deviated)
+                        continue;
+
+                    var units = k.Count(p => p.date >= cross_down[i - 1].Date && p.date <= cross_down[i].Date);
+                    var deviation = new deviation
+                    {
+                        d1 = cross_down[i - 1].Date,
+                        d2 = cross_down[i].Date,
+                        cross = units
+                    };
+
+                    if (deviation.cross > tolerance)
+                        Add(deviation);
+                }
             }
         }
 
@@ -59,6 +83,12 @@ namespace Interace.Attribution
         {
             return o != null && o.Any() ? o.Last() : null;
         }
+    }
+
+    public enum deviationtype
+    {
+        顶背离,
+        底背离
     }
 
     public class deviation

@@ -48,9 +48,12 @@ namespace Web.Controllers.Api
                     result.strategy = q.strategy;
                 }
 
-                var devs = deviations(id, cur.date.Date);
-                if (devs.Any())
-                    result.deviation = string.Join(",", devs);
+                var devs_up = deviations(id, cur.date.Date, deviationtype.底背离);
+                if (devs_up.Any())
+                    result.deviation_up = string.Join(",", devs_up);
+                var devs_down = deviations(id, cur.date.Date, deviationtype.顶背离);
+                if (devs_down.Any())
+                    result.deviation_down = string.Join(",", devs_down);
 
                 var ma = new List<string>();
                 var close = k.close();
@@ -84,7 +87,7 @@ namespace Web.Controllers.Api
             return result;
         }
 
-        private IEnumerable<string> deviations(string code, DateTime date)
+        private IEnumerable<string> deviations(string code, DateTime date, deviationtype type)
         {
             var ktypes = new[] { "D","60","30","15","5" };
             foreach (var ktype in ktypes)
@@ -92,7 +95,7 @@ namespace Web.Controllers.Api
                 var k = new Trade.Db.db().kdata(code, ktype);
                 if (k == null || !k.Any()) continue;
 
-                var deviation = (deviation)new DEVIATION(k);
+                var deviation = (deviation)new DEVIATION(k, type);
                 if (deviation != null && deviation.d2.Date == date.Date)
                 {
                     yield return ktype;
@@ -115,7 +118,8 @@ namespace Web.Controllers.Api
         public double? position { get; set; }
         public string strategy { get; set; }
         public double? change { get; set; }
-        public string deviation { get; set; }
+        public string deviation_up { get; set; }
+        public string deviation_down { get; set; }
         public string ma { get; set; }
         public string PE { get; set; }
     }

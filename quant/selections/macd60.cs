@@ -52,7 +52,7 @@ namespace Trade.selections
                     .Where(p =>
                     {
                         var macd = (macd)new MACD(p);
-                        var deviation = (deviation)new DEVIATION(p);
+                        var deviation = (deviation)new DEVIATION(p, deviationtype.底背离);
                         return macd != null
                         && macd.MACD > 0
                         && macd.Date.Date == DateTime.Today
