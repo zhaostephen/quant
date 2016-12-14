@@ -34,7 +34,7 @@ namespace Quant.strategies.orders
             return url + Uid + key + smsMob + smsText + HttpUtility.UrlEncode(content);
         }
 
-        public void order(Account account, Interace.Quant.Trade trade)
+        public void order(Interace.Quant.Trade trade)
         {
             var message = string.Format("{0:yyyy-MM-dd HH:mm:ss} | {1} {2}({3})",
                 trade.Date,

@@ -6,11 +6,11 @@ using Trade.Indicator;
 
 namespace Quant.strategies
 {
-    public class KDJ15minStrategy : Strategy
+    public class kdj15minstrategy : Strategy
     {
-        static ILog log = LogManager.GetLogger(typeof(KDJ15minStrategy));
+        static ILog log = LogManager.GetLogger(typeof(kdj15minstrategy));
 
-        public KDJ15minStrategy()
+        public kdj15minstrategy()
         {
         }
 

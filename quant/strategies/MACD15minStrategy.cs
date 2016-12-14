@@ -6,11 +6,11 @@ using Trade.Indicator;
 
 namespace Quant.strategies
 {
-    public class MACD15minStrategy : Strategy
+    public class macd15minstrategy : Strategy
     {
-        static ILog log = LogManager.GetLogger(typeof(MACD15minStrategy));
+        static ILog log = LogManager.GetLogger(typeof(macd15minstrategy));
 
-        public MACD15minStrategy()
+        public macd15minstrategy()
         {
         }
 
@@ -24,8 +24,8 @@ namespace Quant.strategies
                 log.InfoFormat("run {0}", stock.Code);
                 var k = client.kdata(stock.Code, "15");
                 var kdj = new MACD(k.close());
-                var crossup = kdj.cross_up();
-                var crossdown = kdj.cross_down();
+                var crossup = kdj.cross_gold();
+                var crossdown = kdj.cross_dead();
 
                 if (crossup.Any())
                 {

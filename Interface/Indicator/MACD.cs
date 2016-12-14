@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trade.Mixin;
+using Interface.Data;
 
 namespace Trade.Indicator
 {
@@ -24,40 +25,60 @@ namespace Trade.Indicator
                        join dea in DEA on dif.Date equals dea.Date
                        select new sValue<double> { Date = dif.Date, Value = (dif.Value - dea.Value) * 2 }).ToArray();
 
-            //DIF:EMA(CLOSE,SHORT)-EMA(CLOSE,LONG);
-            //DEA:EMA(DIF,MID);
-            //MACD:(DIF-DEA)*2,COLORSTICK;
             var result = (from dif in DIF
                           join dea in DEA on dif.Date equals dea.Date
                           join macd in MACD on dif.Date equals macd.Date
                           select new macd { Date = dif.Date, DEA = Math.Round(dea.Value, 2), MACD = Math.Round(macd.Value, 2), DIF = Math.Round(dif.Value, 2) }).ToArray();
 
-            this.AddRange(result);
+            AddRange(result);
         }
-        public macd[] cross_up()
+        public macd[] cross_gold()
         {
-            return cross(ToArray(), (i, next) => i.MACD < 0 && next.MACD >= 0);
+            return cross(gold: (i, next) => i.MACD < 0 && next.MACD >= 0)
+                .Select(p=>p.value)
+                .ToArray();
         }
-        public macd[] cross_down()
+
+        public macd[] cross_dead()
         {
-            return cross(ToArray(), (i, next) => i.MACD >= 0 && next.MACD < 0);
+            return cross(dead: (i, next) => i.MACD >= 0 && next.MACD < 0)
+                .Select(p => p.value)
+                .ToArray(); ;
         }
+
+        public cross<macd>[] cross()
+        {
+            return cross(
+                gold: (i, next) => i.MACD < 0 && next.MACD >= 0,
+                dead: (i, next) => i.MACD >= 0 && next.MACD < 0);
+        }
+
         public static implicit operator macd(MACD o)
         {
             return o.Any() ? o.Last() : null;
         }
-        static macd[] cross(macd[] k, Func<macd, macd, bool> cmp)
+
+        private cross<macd>[] cross(Func<macd, macd, bool> gold = null, Func<macd, macd, bool> dead = null)
         {
-            var cross = new List<macd>();
-            for (var i = 1; i < k.Length; ++i)
+            var k = this;
+            var cross = new List<cross<macd>>();
+            for (var i = 1; i < k.Count; ++i)
             {
-                if (cmp(k[i - 1], k[i]))
+                if (gold != null && gold(k[i - 1], k[i]))
                 {
                     if (Math.Abs(k[i - 1].DEA - k[i - 1].DIF) <
                         Math.Abs(k[i].DEA - k[i].DIF))
-                        cross.Add(k[i - 1]);
+                        cross.Add(new cross<macd>(k[i - 1], crosstype.gold));
                     else
-                        cross.Add(k[i]);
+                        cross.Add(new cross<macd>(k[i], crosstype.gold));
+                }
+                else if (dead != null && dead(k[i - 1], k[i]))
+                {
+                    if (Math.Abs(k[i - 1].DEA - k[i - 1].DIF) <
+                        Math.Abs(k[i].DEA - k[i].DIF))
+                        cross.Add(new cross<macd>(k[i - 1], crosstype.dead));
+                    else
+                        cross.Add(new cross<macd>(k[i], crosstype.dead));
                 }
             }
             return cross.ToArray();

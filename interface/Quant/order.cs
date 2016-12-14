@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Quant.strategies.orders
+namespace Interace.Quant
 {
     public interface IOrder
     {
-        void order(Account account, Interace.Quant.Trade trade);
+        void order(Trade trade);
     }
 }

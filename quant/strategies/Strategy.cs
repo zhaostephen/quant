@@ -10,12 +10,8 @@ namespace Quant.strategies
     public abstract class Strategy
     {
         static ILog log = typeof(Strategy).Log();
-        readonly IOrder[] orders;
 
-        protected Strategy()
-        {
-            orders = new IOrder[] { new dbOrder(), new smsOrder() };
-        }
+        protected Strategy() { }
 
         public abstract void Run(Account account);
 
@@ -33,12 +29,12 @@ namespace Quant.strategies
         {
             account.Trades.Add(trade);
 
-            foreach (var order in orders)
+            foreach (var order in account.orders)
             {
                 log.WarnFormat("{0} order trade | {1}", order, trade);
                 try
                 {
-                    order.order(account, trade);
+                    order.order(trade);
                 }
                 catch (Exception ex)
                 {

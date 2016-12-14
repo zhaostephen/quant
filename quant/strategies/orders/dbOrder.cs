@@ -19,9 +19,9 @@ namespace Quant.strategies.orders
     {
         static ILog log = typeof(dbOrder).Log();
 
-        public void order(Account account, Interace.Quant.Trade trade)
+        public void order(Interace.Quant.Trade trade)
         {
-            new db().save(account.Portflio, new[] { trade });
+            new db().save(trade.Portflio, new[] { trade });
         }
     }
 }
