@@ -47,7 +47,7 @@ namespace Trade
             var q = from k in keyprices
                     join t in todayquotes on k.Code equals t.code
                     where k.Flag == KeyPrice.Flags.lower && Math.Abs((t.low / k.Price - 1) * 100d) < 0.5
-                    select new { date=k.Date, price = k.Price, distpercent= (t.low / k.Price - 1)*100, t.code, t.name, t.trade, t.high, t.low, t.open, t.close, t.volume, t.changepercent, t.turnoverratio, t.pb, t.amount, t.mktcap, t.ts };
+                    select new { date=k.Date, cross =Math.Abs((k.Date-DateTime.Today).TotalDays),price = k.Price, distpercent= (t.low / k.Price - 1)*100, t.code, t.name, t.trade, t.high, t.low, t.open, t.close, t.volume, t.changepercent, t.turnoverratio, t.pb, t.amount, t.mktcap, t.ts };
 
             var r = q
                 .OrderBy(p=>p.code)

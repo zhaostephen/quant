@@ -22,9 +22,9 @@ namespace Quant.commands
 
         public override void exec()
         {
-            var a = analytic.hitkeyprices();
-            log.Info(a.ToCsv());
-            return;
+            //var a = analytic.hitkeyprices();
+            //log.Info(a.ToCsv());
+            //return;
 
             log.Info("run strategy " + param.name.ToLower());
 
