@@ -17,6 +17,9 @@ namespace Web.Controllers.Api
         [Route("api/selections/{id}")]
         public object[] Get(string id)
         {
+            if(id == "keyprice")
+                return Trade.analytic.hitkeyprices();
+
             var codenames = new Trade.Db.db().basics().GroupBy(p => p.code).ToDictionary(p => p.Key, p => p.First());
             var universe = new Trade.Db.db().universe(id);
             return universe.codes

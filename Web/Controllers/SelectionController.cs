@@ -12,5 +12,9 @@ namespace Web.Controllers
         {
             return View();
         }
+        public ActionResult HitKeyPrice()
+        {
+            return View();
+        }
     }
 }

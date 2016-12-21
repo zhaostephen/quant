@@ -44,7 +44,16 @@
                             <li>@Html.ActionLink("个股分析", "singlename", "analysis")</li>
                         </ul>
                     </li>
-                    <li>@Html.ActionLink("量化选股", "index", "selection")</li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            量化选股
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("技术选股", "index", "selection")</li>
+                            <li>@Html.ActionLink("关键价格", "hitkeyprice", "selection")</li>
+                        </ul>
+                    </li>
                     <li>@Html.ActionLink("量化策略", "index", "strategy")</li>
                 </ul>
                 @*<p class="nav navbar-text navbar-right">

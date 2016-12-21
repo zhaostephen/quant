@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "量化选股";
+}
+
+<div ng-controller="selectionKeyPriceCtrl">
+    <h4>量化选股(共{{universe.length}})</h4>
+    <table class="table">
+        <tr>
+            <td>代码</td>
+            <td>名称</td>
+            <td>涨跌%</td>
+            <td>关键日期</td>
+            <td>关键天数</td>
+            <td>关键价格</td>
+            <td>偏离%</td>
+            <td>现价</td>
+            <td>最高</td>
+            <td>最低</td>
+            <td>开盘</td>
+            <td>收盘</td>
+            <td>成交量</td>
+            <td>换手率%</td>
+            <td>pb</td>
+            <td>成交额</td>
+            <td>市值</td>
+        </tr>
+        <tr ng-repeat="d in universe">
+            <td>{{d.code}}</td>
+            <td>{{d.name}}</td>
+            <td><span style="font-weight:bold;"  ng-style="{color:d.changepercent>=0 ? 'red' : 'green'}"><span>{{d.changepercent|number:2}}%</span></td>
+            <td>{{d.date|date:'yyyy-MM-dd'}}</td>
+            <td>{{d.cross}}</td>
+            <td>{{d.price}}</td>
+            <td>{{d.distpercent|number:2}}</td>
+            <td>{{d.trade}}</td>
+            <td>{{d.high}}</td>
+            <td>{{d.low}}</td>
+            <td>{{d.open}}</td>
+            <td>{{d.close}}</td>
+            <td>{{d.volume}}</td>
+            <td>{{d.turnoverratio}}</td>
+            <td>{{d.pb}}</td>
+            <td>{{d.amount}}</td>
+            <td>{{d.mktcap/10000|number:0}}亿</td>
+        </tr>
+    </table>
+</div>
+
+

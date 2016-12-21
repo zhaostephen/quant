@@ -186,6 +186,7 @@
     <Content Include="app\chart.js" />
     <Content Include="app\controllers\analyzeSectorCtrl.js" />
     <Content Include="app\controllers\analyzeIndexCtrl.js" />
+    <Content Include="app\controllers\selectionKeyPriceCtrl.js" />
     <Content Include="app\controllers\selectionCtrl.js" />
     <Content Include="app\controllers\strategyCtrl.js" />
     <Content Include="app\controllers\searchCtrl.js" />
@@ -562,6 +563,7 @@
     <Content Include="Views\Analysis\Index.cshtml" />
     <Content Include="Views\Analysis\sector.cshtml" />
     <Content Include="Views\Analysis\singlename.cshtml" />
+    <Content Include="Views\Selection\HitKeyPrice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\directives\" />
