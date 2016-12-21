@@ -33,20 +33,21 @@ namespace Quant.strategies
                     if (s.Date == k.Last().date && s.Date.Date == DateTime.Today)
                     {
                         Buy(account, stock.Code, s.Date);
+                        continue;
                     }
                 }
-                else if(crossdown.Any())
+
+                if(crossdown.Any())
                 {
                     var s = crossdown.Last();
                     if (s.Date == k.Last().date && s.Date.Date == DateTime.Today)
                     {
                         Sell(account, stock.Code, s.Date);
+                        continue;
                     }
                 }
-                else
-                {
-                    log.InfoFormat("no signal {0}", stock.Code);
-                }
+
+                log.InfoFormat("no signal {0}", stock.Code);
             }
         }
     }
