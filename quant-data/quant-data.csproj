@@ -90,6 +90,9 @@
     <None Include="classified-sql.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="kdata-today-sql.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="kdata-sql.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

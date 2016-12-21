@@ -35,6 +35,19 @@ namespace Trade.Db
             }
         }
 
+        public Dictionary<string, DateTime> keypricedates()
+        {
+            using (var conn = new MySqlConnection(Configuration.analyticdb))
+            {
+                conn.Open();
+
+                return conn
+                    .Query(@"SELECT DISTINCT code,ktype, max(date) date FROM keyprice GROUP by code,ktype")
+                    .GroupBy(p=>new { code = (string)p.code, ktype = (string)p.ktype })
+                    .ToDictionary(p => p.Key.code + p.Key.ktype, p => p.Max(p1=>(DateTime)p1.date));
+            }
+        }
+
         public void save(string ktype, KeyPrice[] o)
         {
             if (!o.Any()) return;
@@ -42,14 +55,6 @@ namespace Trade.Db
             using (var conn = new MySqlConnection(Configuration.analyticdb))
             {
                 conn.Open();
-
-                var codedate = conn
-                    .Query(@"SELECT DISTINCT code, max(date) date FROM keyprice WHERE ktype=@ktype GROUP by code", new { ktype = ktype })
-                    .ToDictionary(p=>(string)p.code, p=>(DateTime)p.date);
-
-                o = o.Where(p => !codedate.ContainsKey(p.Code)
-                                || (codedate.ContainsKey(p.Code) && p.Date > codedate[p.Code]))
-                     .ToArray();
 
                 var upserts = o
                     .Select(p => string.Format(@"INSERT IGNORE INTO keyprice (code,date,price,flag,ktype,auto) 

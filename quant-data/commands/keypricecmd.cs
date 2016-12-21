@@ -32,49 +32,53 @@ namespace Trade.commands
             var codes = db.codes();
             var i = 0;
             var count = codes.Count();
+            var keypricedates = db.keypricedates();
+            var ktypes = new[] { "5", "15", "30", "60", "D", "W", "M" };
             foreach (var code in codes.AsParallel())
             {
                 Interlocked.Increment(ref i);
                 log.InfoFormat("{0}/{1} calc {2}", i, count, code);
 
-                trycalc(code, "5");
-                trycalc(code, "15");
-                trycalc(code, "30");
-                trycalc(code, "60");
-                trycalc(code, "D");
-                trycalc(code, "W");
-                trycalc(code, "M");
+                foreach (var ktype in ktypes)
+                {
+                    try
+                    {
+                        var key = code + ktype;
+                        var o = trycalc(code, ktype);
+                        o = o.Where(p => !keypricedates.ContainsKey(key)
+                                        || (keypricedates.ContainsKey(key) && p.Date > keypricedates[key]))
+                             .ToArray();
+                        db.save(ktype,o);
+                    }
+                    catch (Exception e)
+                    {
+                        log.Warn("ex @ calc " + code + " for " + ktype, e);
+                    }
+                }
             }
 
             log.Info("**********DONE**********");
         }
 
-        public void trycalc(string id, string ktype)
+        KeyPrice[] trycalc(string id, string ktype)
         {
-            try
-            {
-                var db = new Db.db();
-                var d = db.kdata(id, ktype);
-                var peak_h = new PEAK(d, PEAK_TYPE.high);
-                var peak_l = new PEAK(d, PEAK_TYPE.low);
+            var db = new Db.db();
+            var d = db.kdata(id, ktype);
+            var peak_h = new PEAK(d, PEAK_TYPE.high);
+            var peak_l = new PEAK(d, PEAK_TYPE.low);
 
-                var keyprices = d.Select(p =>
-                {
-                    var h = peak_h[p.date];
-                    var l = peak_l[p.date];
-                    if (h > 0) return KeyPrice.high(id, p.date, h, true);
-                    else if (l > 0) return KeyPrice.low(id, p.date, l, true);
-                    return null;
-                })
-                .Where(p => p != null)
-                .ToArray();
-
-                db.save(ktype, keyprices);
-            }
-            catch(Exception e)
+            var keyprices = d.Select(p =>
             {
-                log.Warn("ex @ calc "+ id + " for "+ ktype, e);
-            }
+                var h = peak_h[p.date];
+                var l = peak_l[p.date];
+                if (h > 0) return KeyPrice.high(id, p.date, h, true);
+                else if (l > 0) return KeyPrice.low(id, p.date, l, true);
+                return null;
+            })
+            .Where(p => p != null)
+            .ToArray();
+
+            return keyprices;
         }
     }
 }
