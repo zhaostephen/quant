@@ -44,6 +44,14 @@ namespace Trade
             var keyprices = db.keyprices("D");
             var todayquotes = db.ktoday();
 
+            keyprices = keyprices
+                .OrderBy(p=>p.Code)
+                .ThenByDescending(p=>p.Date)
+                .Where(p=>p.Flag == KeyPrice.Flags.lower)
+                .GroupBy(p=>p.Code)
+                .Select(p=>p.First())
+                .ToArray();
+
             var q = from k in keyprices
                     join t in todayquotes on k.Code equals t.code
                     where k.Flag == KeyPrice.Flags.lower && Math.Abs((t.low / k.Price - 1) * 100d) < 0.5
