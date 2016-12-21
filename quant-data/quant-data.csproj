@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="commands\basicscmd.cs" />
+    <Compile Include="commands\keypricecmd.cs" />
     <Compile Include="commands\sectorcmd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -35,6 +35,33 @@ namespace Trade.Db
             }
         }
 
+        public void save(KeyPrice[] o)
+        {
+            if (!o.Any()) return;
+
+            using (var conn = new MySqlConnection(Configuration.analyticdb))
+            {
+                conn.Open();
+
+                var codedate = conn
+                    .Query(@"SELECT DISTINCT code, max(date) date FROM keyprice GROUP by code")
+                    .ToDictionary(p=>(string)p.code, p=>(DateTime)p.date);
+
+                o = o.Where(p => !codedate.ContainsKey(p.Code)
+                                || (codedate.ContainsKey(p.Code) && p.Date > codedate[p.Code]))
+                     .ToArray();
+
+                var upserts = o
+                    .Select(p => string.Format(@"INSERT IGNORE INTO keyprice (code,date,price,flag,auto) 
+                                                VALUES ('{0}','{1:yyyy-MM-dd}',{2},'{3}',{4})",
+                                p.Code, p.Date, p.Price, p.Flag, p.Auto ? "true" : "false"))
+                    .ToArray();
+
+                if (upserts.Any())
+                    conn.Execute(string.Join(";", upserts));
+            }
+        }
+
         public universe universe(string name)
         {
             using (var conn = new MySqlConnection(Configuration.quantdb))
