@@ -81,7 +81,7 @@ namespace Trade
                 .ThenByDescending(p=>p.date)
                 .GroupBy(p => new { p.code })
                 .Select(p => p.First())
-                .OrderByDescending(p=>Math.Abs(p.changepercent))
+                .OrderByDescending(p=>p.changepercent)
                 .ToArray();
 
             return r;
