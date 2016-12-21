@@ -32,7 +32,7 @@ namespace Trade.commands
             var codes = db.codes();
             var i = 0;
             var count = codes.Count();
-            foreach (var code in codes)
+            foreach (var code in codes.AsParallel())
             {
                 Interlocked.Increment(ref i);
                 log.InfoFormat("{0}/{1} calc {2}", i, count, code);
@@ -69,7 +69,7 @@ namespace Trade.commands
                 .Where(p => p != null)
                 .ToArray();
 
-                db.save(keyprices);
+                db.save(ktype, keyprices);
             }
             catch(Exception e)
             {

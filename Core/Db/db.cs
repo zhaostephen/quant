@@ -35,7 +35,7 @@ namespace Trade.Db
             }
         }
 
-        public void save(KeyPrice[] o)
+        public void save(string ktype, KeyPrice[] o)
         {
             if (!o.Any()) return;
 
@@ -44,7 +44,7 @@ namespace Trade.Db
                 conn.Open();
 
                 var codedate = conn
-                    .Query(@"SELECT DISTINCT code, max(date) date FROM keyprice GROUP by code")
+                    .Query(@"SELECT DISTINCT code, max(date) date FROM keyprice WHERE ktype=@ktype GROUP by code", new { ktype = ktype })
                     .ToDictionary(p=>(string)p.code, p=>(DateTime)p.date);
 
                 o = o.Where(p => !codedate.ContainsKey(p.Code)
@@ -52,9 +52,9 @@ namespace Trade.Db
                      .ToArray();
 
                 var upserts = o
-                    .Select(p => string.Format(@"INSERT IGNORE INTO keyprice (code,date,price,flag,auto) 
-                                                VALUES ('{0}','{1:yyyy-MM-dd}',{2},'{3}',{4})",
-                                p.Code, p.Date, p.Price, p.Flag, p.Auto ? "true" : "false"))
+                    .Select(p => string.Format(@"INSERT IGNORE INTO keyprice (code,date,price,flag,ktype,auto) 
+                                                VALUES ('{0}','{1:yyyy-MM-dd HH:mm:ss}',{2},'{3}','{4}',{5})",
+                                p.Code, p.Date, p.Price, p.Flag, ktype, p.Auto ? "true" : "false"))
                     .ToArray();
 
                 if (upserts.Any())
