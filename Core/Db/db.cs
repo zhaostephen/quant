@@ -48,6 +48,30 @@ namespace Trade.Db
             }
         }
 
+        public KeyPrice[] keyprices(string ktype)
+        {
+            using (var conn = new MySqlConnection(Configuration.analyticdb))
+            {
+                conn.Open();
+
+                return conn
+                    .Query<KeyPrice>(@"SELECT * FROM keyprice WHERE ktype=@ktype",new { ktype = ktype })
+                    .ToArray();
+            }
+        }
+
+        public dynamic[] ktoday()
+        {
+            using (var conn = new MySqlConnection(Configuration.kdatadb))
+            {
+                conn.Open();
+
+                return conn
+                    .Query(@"SELECT * FROM ktoday WHERE ts in (SELECT max(ts) FROM ktoday)")
+                    .ToArray();
+            }
+        }
+
         public void save(string ktype, KeyPrice[] o)
         {
             if (!o.Any()) return;

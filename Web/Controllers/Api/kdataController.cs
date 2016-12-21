@@ -23,26 +23,16 @@ namespace Web.Controllers.Api
             var q = d.Where(p => p.date >= since).ToArray();
             var data = q.Select(p => new object[] { p.date, p.open, p.high, p.low, p.close })
                 .ToArray();
-            var peak_h = new PEAK(d, PEAK_TYPE.high);
-            var peak_l = new PEAK(d, PEAK_TYPE.low);
-
-            var keyprices = q.Select(p =>
+            var keyprices = Trade.analytic.keyprice(id, ktype);
+            if (q.Any())
             {
-                var h = peak_h[p.date];
-                var l = peak_l[p.date];
-                if (h > 0) return KeyPrice.high(id, p.date, h, true);
-                else if (l > 0) return KeyPrice.low(id, p.date, l, true);
-                return null;
-            })
-            .Where(p => p != null)
-            .ToArray();
-
-            var cur = new[] 
-            {
+                var cur = new[]
+                {
                 KeyPrice.low(id, q.Last().date, q.Last().low, true),
                 KeyPrice.high(id, q.Last().date, q.Last().high, true)
             };
-            keyprices = keyprices.Concat(cur).ToArray();
+                keyprices = keyprices.Concat(cur).ToArray();
+            }
 
             return new chart { data = data, code = d.Code, name = basic.name, keyprices = keyprices };
         }

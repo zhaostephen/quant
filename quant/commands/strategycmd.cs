@@ -4,6 +4,7 @@ using Interace.Quant;
 using Interface.Quant;
 using log4net;
 using Quant.strategies.orders;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,10 @@ namespace Quant.commands
 
         public override void exec()
         {
+            var a = analytic.hitkeyprices();
+            log.Info(a.ToCsv());
+            return;
+
             log.Info("run strategy " + param.name.ToLower());
 
             log.Info("get codes");

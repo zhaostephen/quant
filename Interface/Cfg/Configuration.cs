@@ -20,6 +20,9 @@ namespace Trade.Cfg
         public static string analyticdb = env == "dev"
             ? @"Server=584a482f41204.gz.cdb.myqcloud.com;Port=17020;Database=analytic;Uid=quant;Pwd=Woaiquant123"
             : @"Server=10.66.111.191;Port=3306 ;Database=analytic;Uid=quant;Pwd=Woaiquant123";
+        public static string kdatadb = env == "dev"
+            ? @"Server=584a482f41204.gz.cdb.myqcloud.com;Port=17020;Database=kdata;Uid=quant;Pwd=Woaiquant123"
+            : @"Server=10.66.111.191;Port=3306 ;Database=kdata;Uid=quant;Pwd=Woaiquant123";
 
         public class data
         {

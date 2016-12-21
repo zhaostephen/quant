@@ -32,6 +32,31 @@ namespace Trade.Indicator
             }
         }
 
+        public PEAK(kdata data, Func<kdatapoint,double> f, PEAK_TYPE type, int distance = 5)
+        {
+            switch (type)
+            {
+                case PEAK_TYPE.low:
+                    {
+                        peak(data,
+                            (a, prev, next) => f(a) <= f(prev) && f(a) <= f(next),
+                            p => new sValue<double>(p.date, f(p)),
+                            distance);
+                        break;
+                    }
+                case PEAK_TYPE.high:
+                    {
+                        peak(data,
+                            (a, prev, next) => f(a) >= f(prev) && f(a) >= f(next),
+                            p => new sValue<double>(p.date, f(p)),
+                            distance);
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+
         private void peak(
             kdata points,
             Func<kdatapoint, kdatapoint, kdatapoint, bool> cmp,

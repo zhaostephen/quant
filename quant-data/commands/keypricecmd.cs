@@ -44,7 +44,7 @@ namespace Trade.commands
                     try
                     {
                         var key = code + ktype;
-                        var o = trycalc(code, ktype);
+                        var o = analytic.keyprice(code, ktype);
                         o = o.Where(p => !keypricedates.ContainsKey(key)
                                         || (keypricedates.ContainsKey(key) && p.Date > keypricedates[key]))
                              .ToArray();
@@ -58,27 +58,6 @@ namespace Trade.commands
             }
 
             log.Info("**********DONE**********");
-        }
-
-        KeyPrice[] trycalc(string id, string ktype)
-        {
-            var db = new Db.db();
-            var d = db.kdata(id, ktype);
-            var peak_h = new PEAK(d, PEAK_TYPE.high);
-            var peak_l = new PEAK(d, PEAK_TYPE.low);
-
-            var keyprices = d.Select(p =>
-            {
-                var h = peak_h[p.date];
-                var l = peak_l[p.date];
-                if (h > 0) return KeyPrice.high(id, p.date, h, true);
-                else if (l > 0) return KeyPrice.low(id, p.date, l, true);
-                return null;
-            })
-            .Where(p => p != null)
-            .ToArray();
-
-            return keyprices;
         }
     }
 }
