@@ -33,14 +33,11 @@ namespace Trade.selections
                     if (!p.Any()) return false;
 
                     var close = p.close();
-                    var macd = (macd)new MACD(p.volume());
-                    //var ma5 = new MA(close, 5);
-                    //var ma20 = new MA(close, 20);
-                    //var ma60 = new MA(close, 60);
-                    var ma120 = new MA(close, 120);
+                    var cross = new MACD(p.volume()).cross();
 
-                    return macd != null && macd.MACD > 0 && macd.DIF <= 0 && macd.Date.Date == DateTime.Today
-                    && (close.Last().Value>= ma120);
+                    return cross.Any() 
+                    && cross.Last().type == Interface.Data.crosstype.gold
+                    && cross.Last().value.Date.Date == DateTime.Today;
                 })
                 .Select(p => p.Code)
                 .Distinct()
