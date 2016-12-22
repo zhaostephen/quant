@@ -72,6 +72,18 @@ namespace Trade.Db
             }
         }
 
+        public dynamic[] ktoday(string code)
+        {
+            using (var conn = new MySqlConnection(Configuration.kdatadb))
+            {
+                conn.Open();
+
+                return conn
+                    .Query(@"SELECT * FROM ktoday WHERE code=@code",new { code = code})
+                    .ToArray();
+            }
+        }
+
         public void save(string ktype, KeyPrice[] o)
         {
             if (!o.Any()) return;
@@ -133,7 +145,107 @@ namespace Trade.Db
         {
             var file = Configuration.data.kdata.file(ktype + "\\" + code + ".csv");
             var p = file.ReadCsv<kdatapoint>(Configuration.encoding.gbk);
+
+            try
+            {
+                p = kupdate(p, code, ktype);
+            }
+            catch
+            {
+            }
+
             return new kdata(code, p);
+        }
+
+        IEnumerable<kdatapoint> kupdate(IEnumerable<kdatapoint> p, string code, string ktype)
+        {
+            if (p.Any())
+            {
+                switch (ktype)
+                {
+                    case "5":
+                    case "15":
+                    case "30":
+                    case "60":
+                        {
+                            var kunits = int.Parse(ktype);
+
+                            var last = p.Last();
+                            var maxdate = last.date;
+                            var till = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 15, 30, 0);
+                            var from = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 9, 30, 0);
+                            var noon = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 11, 30, 0);
+                            if (maxdate < till)
+                            {
+                                var kt = ktoday(code);
+                                if (kt.Any())
+                                {
+                                    var s = kt
+                                        .Where(p1 => p1.ts > from && p1.ts <= till)
+                                        .OrderBy(p1 => (DateTime)p1.ts)
+                                        .Select(t =>
+                                        {
+                                            var ts = ((DateTime)t.ts);
+                                            var datetime = ts <= noon ? from.AddMinutes(((int)((noon - ts).TotalMinutes / kunits) * kunits))
+                                            : noon.AddMinutes((int)(((till - ts).TotalMinutes / kunits) * kunits));
+
+                                            return new kdatapoint()
+                                            {
+                                                date = datetime,
+                                                open = (double)t.open,
+                                                close = (double)t.trade,
+                                                high = (double)t.high,
+                                                low = (double)t.low,
+                                                volume = (double)t.volume
+                                            };
+                                        })
+                                        .ToArray();
+
+                                    var dict = new Dictionary<DateTime, kdatapoint>();
+                                    foreach (var i in s)
+                                    {
+                                        dict[i.date] = i;
+                                    }
+
+                                    p = p.Concat(dict.Values).ToArray();
+                                }
+                            }
+                        }
+                        break;
+                    case "D":
+                    case "W":
+                    case "M":
+                        {
+                            var last = p.Last();
+                            var maxdate = last.date;
+                            if (maxdate < DateTime.Today)
+                            {
+                                var kt = ktoday(code);
+                                if (kt.Any())
+                                {
+                                    var t = kt.OrderByDescending(p1 => p1.ts).First();
+                                    if (((DateTime)t.ts) > maxdate
+                                        && !((double)t.open == last.open && (double)t.high == last.high && (double)t.low == last.low))
+                                    {
+                                        var kp = new kdatapoint()
+                                        {
+                                            date = DateTime.Today,
+                                            open = (double)t.open,
+                                            close = (double)t.trade,
+                                            high = (double)t.high,
+                                            low = (double)t.low,
+                                            volume = (double)t.volume
+                                        };
+                                        p = p.Concat(new[] { kp }).ToArray();
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+
+            return p;
         }
 
         public IEnumerable<kdata> kdataall(string ktype, string secorOrIndex = null)

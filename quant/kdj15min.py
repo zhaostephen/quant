@@ -5,7 +5,7 @@ import sys
 import os
 
 def getCodes():
-    return ['002233']
+    return ['002233','sh','sz','hs300','sz50','zxb','cyb']
 
 def kdata(code, ktype):
     file = "kdata/" + ktype +"/" + code + ".csv";
