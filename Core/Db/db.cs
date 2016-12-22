@@ -2,6 +2,7 @@
 using Interace.Attribution;
 using Interace.Mixin;
 using Interface.Quant;
+using log4net;
 using MySql.Data.MySqlClient;
 using ServiceStack;
 using System;
@@ -17,6 +18,8 @@ namespace Trade.Db
 {
     public class db
     {
+        static ILog log = LogManager.GetLogger(typeof(db));
+
         public void save(universe universe)
         {
             using (var conn = new MySqlConnection(Configuration.quantdb))
@@ -150,8 +153,9 @@ namespace Trade.Db
             {
                 p = kupdate(p, code, ktype);
             }
-            catch
+            catch(Exception e)
             {
+                log.Error("kupdate " + code + " | " + ktype, e);
             }
 
             return new kdata(code, p);
