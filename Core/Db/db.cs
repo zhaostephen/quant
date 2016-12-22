@@ -172,26 +172,30 @@ namespace Trade.Db
                     case "30":
                     case "60":
                         {
-                            var kunits = int.Parse(ktype);
+                            var perunit = int.Parse(ktype);
 
                             var last = p.Last();
                             var maxdate = last.date;
-                            var till = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 15, 30, 0);
-                            var from = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 9, 30, 0);
-                            var noon = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 11, 30, 0);
-                            if (maxdate < till)
+                            var sodAfernoon = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 13, 30, 0);
+                            var eodAfternoon = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 15, 30, 0);
+                            
+                            var sodNoon = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 9, 30, 0);
+                            var eodNoon = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 11, 30, 0);
+                            if (maxdate < eodAfternoon)
                             {
                                 var kt = ktoday(code);
                                 if (kt.Any())
                                 {
                                     var s = kt
-                                        .Where(p1 => p1.ts > from && p1.ts <= till)
+                                        .Where(p1 => p1.ts > sodNoon)
                                         .OrderBy(p1 => (DateTime)p1.ts)
                                         .Select(t =>
                                         {
                                             var ts = ((DateTime)t.ts);
-                                            var datetime = ts <= noon ? from.AddMinutes(((int)((noon - ts).TotalMinutes / kunits) * kunits))
-                                            : noon.AddMinutes((int)(((till - ts).TotalMinutes / kunits) * kunits));
+
+                                            var datetime = ts < sodNoon 
+                                                            ? integer(ts, sodNoon, eodNoon, perunit)
+                                                            : integer(ts, sodAfernoon, eodAfternoon, perunit);
 
                                             return new kdatapoint()
                                             {
@@ -205,7 +209,7 @@ namespace Trade.Db
                                         })
                                         .ToArray();
 
-                                    var dict = new Dictionary<DateTime, kdatapoint>();
+                                    var dict = new SortedDictionary<DateTime, kdatapoint>();
                                     foreach (var i in s)
                                     {
                                         dict[i.date] = i;
@@ -250,6 +254,19 @@ namespace Trade.Db
             }
 
             return p;
+        }
+
+        DateTime integer(DateTime ts, DateTime sod, DateTime eod, int perunit)
+        {
+            var diff = (ts - sod).TotalMinutes + perunit - 1;
+            var units = ((int)diff) / perunit;
+
+            var r = sod.AddMinutes(units * perunit);
+
+            if (r >= eod)
+                r = eod;
+
+            return r;
         }
 
         public IEnumerable<kdata> kdataall(string ktype, string secorOrIndex = null)
