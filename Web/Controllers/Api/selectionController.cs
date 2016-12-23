@@ -17,9 +17,6 @@ namespace Web.Controllers.Api
         [Route("api/selections/{id}")]
         public object[] Get(string id)
         {
-            if(id == "keyprice")
-                return Trade.analytic.hitkeyprices();
-
             var codenames = new Trade.Db.db().basics().GroupBy(p => p.code).ToDictionary(p => p.Key, p => p.First());
             var universe = new Trade.Db.db().universe(id);
             return universe.codes
@@ -32,6 +29,41 @@ namespace Web.Controllers.Api
                 })
                 .OrderBy(p => p.pe)
                 .ToArray();
+        }
+
+        [Route("api/hitkeyprice")]
+        [HttpGet]
+        public object hitkeyprice(string order = null, string sort = null, int? limit = null, int? offset = null)
+        {
+            var r = Trade.analytic.hitkeyprices();
+            var rows = pagination(r);
+            return new { total = r.Count(), rows = rows };
+        }
+
+        dynamic[] pagination(dynamic[] r, string order = null, string sort = null, int? limit = null, int? offset = null)
+        {
+            if (r == null || !r.Any())
+                return new dynamic[0];
+
+            if (limit.HasValue && offset.HasValue)
+                r = r.Skip(offset.Value).Take(limit.Value).ToArray();
+
+            order = order ?? "code";
+            sort = sort ?? "asc";
+
+            if (sort == "asc")
+                r = r.OrderBy(p => orderdynamic(p, order)).ToArray();
+            else
+                r = r.OrderByDescending(p => orderdynamic(p, order)).ToArray();
+
+            return r;
+        }
+
+        static object orderdynamic(dynamic d, string orderby)
+        {
+            var dict = (IDictionary<string, object>)d;
+            if (!dict.ContainsKey(orderby)) return default(object);
+            return dict[orderby];
         }
     }
 }

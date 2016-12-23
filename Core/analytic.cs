@@ -1,6 +1,7 @@
 ﻿using Interace.Attribution;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,43 +46,52 @@ namespace Trade
             var todayquotes = db.ktoday();
 
             keyprices = keyprices
-                .OrderBy(p=>p.Code)
-                .ThenByDescending(p=>p.Date)
-                .Where(p=>p.Flag == KeyPrice.Flags.lower)
-                .GroupBy(p=>p.Code)
-                .Select(p=>p.First())
+                .OrderBy(p => p.Code)
+                .ThenByDescending(p => p.Date)
+                .Where(p => p.Flag == KeyPrice.Flags.lower)
+                .GroupBy(p => p.Code)
+                .Select(p => p.First())
                 .ToArray();
 
-            var q = from k in keyprices
-                    join t in todayquotes on k.Code equals t.code
-                    where k.Flag == KeyPrice.Flags.lower && Math.Abs((t.low / k.Price - 1) * 100d) < 0.2
-                    select new {
-                        date =k.Date,
-                        cross =Math.Abs((k.Date-DateTime.Today).TotalDays),
-                        price = k.Price,
-                        distpercent = (t.low / k.Price - 1)*100,
-                        t.pe,
-                        t.code,
-                        t.name,
-                        t.trade,
-                        t.high,
-                        t.low,
-                        t.open,
-                        t.close,
-                        t.volume,
-                        t.changepercent,
-                        t.turnoverratio,
-                        t.pb,
-                        t.amount,
-                        t.mktcap,
-                        t.ts };
+            var q = (from k in keyprices
+                     join t in todayquotes on k.Code equals t.code
+                     where k.Flag == KeyPrice.Flags.lower && Math.Abs((t.low / k.Price - 1) * 100d) < 0.2
+                     select new { k, t }
+                    ).Select(_ =>
+                    {
+                        var k = _.k;
+                        var t = _.t;
+
+                        dynamic d = new ExpandoObject();
+                        d.date = k.Date;
+                        d.cross = Math.Abs((k.Date - DateTime.Today).TotalDays);
+                        d.price = k.Price;
+                        d.distpercent = (t.low / k.Price - 1) * 100;
+                        d.pe = t.pe;
+                        d.code = t.code;
+                        d.name = t.name;
+                        d.trade = t.trade;
+                        d.high = t.high;
+                        d.low = t.low;
+                        d.open = t.open;
+                        d.close = t.close;
+                        d.volume = t.volume;
+                        d.changepercent = t.changepercent;
+                        d.turnoverratio = t.turnoverratio;
+                        d.pb = t.pb;
+                        d.amount = t.amount;
+                        d.mktcap = t.mktcap;
+                        d.ts = t.ts;
+
+                        return d;
+                    });
 
             var r = q
-                .OrderBy(p=>p.code)
-                .ThenByDescending(p=>p.date)
+                .OrderBy(p => p.code)
+                .ThenByDescending(p => p.date)
                 .GroupBy(p => new { p.code })
                 .Select(p => p.First())
-                .OrderByDescending(p=>p.changepercent)
+                .OrderByDescending(p => p.changepercent)
                 .ToArray();
 
             return r;

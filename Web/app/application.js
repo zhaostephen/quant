@@ -1,5 +1,5 @@
 ﻿(function () {
     'use strict';
 
-    angular.module("app", ["kendo.directives"])
+    angular.module("app", ["kendo.directives", "bsTable"])
 })();

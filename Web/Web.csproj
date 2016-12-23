@@ -190,6 +190,7 @@
     <Content Include="app\controllers\selectionCtrl.js" />
     <Content Include="app\controllers\strategyCtrl.js" />
     <Content Include="app\controllers\searchCtrl.js" />
+    <Content Include="Content\bootstrap-table.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\kendo\2016.3.1118\Bootstrap\editor.png" />
@@ -319,6 +320,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap-table-angular.js" />
+    <Content Include="Scripts\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -568,7 +571,6 @@
   <ItemGroup>
     <Folder Include="app\directives\" />
     <Folder Include="app\services\" />
-    <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

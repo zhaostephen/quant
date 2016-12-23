@@ -32,7 +32,8 @@ namespace Web
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                      "~/Scripts/angular.js"));
+                      "~/Scripts/angular.js",
+                      "~/Scripts/bootstrap-table-angular.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/highstock").Include(
                  "~/Scripts/highstock/highstock.js",

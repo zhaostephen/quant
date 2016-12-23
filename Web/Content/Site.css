@@ -44,3 +44,11 @@ textarea {
 .k-list-scroller ul{
     list-style-type:none
 }
+.red{
+    color:red;
+    font-weight:bold
+}
+.green{
+    color:green;
+    font-weight:bold
+}
