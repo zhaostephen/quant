@@ -11,6 +11,7 @@ namespace Interace.Quant
         public DateTime Date { get; set; }
         public string Dir { get; set; }
         public double Quantity { get; set; }
+        public string Comments { get; set; }
         public DateTime Ts { get; set; }
 
         public Trade()
@@ -18,29 +19,30 @@ namespace Interace.Quant
             Ts = DateTime.Now;
         }
 
-        public Trade(string portflio, string stock, DateTime date, string dir, double quantity)
+        public Trade(string portflio, string stock, DateTime date, string dir, double quantity, string comments)
         {
             Portflio = portflio;
             Stock = stock;
             Date = date;
             Dir = dir;
             Quantity = quantity;
+            Comments = comments;
             Ts = DateTime.Now;
         }
 
         public override string ToString()
         {
-            return string.Format("{0},{1},{2:yyyy-MM-dd HH:mm:ss},{3},{4}", Portflio, Stock, Date, Dir, Quantity);
+            return string.Format("{0},{1},{2:yyyy-MM-dd HH:mm:ss},{3},{4},{5}", Portflio, Stock, Date, Dir, Quantity, Comments);
         }
 
-        public static Trade Buy(string portflio, string stock, double quantity, DateTime? date = null)
+        public static Trade Buy(string portflio, string stock, double quantity, string comments = null, DateTime? date = null)
         {
-            return new Trade(portflio, stock, date??DateTime.Today, TradeDir.buy, quantity);
+            return new Trade(portflio, stock, date??DateTime.Today, TradeDir.buy, quantity, comments);
         }
 
-        public static Trade Sell(string portflio, string stock, double quantity, DateTime? date = null)
+        public static Trade Sell(string portflio, string stock, double quantity, string comments = null, DateTime? date = null)
         {
-            return new Trade(portflio, stock, date ?? DateTime.Today, TradeDir.sell, quantity);
+            return new Trade(portflio, stock, date ?? DateTime.Today, TradeDir.sell, quantity, comments);
         }
     }
 

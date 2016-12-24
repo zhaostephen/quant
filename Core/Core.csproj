@@ -57,6 +57,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,9 +69,23 @@
     <Compile Include="backtest\backtesting.cs" />
     <Compile Include="backtest\pnl.cs" />
     <Compile Include="Db\db.cs" />
+    <Compile Include="Mixin\DateTimeMixin.cs" />
     <Compile Include="Mixin\DictMixin.cs" />
     <Compile Include="Mixin\Logging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="selections\LowBeta.cs" />
+    <Compile Include="selections\macd60.cs" />
+    <Compile Include="selections\Selection.cs" />
+    <Compile Include="selections\volume.cs" />
+    <Compile Include="strategies\KDJ15minStrategy.cs" />
+    <Compile Include="strategies\LowBeta.cs" />
+    <Compile Include="strategies\MA120.cs" />
+    <Compile Include="strategies\macd15minstrategy.cs" />
+    <Compile Include="strategies\macdstrategy.cs" />
+    <Compile Include="orders\dbOrder.cs" />
+    <Compile Include="orders\smsOrder.cs" />
+    <Compile Include="strategies\Strategy.cs" />
+    <Compile Include="strategies\volumestrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,9 +1,7 @@
-﻿using Cli;
-using Interace.Quant;
+﻿using Interace.Quant;
 using log4net;
-using Quant.strategies.orders;
 using System;
-using Trade.Db;
+using Trade.Utility;
 
 namespace Quant.strategies
 {
@@ -15,14 +13,14 @@ namespace Quant.strategies
 
         public abstract void Run(Account account);
 
-        protected void Buy(Account account, string stock, DateTime date, double quantity = 0)
+        protected void Buy(Account account, string stock, DateTime date, double quantity = 0, string comments=null)
         {
-            PostTrade(account, Interace.Quant.Trade.Buy(account.Portflio, stock, quantity, date));
+            PostTrade(account, Interace.Quant.Trade.Buy(account.Portflio, stock, quantity, comments, date));
         }
 
-        protected void Sell(Account account, string stock, DateTime date, double quantity = 0)
+        protected void Sell(Account account, string stock, DateTime date, double quantity = 0, string comments = null)
         {
-            PostTrade(account, Interace.Quant.Trade.Sell(account.Portflio, stock, quantity, date));
+            PostTrade(account, Interace.Quant.Trade.Sell(account.Portflio, stock, quantity, comments, date));
         }
 
         protected void PostTrade(Account account, Interace.Quant.Trade trade)

@@ -56,20 +56,7 @@
   <ItemGroup>
     <Compile Include="commands\strategycmd.cs" />
     <Compile Include="commands\selectioncmd.cs" />
-    <Compile Include="selections\volume.cs" />
-    <Compile Include="strategies\macdstrategy.cs" />
-    <Compile Include="strategies\volumestrategy.cs" />
-    <Compile Include="strategies\macd15minstrategy.cs" />
-    <Compile Include="strategies\orders\dbOrder.cs" />
-    <Compile Include="strategies\orders\smsOrder.cs" />
-    <Compile Include="selections\LowBeta.cs" />
-    <Compile Include="selections\macd60.cs" />
-    <Compile Include="selections\Selection.cs" />
-    <Compile Include="strategies\kdj15minstrategy.cs" />
-    <Compile Include="strategies\LowBeta.cs" />
-    <Compile Include="strategies\MA120.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="strategies\Strategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
