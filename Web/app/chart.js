@@ -22,14 +22,16 @@ function getData(code, period, callback) {
     currentcode = code;
     currentperiod = period;
     $.getJSON(root + 'api/kdata/' + code + "?ktype=" + period, function (result) {
-        var data = result.data;
         var utc = function (d) {
             var date = new Date(d);
             return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()-8, date.getMinutes());
         };
 
-        for (var i = 0; i < data.length; ++i) {
-            data[i][0] = utc(data[i][0]);
+        for (var i = 0; i < result.data.length; ++i) {
+            result.data[i][0] = utc(result.data[i][0]);
+        }
+        for (var i = 0; i < result.volume.length; ++i) {
+            result.volume[i][0] = utc(result.volume[i][0]);
         }
 
         keyhighdates = [];
@@ -45,7 +47,8 @@ function getData(code, period, callback) {
         }
         callback({
             name: result.name + " - " + kperiod(period),
-            data: data,
+            data: result.data,
+            volume:result.volume,
             keyhighdates: keyhighdates,
             keylowdates: keylowdates
         });
@@ -71,20 +74,10 @@ function setupcharts(code, period, callback) {
             rangeSelectorFrom: "日期:",
             rangeSelectorTo: "至",
             rangeSelectorZoom: "",
-            loading: '加载中...',
-            //months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-            //shortMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月',
-            //        '9月', '10月', '11月', '12月'],
-            //weekdays: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+            loading: '加载中...'
         },
     });
-    getData(code,period, function (result) {
-        var data = result.data;
-
-        // Add a null value for the end date
-        //data = [].concat(data, [[Date.UTC(2011, 9, 14, 19, 59), null, null, null, null]]);
-
-        // create the chart
+    getData(code, period, function (result) {
         Highcharts.stockChart('container', {
             chart: {
                 type: 'candlestick',
@@ -104,15 +97,12 @@ function setupcharts(code, period, callback) {
             scrollbar: {
                 liveRedraw: false
             },
-
             title: {
                 text: result.name
             },
-
             subtitle: {
                 text: ''
             },
-
             rangeSelector: {
                 buttonSpacing: 5,
                 buttonTheme: {
@@ -162,11 +152,9 @@ function setupcharts(code, period, callback) {
                     value: '60'
                 }]
             },
-
             exporting: {
                 enabled: false,
             },
-            //colors: ['#000000', '#0000ff', '#ff00ff', '#f7a35c', '#8085e9'],
             plotOptions: {
                 candlestick: {
                     color: '#00cc00',
@@ -216,44 +204,44 @@ function setupcharts(code, period, callback) {
                     formatter: function () { return Highcharts.dateFormat('%m/%d', this.value); }
                 }
             },
-
-            yAxis: {
-                floor: 0
-            },
-
-            tooltip: {
-                formatter: function () {
-                    var s = Highcharts.dateFormat('<span> %Y-%m-%d %H:%M:%S</span>', this.x);
-                    s += '<br />开盘:<b>'
-                    + this.points[0].point.open
-                    + '</b><br />最高:<b>'
-                    + this.points[0].point.high
-                    + '</b><br />最低:<b>'
-                    + this.points[0].point.low
-                    + '</b><br />收盘:<b>'
-                    + this.points[0].point.close
-                    + '</b>';
-                    return "<span>" + s + "</span>";
+            yAxis: [{
+                title: {
+                    text: '价格'
                 },
-                shared: true,
-                useHTML: true,
-                valueDecimals: 2, 
-                crosshairs: [{
-                    color: '#b9b9b0'
-                }, {
-                    color: '#b9b9b0'
-                }]
-            },
-
-            series: [{
-                data: data,
-                dataGrouping: {
-                    enabled: false
+                height: '70%'
+            }, {
+                title: {
+                    text: '成交量'
                 },
-                tooltip: {
-                    valueDecimals: 2
-                }
-            }]
+                top: '70%',
+                height: '30%',
+                offset: 0
+            }],
+            series: [
+                {
+                    data: result.data,
+                    name: "价格",
+                    tooltip: {
+                        headerFormat:"",
+                        pointFormatter: function () {
+                            var s = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x);
+                            s += '<br />开盘:<b>'
+                            + this.open
+                            + '</b><br />最高:<b>'
+                            + this.high
+                            + '</b><br />最低:<b>'
+                            + this.low
+                            + '</b><br />收盘:<b>'
+                            + this.close
+                            + '</b>';
+                            var cls = this.close >= this.open ? "red" : "green";
+                            return "<span class='" + cls + "'>" + s + "</span><br/>";
+                        },
+                        shared:true
+                    },
+                },
+                { type: 'column', name: '成交量', data: result.volume, tooltip: { valueDecimals: 0}, yAxis: 1 }
+            ]
         });
     });
 }
@@ -264,6 +252,7 @@ function candlestick(code, period) {
     chart.showLoading('请稍等...');
     getData(code, period, function (result) {
         chart.series[0].setData(result.data);
+        chart.series[1].setData(result.volume);
         chart.setTitle({
             text: result.name
         });

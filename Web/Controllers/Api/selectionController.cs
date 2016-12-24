@@ -48,8 +48,8 @@ namespace Web.Controllers.Api
             if (limit.HasValue && offset.HasValue)
                 r = r.Skip(offset.Value).Take(limit.Value).ToArray();
 
-            order = order ?? "code";
-            sort = sort ?? "asc";
+            order = order ?? "changepercent";
+            sort = sort ?? "desc";
 
             if (sort == "asc")
                 r = r.OrderBy(p => orderdynamic(p, order)).ToArray();

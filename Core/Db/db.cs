@@ -204,7 +204,7 @@ namespace Trade.Db
                                                 close = (double)t.trade,
                                                 high = (double)t.high,
                                                 low = (double)t.low,
-                                                volume = (double)t.volume
+                                                volume = (double)t.volume/100d
                                             };
                                         })
                                         .ToArray();
@@ -241,7 +241,7 @@ namespace Trade.Db
                                             close = (double)t.trade,
                                             high = (double)t.high,
                                             low = (double)t.low,
-                                            volume = (double)t.volume
+                                            volume = (double)t.volume/100d
                                         };
                                         p = p.Concat(new[] { kp }).ToArray();
                                     }
