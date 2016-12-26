@@ -22,10 +22,13 @@ namespace Web.Controllers.Api
             var basic = new Trade.Db.db().basics(id);
             var since = Trade.Cfg.Configuration.data.bearcrossbull;
             var k = kdata.Where(p => p.date >= since).ToArray();
-            var macd = new MACD(kdata.close()).ToDictionary(p => p.Date, p => p.MACD);
+            var macd = new MACD(kdata.close()).Where(p => p.Date >= since).ToArray();
             return new chart {
                 data = k.Select(p => new object[] { p.date, p.open, p.high, p.low, p.close }).ToArray(),
                 volume = k.Select(p => new object[] { p.date, p.volume }).ToArray(),
+                macd = macd.Select(p => new object[] { p.Date, p.MACD }).ToArray(),
+                dif = macd.Select(p => new object[] { p.Date, p.DIF }).ToArray(),
+                dea = macd.Select(p => new object[] { p.Date, p.DEA }).ToArray(),
                 code = kdata.Code,
                 name = basic.name,
                 keyprices = keyprice(k, id, ktype)
@@ -53,6 +56,9 @@ namespace Web.Controllers.Api
         public KeyPrice[] keyprices { get; set; }
         public object[][] data { get; set; }
         public object[][] volume { get; set; }
+        public object[][] macd { get; set; }
+        public object[][] dif { get; set; }
+        public object[][] dea { get; set; }
         public string code { get; set; }
         public string name { get; set; }
     }

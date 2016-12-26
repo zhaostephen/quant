@@ -26,13 +26,17 @@ function getData(code, period, callback) {
             var date = new Date(d);
             return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()-8, date.getMinutes());
         };
+        var setUtc = function (f) {
+            for (var i = 0; i < result[f].length; ++i) {
+                result[f][i][0] = utc(result[f][i][0]);
+            }
+        }
 
-        for (var i = 0; i < result.data.length; ++i) {
-            result.data[i][0] = utc(result.data[i][0]);
-        }
-        for (var i = 0; i < result.volume.length; ++i) {
-            result.volume[i][0] = utc(result.volume[i][0]);
-        }
+        setUtc("data");
+        setUtc("volume");
+        setUtc("macd");
+        setUtc("dif");
+        setUtc("dea");
 
         keyhighdates = [];
         keylowdates = [];
@@ -48,12 +52,20 @@ function getData(code, period, callback) {
         callback({
             name: result.name + " - " + kperiod(period),
             data: result.data,
-            volume:result.volume,
+            volume: result.volume,
+            macd: result.macd,
+            dif: result.dif,
+            dea: result.dea,
             keyhighdates: keyhighdates,
             keylowdates: keylowdates
         });
     });
 }
+function range(result) {
+    var count = result.data.length - Math.min(result.data.length, 120);
+    Highcharts.charts[0].xAxis[0].setExtremes(result.data[count][0]);
+}
+
 function setupcharts(code, period, callback) {
     if (chartssetup) {
         return;
@@ -84,7 +96,7 @@ function setupcharts(code, period, callback) {
                 zoomType: 'x',
                 backgroundColor: "#ffffff",
                 height: 500,
-                width:1000
+                width: 1000
             },
             credits: { enabled: false },
             navigator: {
@@ -134,7 +146,7 @@ function setupcharts(code, period, callback) {
                     value: 'D'
                 }, {
                     text: '周K',
-                    value:'W'
+                    value: 'W'
                 }, {
                     text: '月K',
                     value: 'M'
@@ -171,7 +183,7 @@ function setupcharts(code, period, callback) {
                                 var css = high ? "small-high-label" : "small-low-label";
                                 var bottom = 0;
                                 if (low)
-                                    bottom = -1 * (this.point.shapeArgs.height+20) + "px";
+                                    bottom = -1 * (this.point.shapeArgs.height + 20) + "px";
                                 return "<span class=\"" + css + "\" style=\"bottom:" + bottom + "\">" + label + "</span>";
                             }
                             return label;
@@ -208,13 +220,20 @@ function setupcharts(code, period, callback) {
                 title: {
                     text: '价格'
                 },
-                height: '70%'
+                height: '60%'
             }, {
                 title: {
                     text: '成交量'
                 },
-                top: '70%',
-                height: '30%',
+                top: '60%',
+                height: '20%',
+                offset: 0
+            }, {
+                title: {
+                    text: 'MACD-价格'
+                },
+                top: '80%',
+                height: '20%',
                 offset: 0
             }],
             series: [
@@ -225,7 +244,7 @@ function setupcharts(code, period, callback) {
                         enabled: false
                     },
                     tooltip: {
-                        headerFormat:"",
+                        headerFormat: "",
                         pointFormatter: function () {
                             var s = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x);
                             s += '<br />开盘:<b>'
@@ -240,19 +259,48 @@ function setupcharts(code, period, callback) {
                             var cls = this.close >= this.open ? "red" : "green";
                             return "<span class='" + cls + "'>" + s + "</span><br/>";
                         },
-                        shared:true
+                        shared: true
                     },
-                },
-                {
+                }, {
                     type: 'column',
                     name: '成交量',
                     dataGrouping: {
                         enabled: false
                     },
                     data: result.volume, tooltip: { valueDecimals: 0 }, yAxis: 1
+                }, {
+                    type: 'column',
+                    name: 'MACD',
+                    //colors: ['#00cc00', '#ff3232'],
+                    maxPointWidth: 1,
+                    shadow: false,
+                    dataGrouping: {
+                        enabled: false
+                    },
+                    data: result.macd, tooltip: { valueDecimals: 2 }, yAxis: 2
+                }, {
+                    type: 'line',
+                    name: 'DIF',
+                    color: "blue",
+                    lineWidth: 0.5,
+                    shadow: false,
+                    dataGrouping: {
+                        enabled: false
+                    },
+                    data: result.dif, tooltip: { valueDecimals: 2 }, yAxis: 2
+                }, {
+                    type: 'line',
+                    name: 'DEA',
+                    lineWidth: 0.5,
+                    shadow: false,
+                    dataGrouping: {
+                        enabled: false
+                    },
+                    data: result.dea, tooltip: { valueDecimals: 2 }, yAxis: 2
                 }
             ]
         });
+        range(result);
     });
 }
 function candlestick(code, period) {
@@ -263,9 +311,13 @@ function candlestick(code, period) {
     getData(code, period, function (result) {
         chart.series[0].setData(result.data);
         chart.series[1].setData(result.volume);
+        chart.series[2].setData(result.macd);
+        chart.series[3].setData(result.dif);
+        chart.series[4].setData(result.dea);
         chart.setTitle({
             text: result.name
         });
+        range(result);
         chart.hideLoading();
     });
 }
