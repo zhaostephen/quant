@@ -37,6 +37,9 @@ function getData(code, period, callback) {
         setUtc("macd");
         setUtc("dif");
         setUtc("dea");
+        setUtc("macdvol");
+        setUtc("difvol");
+        setUtc("deavol");
 
         keyhighdates = [];
         keylowdates = [];
@@ -56,6 +59,9 @@ function getData(code, period, callback) {
             macd: result.macd,
             dif: result.dif,
             dea: result.dea,
+            macdvol: result.macdvol,
+            difvol: result.difvol,
+            deavol: result.deavol,
             keyhighdates: keyhighdates,
             keylowdates: keylowdates
         });
@@ -220,20 +226,27 @@ function setupcharts(code, period, callback) {
                 title: {
                     text: '价格'
                 },
-                height: '60%'
+                height: '55%'
             }, {
                 title: {
                     text: '成交量'
                 },
-                top: '60%',
-                height: '20%',
+                top: '55%',
+                height: '15%',
                 offset: 0
             }, {
                 title: {
-                    text: 'MACD-价格'
+                    text: 'M-价格'
                 },
-                top: '80%',
-                height: '20%',
+                top: '70%',
+                height: '15%',
+                offset: 0
+            }, {
+                title: {
+                    text: 'M-成交量'
+                },
+                top: '85%',
+                height: '15%',
                 offset: 0
             }],
             series: [
@@ -292,11 +305,42 @@ function setupcharts(code, period, callback) {
                     type: 'line',
                     name: 'DEA',
                     lineWidth: 0.5,
+                    color: "red",
                     shadow: false,
                     dataGrouping: {
                         enabled: false
                     },
                     data: result.dea, tooltip: { valueDecimals: 2 }, yAxis: 2
+                }, {
+                    type: 'column',
+                    name: 'MACD',
+                    //colors: ['#00cc00', '#ff3232'],
+                    maxPointWidth: 1,
+                    shadow: false,
+                    dataGrouping: {
+                        enabled: false
+                    },
+                    data: result.macdvol, tooltip: { valueDecimals: 2 }, yAxis: 3
+                }, {
+                    type: 'line',
+                    name: 'DIF',
+                    color: "blue",
+                    lineWidth: 0.5,
+                    shadow: false,
+                    dataGrouping: {
+                        enabled: false
+                    },
+                    data: result.difvol, tooltip: { valueDecimals: 2 }, yAxis: 3
+                }, {
+                    type: 'line',
+                    name: 'DEA',
+                    color: "red",
+                    lineWidth: 0.5,
+                    shadow: false,
+                    dataGrouping: {
+                        enabled: false
+                    },
+                    data: result.deavol, tooltip: { valueDecimals: 2 }, yAxis: 3
                 }
             ]
         });
@@ -314,6 +358,9 @@ function candlestick(code, period) {
         chart.series[2].setData(result.macd);
         chart.series[3].setData(result.dif);
         chart.series[4].setData(result.dea);
+        chart.series[5].setData(result.macdvol);
+        chart.series[6].setData(result.difvol);
+        chart.series[7].setData(result.deavol);
         chart.setTitle({
             text: result.name
         });

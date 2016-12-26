@@ -38,9 +38,9 @@ namespace Trade.Data
             return series(p => p.high);
         }
 
-        public Series<double> volume()
+        public Series<double> volume(int units=1)
         {
-            return series(p => p.volume);
+            return series(p => p.volume/ units);
         }
 
         public Series<double> series(Func<kdatapoint, double> selector)
