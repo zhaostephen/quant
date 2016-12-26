@@ -221,6 +221,9 @@ function setupcharts(code, period, callback) {
                 {
                     data: result.data,
                     name: "价格",
+                    dataGrouping: {
+                        enabled: false
+                    },
                     tooltip: {
                         headerFormat:"",
                         pointFormatter: function () {
@@ -240,7 +243,14 @@ function setupcharts(code, period, callback) {
                         shared:true
                     },
                 },
-                { type: 'column', name: '成交量', data: result.volume, tooltip: { valueDecimals: 0}, yAxis: 1 }
+                {
+                    type: 'column',
+                    name: '成交量',
+                    dataGrouping: {
+                        enabled: false
+                    },
+                    data: result.volume, tooltip: { valueDecimals: 0 }, yAxis: 1
+                }
             ]
         });
     });
