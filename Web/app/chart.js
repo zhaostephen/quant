@@ -32,7 +32,7 @@ function getData(code, period, callback) {
             }
         }
 
-        colors = [];
+        var colors = [];
         for (var i = 0; i < result.data.length; ++i) {
             if (result.data[i][4] >= result.data[i][1])
                 colors.push("red");
@@ -313,7 +313,8 @@ function setupcharts(code, period, callback) {
                     type: 'column',
                     name: '成交量',
                     colors: result.colors,
-                    colorByPoint:true,
+                    colorByPoint: true,
+                    shadow: false,
                     dataGrouping: {
                         enabled: false
                     },
@@ -323,6 +324,8 @@ function setupcharts(code, period, callback) {
                 }, {
                     type: 'column',
                     name: 'MACD',
+                    color: "red",
+                    negativeColor: "forestgreen",
                     maxPointWidth: 1,
                     shadow: false,
                     dataGrouping: {
@@ -358,6 +361,8 @@ function setupcharts(code, period, callback) {
                 }, {
                     type: 'column',
                     name: 'MACD',
+                    color: "red",
+                    negativeColor:"forestgreen",
                     maxPointWidth: 1,
                     shadow: false,
                     dataGrouping: {
@@ -412,11 +417,11 @@ function candlestick(code, period) {
         chart.series[7].setData(result.macdvol);
         chart.series[8].setData(result.difvol);
         chart.series[9].setData(result.deavol);
-
-        chart.series[3].options.colors = result.colors;
-
         chart.setTitle({
             text: result.name
+        });
+        chart.series[3].update({
+            colors: result.colors
         });
         range(result);
         chart.hideLoading();

@@ -19,24 +19,25 @@
                k-data-text-field="'code'"
                k-data-source="basicnames"
                k-on-change="search()" />
+        <button class="btn btn-default" ng-click="search()" type="button" name="refresh" title="Refresh"><i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
         <br />
         <br />
-        <span style="font-weight:bold; font-size:xx-small">今日:{{analytic.date ? analytic.date : '-' }}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">涨跌:</span><span style="font-weight:bold;"  ng-style="{color:'red'}">
+        <span style="font-weight:bold; font-size:x-small">今日:{{analytic.date ? analytic.date : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">涨跌:</span><span style="font-weight:bold;"  ng-style="{color:'red'}">
             <span>{{analytic.change ? analytic.change : '-'  | number:2}}%</span>
         </span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">开盘:{{analytic.open ? analytic.open : '-'  | number:2}}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">最高:{{analytic.high ? analytic.high : '-'  | number:2}}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">最低:{{analytic.low ? analytic.low : '-'  | number:2}}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">收盘:{{analytic.close ? analytic.close : '-'  | number:2}}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">BETA:{{analytic.beta ? analytic.beta : '-' | number:2}}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">PE:{{analytic.PE ? analytic.PE : '-' | number:2}}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">状态判断:</span><span style="font-weight:bold; color:red">{{analytic.state ? analytic.state : '-' }}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">推荐仓位:</span><span style="font-weight:bold; color:red">{{analytic.position | number:0 }}%</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">推荐策略:</span><span style="font-weight:bold; color:red">{{analytic.strategy ? analytic.strategy : '-' }}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">MACD背离(底):</span><span style="font-weight:bold; color:red">{{analytic.deviation_up ? analytic.deviation_up : '-' }}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">MACD背离(顶):</span><span style="font-weight:bold; color:red">{{analytic.deviation_down ? analytic.deviation_down : '-' }}</span>
-        <span>|</span><span style="font-weight:bold; font-size:xx-small">均线:</span><span style="font-weight:bold; color:red">{{analytic.ma ? analytic.ma : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">开盘:{{analytic.open ? analytic.open : '-'  | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">最高:{{analytic.high ? analytic.high : '-'  | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">最低:{{analytic.low ? analytic.low : '-'  | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">收盘:{{analytic.close ? analytic.close : '-'  | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">BETA:{{analytic.beta ? analytic.beta : '-' | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">PE:{{analytic.PE ? analytic.PE : '-' | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">状态判断:</span><span style="font-weight:bold; color:red">{{analytic.state ? analytic.state : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">推荐仓位:</span><span style="font-weight:bold; color:red">{{analytic.position | number:0 }}%</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">推荐策略:</span><span style="font-weight:bold; color:red">{{analytic.strategy ? analytic.strategy : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(底):</span><span style="font-weight:bold; color:red">{{analytic.deviation_up ? analytic.deviation_up : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(顶):</span><span style="font-weight:bold; color:red">{{analytic.deviation_down ? analytic.deviation_down : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">均线:</span><span style="font-weight:bold; color:red">{{analytic.ma ? analytic.ma : '-' }}</span>
         @*<span>|</span><span style="font-weight:bold; font-size:xx-small">交易建议:</span><span style="font-weight:bold; color:red">{{analytic.buyorsell ? analytic.buyorsell : '-' }}</span>*@
     </p>
     <div id="container"></div>
