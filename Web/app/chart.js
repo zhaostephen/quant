@@ -40,6 +40,10 @@ function getData(code, period, callback) {
         setUtc("macdvol");
         setUtc("difvol");
         setUtc("deavol");
+        setUtc("ma5");
+        setUtc("ma30");
+        setUtc("ma60");
+        setUtc("ma120");
 
         keyhighdates = [];
         keylowdates = [];
@@ -62,13 +66,17 @@ function getData(code, period, callback) {
             macdvol: result.macdvol,
             difvol: result.difvol,
             deavol: result.deavol,
+            ma5: result.ma5,
+            ma30: result.ma30,
+            ma60: result.ma60,
+            ma120: result.ma120,
             keyhighdates: keyhighdates,
             keylowdates: keylowdates
         });
     });
 }
 function range(result) {
-    var count = result.data.length - Math.min(result.data.length, 120);
+    var count = result.data.length - Math.min(result.data.length, 150);
     Highcharts.charts[0].xAxis[0].setExtremes(result.data[count][0]);
 }
 
@@ -175,7 +183,7 @@ function setupcharts(code, period, callback) {
             },
             plotOptions: {
                 candlestick: {
-                    color: '#00cc00',
+                    color: '#228B22',
                     upColor: '#ff3232',
                     dataLabels: {
                         enabled: true,
@@ -243,7 +251,7 @@ function setupcharts(code, period, callback) {
                 offset: 0
             }, {
                 title: {
-                    text: 'M-成交量'
+                    text: 'M2-成交量'
                 },
                 top: '85%',
                 height: '15%',
@@ -259,88 +267,118 @@ function setupcharts(code, period, callback) {
                     tooltip: {
                         headerFormat: "",
                         pointFormatter: function () {
-                            var s = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x);
-                            s += '<br />开盘:<b>'
-                            + this.open
-                            + '</b><br />最高:<b>'
-                            + this.high
-                            + '</b><br />最低:<b>'
-                            + this.low
-                            + '</b><br />收盘:<b>'
-                            + this.close
+                            var s = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x).replace(" 00:00:00", "") + "<br />";
+                            s += '  开盘:<b>'+ this.open
+                            + '</b>  最高:<b>'+ this.high
+                            + '</b>  最低:<b>' + this.low
+                            + '</b>  收盘:<b>'+ this.close
                             + '</b>';
                             var cls = this.close >= this.open ? "red" : "green";
                             return "<span class='" + cls + "'>" + s + "</span><br/>";
                         },
+                        useHTML: true,
                         shared: true
                     },
                 }, {
+                    type: 'line',
+                    name: 'MA5',
+                    lineWidth: 1,
+                    shadow: false,
+                    dataGrouping: {
+                        enabled: false
+                    },
+                    data: result.ma5,
+                    tooltip: { valueDecimals: 2, pointFormatter: function () { return "MA5:<b>" + this.y + "</b>  "; } }
+                },{
+                    type: 'line',
+                    name: 'MA120',
+                    lineWidth: 1,
+                    shadow: false,
+                    dataGrouping: {
+                        enabled: false
+                    },
+                    data: result.ma120,
+                    tooltip: { valueDecimals: 2, pointFormatter: function () { return "MA120:<b>" + this.y + "</b>  "; } }
+                }, {
                     type: 'column',
                     name: '成交量',
+                    color:"red",
                     dataGrouping: {
                         enabled: false
                     },
-                    data: result.volume, tooltip: { valueDecimals: 0 }, yAxis: 1
+                    data: result.volume,
+                    tooltip: { valueDecimals: 2, pointFormatter: function () { return "<br/>成交量:<b>" + Highcharts.numberFormat(this.y / 100 / 10000,0).replace(" ","") + "</b>  "; } },
+                    yAxis: 1
                 }, {
                     type: 'column',
                     name: 'MACD',
-                    //colors: ['#00cc00', '#ff3232'],
                     maxPointWidth: 1,
                     shadow: false,
                     dataGrouping: {
                         enabled: false
                     },
-                    data: result.macd, tooltip: { valueDecimals: 2 }, yAxis: 2
+                    data: result.macd,
+                    tooltip: { valueDecimals: 2, pointFormatter: function () { return "<br/>M:<b>" + Highcharts.numberFormat(this.y, 2) + "</b>  "; } },
+                    yAxis: 2
                 }, {
                     type: 'line',
                     name: 'DIF',
-                    color: "blue",
-                    lineWidth: 0.5,
+                    color: "#000000",
+                    lineWidth: 1,
                     shadow: false,
                     dataGrouping: {
                         enabled: false
                     },
-                    data: result.dif, tooltip: { valueDecimals: 2 }, yAxis: 2
+                    data: result.dif,
+                    tooltip: { valueDecimals: 2, pointFormatter: function () { return "DIF:<b>" + Highcharts.numberFormat(this.y, 2) + "</b>  "; } },
+                    yAxis: 2
                 }, {
                     type: 'line',
                     name: 'DEA',
-                    lineWidth: 0.5,
-                    color: "red",
+                    lineWidth: 1,
+                    color: "#8B4513",
                     shadow: false,
                     dataGrouping: {
                         enabled: false
                     },
-                    data: result.dea, tooltip: { valueDecimals: 2 }, yAxis: 2
+                    data: result.dea,
+                    tooltip: { valueDecimals: 2, pointFormatter: function () { return "DEA:<b>" + Highcharts.numberFormat(this.y, 2) + "</b>  "; } },
+                    yAxis: 2
                 }, {
                     type: 'column',
                     name: 'MACD',
-                    //colors: ['#00cc00', '#ff3232'],
                     maxPointWidth: 1,
                     shadow: false,
                     dataGrouping: {
                         enabled: false
                     },
-                    data: result.macdvol, tooltip: { valueDecimals: 2 }, yAxis: 3
+                    data: result.macdvol,
+                    tooltip: { valueDecimals: 2, pointFormatter: function () { return "<br/>M2:<b>" + Highcharts.numberFormat(this.y, 2) + "</b>  "; } },
+                    yAxis: 3
                 }, {
                     type: 'line',
                     name: 'DIF',
-                    color: "blue",
-                    lineWidth: 0.5,
+                    color: "#000000",
+                    lineWidth: 1,
                     shadow: false,
                     dataGrouping: {
                         enabled: false
                     },
-                    data: result.difvol, tooltip: { valueDecimals: 2 }, yAxis: 3
+                    data: result.difvol,
+                    tooltip: { valueDecimals: 2, pointFormatter: function () { return "DIF2:<b>" + Highcharts.numberFormat(this.y, 2) + "</b>  "; } },
+                    yAxis: 3
                 }, {
                     type: 'line',
                     name: 'DEA',
-                    color: "red",
-                    lineWidth: 0.5,
+                    color: "#8B4513",
+                    lineWidth: 1,
                     shadow: false,
                     dataGrouping: {
                         enabled: false
                     },
-                    data: result.deavol, tooltip: { valueDecimals: 2 }, yAxis: 3
+                    data: result.deavol,
+                    tooltip: { valueDecimals: 2, pointFormatter: function () { return "DEA2:<b>" + Highcharts.numberFormat(this.y, 2) + "</b>  "; } },
+                    yAxis: 3
                 }
             ]
         });
