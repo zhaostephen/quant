@@ -32,6 +32,14 @@ function getData(code, period, callback) {
             }
         }
 
+        colors = [];
+        for (var i = 0; i < result.data.length; ++i) {
+            if (result.data[i][4] >= result.data[i][1])
+                colors.push("red");
+            else
+                colors.push("forestgreen");
+        }
+
         setUtc("data");
         setUtc("volume");
         setUtc("macd");
@@ -71,7 +79,8 @@ function getData(code, period, callback) {
             ma60: result.ma60,
             ma120: result.ma120,
             keyhighdates: keyhighdates,
-            keylowdates: keylowdates
+            keylowdates: keylowdates,
+            colors:colors
         });
     });
 }
@@ -103,6 +112,7 @@ function setupcharts(code, period, callback) {
             loading: '加载中...'
         },
     });
+
     getData(code, period, function (result) {
         Highcharts.stockChart('container', {
             chart: {
@@ -302,7 +312,8 @@ function setupcharts(code, period, callback) {
                 }, {
                     type: 'column',
                     name: '成交量',
-                    color:"red",
+                    colors: result.colors,
+                    colorByPoint:true,
                     dataGrouping: {
                         enabled: false
                     },
@@ -392,13 +403,18 @@ function candlestick(code, period) {
     chart.showLoading('请稍等...');
     getData(code, period, function (result) {
         chart.series[0].setData(result.data);
-        chart.series[1].setData(result.volume);
-        chart.series[2].setData(result.macd);
-        chart.series[3].setData(result.dif);
-        chart.series[4].setData(result.dea);
-        chart.series[5].setData(result.macdvol);
-        chart.series[6].setData(result.difvol);
-        chart.series[7].setData(result.deavol);
+        chart.series[1].setData(result.ma5);
+        chart.series[2].setData(result.ma120);
+        chart.series[3].setData(result.volume);
+        chart.series[4].setData(result.macd);
+        chart.series[5].setData(result.dif);
+        chart.series[6].setData(result.dea);
+        chart.series[7].setData(result.macdvol);
+        chart.series[8].setData(result.difvol);
+        chart.series[9].setData(result.deavol);
+
+        chart.series[3].options.colors = result.colors;
+
         chart.setTitle({
             text: result.name
         });
