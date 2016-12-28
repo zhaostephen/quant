@@ -191,6 +191,8 @@
     <Content Include="app\controllers\selectionCtrl.js" />
     <Content Include="app\controllers\strategyCtrl.js" />
     <Content Include="app\controllers\searchCtrl.js" />
+    <Content Include="app\directives\analysisDetail.html" />
+    <Content Include="app\directives\analysisDetail.js" />
     <Content Include="Content\bootstrap-table.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -571,7 +573,6 @@
     <Content Include="Views\Analysis\dapan.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="app\directives\" />
     <Folder Include="app\services\" />
     <Folder Include="Models\" />
   </ItemGroup>

@@ -12,7 +12,7 @@ namespace Web
                 .Include("~/app/chart.js")
                 .Include("~/app/application.js")
                 //.IncludeDirectory("~/app/services", "*.js", true)
-                //.IncludeDirectory("~/app/directives", "*.js", true)
+                .IncludeDirectory("~/app/directives", "*.js", true)
                 .IncludeDirectory("~/app/controllers", "*.js", true)
                 );
 

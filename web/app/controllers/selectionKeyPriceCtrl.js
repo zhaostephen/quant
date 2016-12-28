@@ -19,6 +19,14 @@
             }
         }
 
+        function detailFormatter(index, row) {
+            var html = [];
+            $.each(row, function (key, value) {
+                html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+            });
+            return html.join('');
+        }
+
         $scope.universe = {
             options: {
                 height: $(window).height()-70,
@@ -30,7 +38,9 @@
                 minimumCountColumns: 2,
                 showToggle: true,
                 sidePagination: "server",
-                showPaginationSwitch:true,
+                showPaginationSwitch: true,
+                detailView: true,
+                detailFormatter : detailFormatter,
                 url: root + 'api/hitkeyprice',
                 columns:
                 [

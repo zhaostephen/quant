@@ -2,25 +2,15 @@
     'use strict';
 
     var ctrl = ['$scope', '$http', function ($scope, $http) {
-        $scope.analytic = {};
-        $scope.getAnalytic = function (code, period) {
-            $http
-                .get(root + 'api/analytic/' + code + '/' + period)
-                .then(function (res) {
-                    $scope.analytic = res.data;
-                }, function (res) { });
-        }
-        $scope.select = function (code) {
-            if (!code || code == "")
-                return;
+        $scope.code = code;
+        $scope.type = "D";
+
+        setupcharts($scope.code, $scope.type, function (code, period) {
             $scope.code = code;
-            candlestick($scope.code, "D");
-            $scope.getAnalytic($scope.code, "D");
-        };
-        setupcharts(code, "D", function (code, period) {
-            $scope.getAnalytic(code, period);
+            $scope.type = period;
         });
-        $scope.select(code);
+
+        candlestick($scope.code, $scope.type);
     }];
 
     angular.module('app').controller('analyzeCtrl', ctrl)
