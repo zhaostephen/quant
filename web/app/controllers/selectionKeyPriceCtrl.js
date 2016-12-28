@@ -34,7 +34,11 @@
                 url: root + 'api/hitkeyprice',
                 columns:
                 [
-                    { field: 'code', title: '代码', align: 'center', valign: 'middle', sortable: true },
+                    {
+                        field: 'code', title: '代码', align: 'center', valign: 'middle', sortable: true,
+                        formatter: function (value) {
+                            return "<a target='blank' href='" + root + "analysis?code=" + value + "'>" + value + "</a>"
+                        }},
                     { field: 'name', title: '名称', align: 'center', valign: 'middle', sortable: true },
                     { field: 'changepercent', title: '涨跌%', align: 'center', valign: 'middle', sortable: true, formatter: N(2, true) },
                     { field: 'date', title: '关键日期', align: 'center', valign: 'middle', sortable: true, formatter: D() },

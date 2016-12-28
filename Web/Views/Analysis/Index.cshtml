@@ -1,46 +1,31 @@
 ﻿
 @{
-    ViewBag.Title = "大盘/指数分析";
+    ViewBag.Title = ViewBag.code;
 }
 
-<div ng-controller="analyzeIndexCtrl">
-    <div ng-repeat="m in analyticsList">
-        <h4 style="font-weight:bold; text-decoration:underline">{{m.name}}</h4>
-        <table class="table">
-            <tr>
-                <th>编码</th>
-                <th>名称</th>
-                <th>今日</th>
-                <th>涨跌</th>
-                <th>开盘</th>
-                <th>最高</th>
-                <th>最低</th>
-                <th>收盘</th>
-                <th>BETA</th>
-                <th>状态判断</th>
-                <th>推荐仓位</th>
-                <th>推荐策略</th>
-                <th>MACD背离(底)</th>
-                <th>MACD背离(顶)</th>
-            </tr>
-            <tr ng-repeat="analytic in m.analytics">
-                <td>{{analytic.code}}</td>
-                <td>{{analytic.name}}</td>
-                <td><span style="font-weight:bold; font-size:xx-small">{{analytic.date ? analytic.date : '-' }}</span></td>
-                <td><span style="font-weight:bold;" ng-style="{color:analytic.change>0 ? 'red' : 'green'}"><span>{{analytic.change ? analytic.change : '-'  | number:2}}%</span></span></td>
-                <td><span style="font-weight:bold; font-size:xx-small">{{analytic.open ? analytic.open : '-'  | number:2}}</span></td>
-                <td><span style="font-weight:bold; font-size:xx-small">{{analytic.high ? analytic.high : '-'  | number:2}}</span></td>
-                <td><span style="font-weight:bold; font-size:xx-small">{{analytic.low ? analytic.low : '-'  | number:2}}</span></td>
-                <td><span style="font-weight:bold; font-size:xx-small">{{analytic.close ? analytic.close : '-'  | number:2}}</span></td>
-                <td><span style="font-weight:bold; font-size:xx-small">{{analytic.beta ? analytic.beta : '-' | number:2}}</span></td>
-                <td><span style="font-weight:bold; color:red">{{analytic.state ? analytic.state : '-' }}</span></td>
-                <td><span style="font-weight:bold; color:red">{{analytic.position | number:0 }}%</span></td>
-                <td><span style="font-weight:bold; color:red">{{analytic.strategy ? analytic.strategy : '-' }}</span></td>
-                <td><span style="font-weight:bold; color:red">{{analytic.deviation_up ? analytic.deviation_up : '-' }}</span></td>
-                <td><span style="font-weight:bold; color:red">{{analytic.deviation_down ? analytic.deviation_down : '-' }}</span></td>
-            </tr>
-        </table>
-    </div>
+<script type="text/javascript">
+    var code = '@ViewBag.code';
+</script>
+<div class="jumbotron-condense jumbotron">
+    <p class="lead" style="font-size:medium" ng-controller="analyzeCtrl">
+        <span style="font-weight:bold; font-size:x-small">今日:{{analytic.date ? analytic.date : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">涨跌:</span><span style="font-weight:bold;" ng-style="{color:'red'}">
+            <span>{{analytic.change ? analytic.change : '-'  | number:2}}%</span>
+        </span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">开盘:{{analytic.open ? analytic.open : '-'  | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">最高:{{analytic.high ? analytic.high : '-'  | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">最低:{{analytic.low ? analytic.low : '-'  | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">收盘:{{analytic.close ? analytic.close : '-'  | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">BETA:{{analytic.beta ? analytic.beta : '-' | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">PE:{{analytic.PE ? analytic.PE : '-' | number:2}}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">状态判断:</span><span style="font-weight:bold; color:red">{{analytic.state ? analytic.state : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">推荐仓位:</span><span style="font-weight:bold; color:red">{{analytic.position | number:0 }}%</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">推荐策略:</span><span style="font-weight:bold; color:red">{{analytic.strategy ? analytic.strategy : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(底):</span><span style="font-weight:bold; color:red">{{analytic.deviation_up ? analytic.deviation_up : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(顶):</span><span style="font-weight:bold; color:red">{{analytic.deviation_down ? analytic.deviation_down : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">均线:</span><span style="font-weight:bold; color:red">{{analytic.ma ? analytic.ma : '-' }}</span>
+    </p>
+    <div id="container"></div>
 </div>
 
 

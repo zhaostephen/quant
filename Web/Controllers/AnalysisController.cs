@@ -8,7 +8,13 @@ namespace Web.Controllers
 {
     public class AnalysisController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string code)
+        {
+            ViewBag.code = code;
+            return View();
+        }
+
+        public ActionResult dapan()
         {
             return View();
         }

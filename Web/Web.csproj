@@ -186,6 +186,7 @@
     <Content Include="app\chart.js" />
     <Content Include="app\controllers\analyzeSectorCtrl.js" />
     <Content Include="app\controllers\analyzeIndexCtrl.js" />
+    <Content Include="app\controllers\analyzeCtrl.js" />
     <Content Include="app\controllers\selectionKeyPriceCtrl.js" />
     <Content Include="app\controllers\selectionCtrl.js" />
     <Content Include="app\controllers\strategyCtrl.js" />
@@ -563,10 +564,11 @@
     <Content Include="Scripts\kendo\2016.3.1118\messages\kendo.messages.zh-CN.min.js.map" />
     <Content Include="Views\Strategy\Index.cshtml" />
     <Content Include="Views\Selection\Index.cshtml" />
-    <Content Include="Views\Analysis\Index.cshtml" />
+    <Content Include="Views\Analysis\index.cshtml" />
     <Content Include="Views\Analysis\sector.cshtml" />
     <Content Include="Views\Analysis\singlename.cshtml" />
     <Content Include="Views\Selection\HitKeyPrice.cshtml" />
+    <Content Include="Views\Analysis\dapan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\directives\" />
