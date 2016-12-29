@@ -7,7 +7,6 @@
 
         $scope.search = function () {
             $scope.type = "D";
-            candlestick($scope.code, $scope.type);
         };
 
         $scope.select = function (code) {
@@ -15,7 +14,6 @@
                 return;
             $scope.code = code;
             $scope.type = "D";
-            candlestick($scope.code, $scope.type);
         };
 
         $scope.basicnames = new kendo.data.DataSource({
@@ -31,11 +29,6 @@
                         });
                 }
             }
-        });
-
-        setupcharts($scope.code, $scope.type, function (code, period) {
-            $scope.code = code;
-            $scope.type = period;
         });
     }];
 
