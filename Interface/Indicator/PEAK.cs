@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interface.Data;
+using System;
 using System.Linq;
 using Trade.Data;
 
@@ -7,7 +8,7 @@ namespace Trade.Indicator
     public enum PEAK_TYPE { low, high }
     public class PEAK : Series<double>
     {
-        public PEAK(kdata data, PEAK_TYPE type, int distance = 5)
+        public PEAK(kdata data, PEAK_TYPE type, int distance = 5, int M = 3)
         {
             switch (type)
             {
@@ -16,7 +17,9 @@ namespace Trade.Indicator
                         peak(data,
                             (a, prev, next) => a.low <= prev.low && a.low <= next.low,
                             p => new sValue<double>(p.date, p.low),
-                            distance);
+                            crosstype.gold,
+                            distance,
+                            M);
                         break;
                     }
                 case PEAK_TYPE.high:
@@ -24,7 +27,9 @@ namespace Trade.Indicator
                         peak(data,
                             (a, prev, next) => a.high >= prev.high && a.high >= next.high,
                             p => new sValue<double>(p.date, p.high),
-                            distance);
+                            crosstype.dead,
+                            distance,
+                            M);
                         break;
                     }
                 default:
@@ -32,7 +37,7 @@ namespace Trade.Indicator
             }
         }
 
-        public PEAK(kdata data, Func<kdatapoint,double> f, PEAK_TYPE type, int distance = 5)
+        public PEAK(kdata data, Func<kdatapoint,double> f, PEAK_TYPE type, int distance = 5, int M = 3)
         {
             switch (type)
             {
@@ -41,7 +46,9 @@ namespace Trade.Indicator
                         peak(data,
                             (a, prev, next) => f(a) <= f(prev) && f(a) <= f(next),
                             p => new sValue<double>(p.date, f(p)),
-                            distance);
+                            crosstype.gold,
+                            distance,
+                            M);
                         break;
                     }
                 case PEAK_TYPE.high:
@@ -49,7 +56,9 @@ namespace Trade.Indicator
                         peak(data,
                             (a, prev, next) => f(a) >= f(prev) && f(a) >= f(next),
                             p => new sValue<double>(p.date, f(p)),
-                            distance);
+                            crosstype.dead,
+                            distance,
+                            M);
                         break;
                     }
                 default:
@@ -61,8 +70,11 @@ namespace Trade.Indicator
             kdata points,
             Func<kdatapoint, kdatapoint, kdatapoint, bool> cmp,
             Func<kdatapoint, sValue<double>> ret,
-            int distance = 5)
+            crosstype confirmcross,
+            int distance,
+            int M)
         {
+            var crosses = new MACD(points.close()).cross();
             var count = points.Count;
             for (var i = distance + 1; i < count - distance; ++i)
             {
@@ -73,8 +85,20 @@ namespace Trade.Indicator
                         break;
                 }
                 if (j > distance)
-                    Add(ret(points[i]));
+                {
+                    if(confirm(points[i], crosses, confirmcross, M))
+                        Add(ret(points[i]));
+                }
             }
+        }
+
+        bool confirm(kdatapoint k, cross<macd>[] crosses, crosstype confirmcross, int M)
+        {
+            var cross = crosses.FirstOrDefault(p => p.value.Date >= k.date);
+            if (cross != null && cross.type == confirmcross)
+                return true;
+
+            return false;
         }
 
         public static implicit operator double?(PEAK o)
