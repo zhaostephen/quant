@@ -140,14 +140,13 @@
                     loading: '加载中...'
                 },
             });
-
             getData(code, period, function (result) {
                 Highcharts.stockChart(element, {
                     chart: {
                         type: 'candlestick',
                         zoomType: 'x',
                         backgroundColor: "#ffffff",
-                        height: $(window).height() - 290,
+                        height: Math.min($(window).height() - 290, 500),
                         width: 1000
                     },
                     credits: { enabled: false },
