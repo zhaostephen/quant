@@ -21,7 +21,7 @@
 
         function detailFormatter(index, row) {
             $scope.code = "'" + row.code + "'";
-            return $compile("<analysis code=\"'" + row.code + "'\"></div>")($scope);
+            return $compile("<analysis code=\"'" + row.code + "'\"></div>")(angular.copy($scope));
         }
 
         $scope.universe = {
@@ -44,7 +44,7 @@
                     {
                         field: 'code', title: '代码', align: 'center', valign: 'middle', sortable: true,
                         formatter: function (value) {
-                            return "<a target='blank' href='" + root + "analysis?code=" + value + "'>" + value + "</a>"
+                            return "<a target='_blank' href='" + root + "analysis?code=" + value + "'>" + value + "</a>"
                         }},
                     { field: 'name', title: '名称', align: 'center', valign: 'middle', sortable: true },
                     { field: 'changepercent', title: '涨跌%', align: 'center', valign: 'middle', sortable: true, formatter: N(2, true) },
