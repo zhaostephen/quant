@@ -1,5 +1,6 @@
 ﻿using Interface.Data;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Trade.Data;
 
@@ -67,38 +68,56 @@ namespace Trade.Indicator
         }
 
         private void peak(
-            kdata points,
+            kdata k,
             Func<kdatapoint, kdatapoint, kdatapoint, bool> cmp,
             Func<kdatapoint, sValue<double>> ret,
             crosstype confirmcross,
             int distance,
             int M)
         {
-            var crosses = new MACD(points.close()).cross();
-            var count = points.Count;
+            var count = k.Count;
             for (var i = distance + 1; i < count - distance; ++i)
             {
                 var j = 1;
                 for (; j <= distance; ++j)
                 {
-                    if (!cmp(points[i], points[i - j], points[i + j]))
+                    if (!cmp(k[i], k[i - j], k[i + j]))
                         break;
                 }
                 if (j > distance)
                 {
-                    if(confirm(points[i], crosses, confirmcross, M))
-                        Add(ret(points[i]));
+                    Add(ret(k[i]));
                 }
             }
+
+            confirm(k, confirmcross, M);
         }
 
-        bool confirm(kdatapoint k, cross<macd>[] crosses, crosstype confirmcross, int M)
+        void confirm(kdata k,crosstype confirmcross, int M)
         {
-            var cross = crosses.FirstOrDefault(p => p.value.Date >= k.date);
-            if (cross != null && cross.type == confirmcross)
-                return true;
+            var crosses = new MACD(k.close()).cross();
+            var list = new List<sValue<double>>();
+            DateTime? lastcrossdate = null;
+            foreach(var peak in this)
+            {
+                var cross = crosses.FirstOrDefault(p => p.value.Date >= peak.Date);
+                if (cross != null && cross.type == confirmcross)
+                {
+                    if (lastcrossdate == cross.value.Date)
+                    {
+                        list.RemoveAt(list.Count - 1);
+                        list.Add(peak);
+                    }
+                    else
+                    {
+                        list.Add(peak);
+                    }
+                    lastcrossdate = cross.value.Date;
+                }
+            }
 
-            return false;
+            Clear();
+            AddRange(list);
         }
 
         public static implicit operator double?(PEAK o)
