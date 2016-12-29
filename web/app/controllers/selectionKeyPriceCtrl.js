@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var ctrl = ['$scope', '$filter', function ($scope, $filter) {
+    var ctrl = ['$scope', '$filter', '$compile', function ($scope, $filter, $compile) {
         function N(digits, chg) {
             return function (value, row, index) {
                 var s = $filter('number')(value, digits);
@@ -20,11 +20,9 @@
         }
 
         function detailFormatter(index, row) {
-            var html = [];
-            $.each(row, function (key, value) {
-                html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-            });
-            return html.join('');
+            $scope.code = "'" + row.code + "'";
+            $scope.type = "'D'";
+            return $compile("<div analysis-detail code=\"'" + row.code + "'\" type=\"'D'\"></div>")($scope);
         }
 
         $scope.universe = {

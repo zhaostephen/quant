@@ -119,7 +119,7 @@ function setupcharts(code, period, callback) {
                 type: 'candlestick',
                 zoomType: 'x',
                 backgroundColor: "#ffffff",
-                height: 500,
+                height: $(window).height()-290,
                 width: 1000
             },
             credits: { enabled: false },

@@ -6,10 +6,8 @@
 <script type="text/javascript">
     var code = '@ViewBag.code';
 </script>
-<div class="jumbotron-condense jumbotron">
-    <div ng-controller="analyzeCtrl">
-        <div analysis-detail code="code" type="type"></div>
-    </div>
+<div class="jumbotron-condense jumbotron" ng-controller="analyzeCtrl">
+    <div analysis-detail code="code" type="type"></div>
     <div id="container"></div>
 </div>
 

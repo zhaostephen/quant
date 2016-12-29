@@ -9,18 +9,14 @@
                 .then(function (res) {
                     $scope.analytic = res.data;
                 }, function (res) { });
-        }
+        };
         $scope.refresh();
     }]);
 
     var analysisDetail = ["$http", function ($http) {
         var directive = {
             link: function (scope, element, attrs) {
-                //scope.$watch(attr.value, function (newVal) {
-                //    scope.date = newVal;
-                //});
             },
-            transclude: true,
             replace: true,
             scope: {
                 code: "=",

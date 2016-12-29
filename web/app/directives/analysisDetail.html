@@ -1,4 +1,4 @@
-﻿<p class="lead" style="font-size:medium">
+﻿<div class="lead" style="font-size:medium">
     <span style="font-weight:bold; font-size:x-small">今日:{{analytic.date ? analytic.date : '-' }}</span>
     <span>|</span><span style="font-weight:bold; font-size:x-small">涨跌:</span><span style="font-weight:bold;" ng-style="{color:'red'}">
         <span>{{analytic.change ? analytic.change : '-'  | number:2}}%</span>
@@ -15,4 +15,4 @@
     <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(底):</span><span style="font-weight:bold; color:red">{{analytic.deviation_up ? analytic.deviation_up : '-' }}</span>
     <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(顶):</span><span style="font-weight:bold; color:red">{{analytic.deviation_down ? analytic.deviation_down : '-' }}</span>
     <span>|</span><span style="font-weight:bold; font-size:x-small">均线:</span><span style="font-weight:bold; color:red">{{analytic.ma ? analytic.ma : '-' }}</span>
-</p>
+</div>
