@@ -58,6 +58,7 @@ namespace Trade
                      where k.Flag == KeyPrice.Flags.lower 
                         && Math.Abs((t.low / k.Price - 1) * 100d) <= 0.5
                         && t.changepercent>=0.01 && t.changepercent <= 0.5
+                        && Math.Abs((k.Date - DateTime.Today).TotalDays) >= 21
                      select new { k, t }
                     ).Select(_ =>
                     {

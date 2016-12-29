@@ -87,9 +87,70 @@
                 });
             });
         }
+
+        var textMAElement = null;
+        var volumeElement = null;
+        var macdElement = null;
+        var macdvolElement = null;
+
+        function drawtext(element, text, height, color) {
+            var chart = Highcharts.charts[0];
+            if (element) {
+                element.element.remove();
+            }
+            return chart.renderer
+                .text(text, 20, height)
+                .add()
+                .css({ fontWeight: 'bold', fontSize: "xx-small", color: color });
+        }
+
+        function drawindicators(result)
+        {
+            var open = result.data[result.data.length - 1][1];
+            var high = result.data[result.data.length - 1][2];
+            var low = result.data[result.data.length - 1][3];
+            var close = result.data[result.data.length - 1][4];
+            var volume = result.volume[result.volume.length - 1][1];
+            var ma5 = result.ma5[result.ma5.length - 1][1];
+            var ma120 = result.ma120[result.ma120.length - 1][1];
+            var macd = result.macd[result.macd.length - 1][1];
+            var dea = result.dea[result.dea.length - 1][1];
+            var dif = result.dif[result.dif.length - 1][1];
+            var macdvol = result.macdvol[result.macdvol.length - 1][1];
+            var deavol = result.deavol[result.deavol.length - 1][1];
+            var difvol = result.difvol[result.difvol.length - 1][1];
+
+            var chart = Highcharts.charts[0];
+            var height = chart.options.chart.height - 90 - 54 - 46;
+
+            textMAElement = drawtext(
+                textMAElement,
+                "现价:" + close + " 开盘:" + open + " 最高:" + high + " 最低:" + low + " MA5:" + ma5 + " MA120:" + ma120,
+                 90,
+                 close >= open ? "red" : "green");
+
+            volumeElement = drawtext(
+                volumeElement,
+                 "成交量:" + volume,
+                 height * 0.55 + 90,
+                 close >= open ? "red" : "green");
+
+            macdElement = drawtext(
+                  macdElement,
+                   "DIF:" + dif + " DEA:" + dea + " M:" + macd,
+                   height * 0.7 + 90,
+                   macd >= 0 ? "red" : "green");
+
+            macdvolElement =  drawtext(
+                  macdvolElement,
+                   "DIF:" + difvol + " DEA:" + deavol + " M:" + macdvol,
+                   height * 0.85 + 90,
+                   macdvol >= 0 ? "red" : "green");
+        }
         function range(result) {
             var count = result.data.length - Math.min(result.data.length, 150);
             Highcharts.charts[0].xAxis[0].setExtremes(result.data[count][0]);
+            drawindicators(result);
         }
         function candlestick(code, period) {
             var chart = Highcharts.charts[0];

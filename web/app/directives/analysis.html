@@ -1,7 +1,7 @@
 ﻿<div>
     <div class="lead" style="font-size:medium">
         <span style="font-weight:bold; font-size:x-small">今日:{{analytic.date ? analytic.date : '-' }}</span>
-        <span>|</span><span style="font-weight:bold; font-size:x-small">涨跌:</span><span style="font-weight:bold;" ng-style="{color:'red'}">
+        <span>|</span><span style="font-weight:bold; font-size:x-small">涨跌:</span><span style="font-weight:bold;" ng-style="{color:analytic.change>=0?'red':'green'}">
             <span>{{analytic.change ? analytic.change : '-'  | number:2}}%</span>
         </span>
         <span>|</span><span style="font-weight:bold; font-size:x-small">开盘:{{analytic.open ? analytic.open : '-'  | number:2}}</span>

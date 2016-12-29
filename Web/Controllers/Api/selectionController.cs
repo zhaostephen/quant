@@ -48,7 +48,7 @@ namespace Web.Controllers.Api
             if (limit.HasValue && offset.HasValue)
                 r = r.Skip(offset.Value).Take(limit.Value).ToArray();
 
-            order = order ?? "changepercent";
+            order = order ?? "cross";
             sort = sort ?? "desc";
 
             if (sort == "asc")
