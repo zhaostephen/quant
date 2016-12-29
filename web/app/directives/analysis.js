@@ -224,12 +224,13 @@
                             upColor: '#ff3232',
                             dataLabels: {
                                 enabled: true,
+                                allowOverlap:true,
                                 useHTML: true,
                                 formatter: function () {
                                     var high = (keyhighdates.indexOf(this.x) != -1);
                                     var low = (keylowdates.indexOf(this.x) != -1);
 
-                                    var label = high ? this.point.high : low ? this.point.low : "";
+                                    var label = high ? this.point.high : (low ? this.point.low : "");
                                     if (label != "") {
                                         var css = high ? "small-high-label" : "small-low-label";
                                         var bottom = 0;

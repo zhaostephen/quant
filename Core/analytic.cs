@@ -56,8 +56,8 @@ namespace Trade
             var q = (from k in keyprices
                      join t in todayquotes on k.Code equals t.code
                      where k.Flag == KeyPrice.Flags.lower 
-                        && Math.Abs((t.low / k.Price - 1) * 100d) < 1
-                        && t.changepercent>=0.01 && t.changepercent <= 0.5
+                        //&& Math.Abs((t.low / k.Price - 1) * 100d) < 1
+                        //&& t.changepercent>=0.01 && t.changepercent <= 0.5
                      select new { k, t }
                     ).Select(_ =>
                     {

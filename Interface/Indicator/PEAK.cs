@@ -19,6 +19,7 @@ namespace Trade.Indicator
                             (a, prev, next) => a.low <= prev.low && a.low <= next.low,
                             p => new sValue<double>(p.date, p.low),
                             crosstype.gold,
+                            type,
                             distance,
                             M);
                         break;
@@ -29,6 +30,7 @@ namespace Trade.Indicator
                             (a, prev, next) => a.high >= prev.high && a.high >= next.high,
                             p => new sValue<double>(p.date, p.high),
                             crosstype.dead,
+                            type,
                             distance,
                             M);
                         break;
@@ -48,6 +50,7 @@ namespace Trade.Indicator
                             (a, prev, next) => f(a) <= f(prev) && f(a) <= f(next),
                             p => new sValue<double>(p.date, f(p)),
                             crosstype.gold,
+                            type,
                             distance,
                             M);
                         break;
@@ -58,6 +61,7 @@ namespace Trade.Indicator
                             (a, prev, next) => f(a) >= f(prev) && f(a) >= f(next),
                             p => new sValue<double>(p.date, f(p)),
                             crosstype.dead,
+                            type,
                             distance,
                             M);
                         break;
@@ -72,6 +76,7 @@ namespace Trade.Indicator
             Func<kdatapoint, kdatapoint, kdatapoint, bool> cmp,
             Func<kdatapoint, sValue<double>> ret,
             crosstype confirmcross,
+            PEAK_TYPE type,
             int distance,
             int M)
         {
@@ -90,10 +95,10 @@ namespace Trade.Indicator
                 }
             }
 
-            confirm(k, confirmcross, M);
+            confirm(k, confirmcross, type, M);
         }
 
-        void confirm(kdata k,crosstype confirmcross, int M)
+        void confirm(kdata k,crosstype confirmcross, PEAK_TYPE type, int M)
         {
             var crosses = new MACD(k.close()).cross();
             var list = new List<sValue<double>>();
@@ -105,8 +110,23 @@ namespace Trade.Indicator
                 {
                     if (lastcrossdate == cross.value.Date)
                     {
-                        list.RemoveAt(list.Count - 1);
-                        list.Add(peak);
+                        switch (type)
+                        {
+                            case PEAK_TYPE.high:
+                                if (peak.Value > list[list.Count - 1].Value)
+                                {
+                                    list.RemoveAt(list.Count - 1);
+                                    list.Add(peak);
+                                }
+                                break;
+                            case PEAK_TYPE.low:
+                                if (peak.Value < list[list.Count - 1].Value)
+                                {
+                                    list.RemoveAt(list.Count - 1);
+                                    list.Add(peak);
+                                }
+                                break;
+                        }
                     }
                     else
                     {
