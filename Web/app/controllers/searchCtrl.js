@@ -11,6 +11,7 @@
 
         $scope.select = function (code) {
             $scope.code = code;
+            $scope.searchcode = code;
         };
 
         $scope.basicnames = new kendo.data.DataSource({
