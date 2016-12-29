@@ -1,10 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('app').controller('analysisChartCtrl', ['$scope', '$http', function ($scope, $http) {
-        $scope.code = "sh";
-        $scope.type = "D";
-
+    angular.module('app').controller('analysisCtrl', ['$scope', '$http', function ($scope, $http) {
         var keyhighdates = [];
         var keylowdates = [];
         var currentcode = "";
@@ -120,7 +117,7 @@
                 chart.hideLoading();
             });
         }
-        function setupcharts(element,code, period, callback) {
+        function setupcharts(element, code, period, callback) {
             if (chartssetup) {
                 return;
             }
@@ -433,39 +430,55 @@
             });
         }
 
-        $scope.$on('redraw', function (e,data) {
-            $scope.code = data.code;
-            $scope.type = data.type;
+        $scope.type = "D";
+        $scope.analytic = {};
+        
+        $scope.$watch('code', function (newValue) {
+            $scope.code = newValue;
+
             candlestick($scope.code, $scope.type);
+
+            $scope.refresh();
         });
 
         this.setupcharts = function (element) {
-            var id = "id"+$scope.code;
+            var id = "id" + $scope.code;
             $(element).attr("id", id);
             setupcharts(id, $scope.code, $scope.type, function (code, period) {
                 $scope.code = code;
                 $scope.type = period;
-                $scope.$parent.$broadcast('redraw', { code: $scope.code, type: $scope.type });
             });
         }
+
+        $scope.refresh = function () {
+            $http
+                .get(root + 'api/analytic/' + $scope.code + '/' + $scope.type)
+                .then(function (res) {
+                    $scope.analytic = res.data;
+                }, function (res) { });
+        };
+
+        $scope.refresh();
     }]);
 
-    var analysisChart = ["$http", function ($http) {
+    var analysisDetail = ["$http", function ($http) {
         var directive = {
             link: function (scope, element, attrs, chartCtrl) {
-                chartCtrl.setupcharts(element);
+                if (scope.showChart) {
+                    chartCtrl.setupcharts($(element).find("div")[1]);
+                }
             },
             replace: true,
             scope: {
                 code: "=",
-                type: "="
+                showChart: "&"
             },
-            controller: 'analysisChartCtrl',
-            templateUrl: root + 'app/directives/analysisChart.html',
+            controller: 'analysisCtrl',
+            templateUrl: root + 'app/directives/analysis.html',
             restrict: 'EA'
         };
         return directive;
     }];
 
-    angular.module('app').directive('analysisChart', analysisChart);
+    angular.module('app').directive('analysis', analysisDetail);
 })();

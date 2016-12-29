@@ -185,15 +185,12 @@
     <Content Include="app\application.js" />
     <Content Include="app\controllers\analyzeSectorCtrl.js" />
     <Content Include="app\controllers\analyzeIndexCtrl.js" />
-    <Content Include="app\controllers\analyzeCtrl.js" />
     <Content Include="app\controllers\selectionKeyPriceCtrl.js" />
     <Content Include="app\controllers\selectionCtrl.js" />
     <Content Include="app\controllers\strategyCtrl.js" />
     <Content Include="app\controllers\searchCtrl.js" />
-    <Content Include="app\directives\analysisChart.js" />
-    <Content Include="app\directives\analysisChart.html" />
-    <Content Include="app\directives\analysisDetail.html" />
-    <Content Include="app\directives\analysisDetail.js" />
+    <Content Include="app\directives\analysis.html" />
+    <Content Include="app\directives\analysis.js" />
     <Content Include="Content\bootstrap-table.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />

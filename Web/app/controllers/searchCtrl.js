@@ -3,19 +3,14 @@
 
     var ctrl = ['$scope', '$http', function ($scope, $http) {
         $scope.code = 'sh';
-        $scope.type = 'D';
+        $scope.searchcode = 'sh';
 
         $scope.search = function () {
-            $scope.type = "D";
-            $scope.$broadcast('redraw', { code: $scope.code, type: $scope.type });
+            $scope.code = $scope.searchcode;
         };
 
         $scope.select = function (code) {
-            if (!code || code == "")
-                return;
             $scope.code = code;
-            $scope.type = "D";
-            $scope.$broadcast('redraw', { code: $scope.code, type: $scope.type });
         };
 
         $scope.basicnames = new kendo.data.DataSource({

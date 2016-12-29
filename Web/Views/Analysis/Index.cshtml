@@ -3,12 +3,8 @@
     ViewBag.Title = ViewBag.code;
 }
 
-<script type="text/javascript">
-    var code = '@ViewBag.code';
-</script>
-<div class="jumbotron-condense jumbotron" ng-controller="analyzeCtrl">
-    <div analysis-detail code="code" type="type"></div>
-    <div analysis-chart code="code" type="type"></div>
+<div class="jumbotron-condense jumbotron">
+    <analysis code="'@ViewBag.code'" show-chart="true"></analysis>
 </div>
 
 

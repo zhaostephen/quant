@@ -15,14 +15,13 @@
         <input id="querycode"
                type="text"
                kendo-auto-complete k-template="'#= code # | #= name # | #= assettype #'"
-               ng-model="code"
+               ng-model="searchcode"
                k-data-text-field="'code'"
                k-data-source="basicnames"
                k-on-change="search()" />
         <button class="btn btn-default" ng-click="search()" type="button" name="refresh" title="Refresh"><i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
         <br />
         <br />
-        <div analysis-detail code="code" type="type"></div>
-        <div analysis-chart code="code" type="type"></div>
+        <analysis code="code" show-chart="true"></analysis>
     </div>
 </div>

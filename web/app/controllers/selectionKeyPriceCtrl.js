@@ -21,8 +21,7 @@
 
         function detailFormatter(index, row) {
             $scope.code = "'" + row.code + "'";
-            $scope.type = "'D'";
-            return $compile("<div analysis-detail code=\"'" + row.code + "'\" type=\"'D'\"></div>")($scope);
+            return $compile("<analysis code=\"'" + row.code + "'\"></div>")($scope);
         }
 
         $scope.universe = {
