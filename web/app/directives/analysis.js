@@ -146,7 +146,7 @@
                         type: 'candlestick',
                         zoomType: 'x',
                         backgroundColor: "#ffffff",
-                        height: Math.min($(window).height() - 290, 500),
+                        height: Math.max($(window).height() - 290, 500),
                         width: 1000
                     },
                     credits: { enabled: false },
