@@ -433,12 +433,19 @@
             });
         }
 
+        $scope.$on('redraw', function (e,data) {
+            $scope.code = data.code;
+            $scope.type = data.type;
+            candlestick($scope.code, $scope.type);
+        });
+
         this.setupcharts = function (element) {
             var id = "id"+$scope.code;
             $(element).attr("id", id);
             setupcharts(id, $scope.code, $scope.type, function (code, period) {
                 $scope.code = code;
                 $scope.type = period;
+                $scope.$parent.$broadcast('redraw', { code: $scope.code, type: $scope.type });
             });
         }
     }]);

@@ -10,6 +10,11 @@
                     $scope.analytic = res.data;
                 }, function (res) { });
         };
+        $scope.$on('redraw', function (e, data) {
+            $scope.code = data.code;
+            $scope.type = data.type;
+            $scope.refresh();
+        });
         $scope.refresh();
     }]);
 

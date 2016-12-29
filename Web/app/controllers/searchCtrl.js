@@ -7,6 +7,7 @@
 
         $scope.search = function () {
             $scope.type = "D";
+            $scope.$broadcast('redraw', { code: $scope.code, type: $scope.type });
         };
 
         $scope.select = function (code) {
@@ -14,6 +15,7 @@
                 return;
             $scope.code = code;
             $scope.type = "D";
+            $scope.$broadcast('redraw', { code: $scope.code, type: $scope.type });
         };
 
         $scope.basicnames = new kendo.data.DataSource({
