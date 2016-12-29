@@ -23,14 +23,15 @@ namespace Web.Controllers.Api
             var since = Trade.Cfg.Configuration.data.bearcrossbull;
             var k = kdata.Where(p => p.date >= since).ToArray();
             var macd = new MACD(kdata.close()).Where(p => p.Date >= since).ToArray();
-            var macdvol = new MACD(kdata.volume(100 * 10000)).Where(p => p.Date >= since).ToArray();
-            var ma5 = new MA(kdata.close(), 5).Where(p => p.Date >= since).ToArray();
-            var ma30 = new MA(kdata.close(), 30).Where(p => p.Date >= since).ToArray();
-            var ma60 = new MA(kdata.close(), 60).Where(p => p.Date >= since).ToArray();
-            var ma120 = new MA(kdata.close(), 120).Where(p => p.Date >= since).ToArray();
+            var macdvol = new MACD(kdata.volume(100)).Where(p => p.Date >= since).ToArray();
+            var ma5 = new MA(kdata.close(), 5).Range(since);
+            var ma30 = new MA(kdata.close(), 30).Range(since);
+            var ma60 = new MA(kdata.close(), 60).Range(since);
+            var ma120 = new MA(kdata.close(), 120).Range(since);
+            var chg = new CHG(kdata.close()).Range(since);
             return new chart {
-                data = k.Select(p => new object[] { p.date, p.open, p.high, p.low, p.close }).ToArray(),
-                volume = k.Select(p => new object[] { p.date, p.volume/ 100 * 10000 }).ToArray(),
+                data = k.Select(p => new object[] { p.date, p.open, p.high, p.low, p.close, chg[p.date] }).ToArray(),
+                volume = k.Select(p => new object[] { p.date, p.volume/ 100 }).ToArray(),
                 macd = macd.Select(p => new object[] { p.Date, p.MACD }).ToArray(),
                 dif = macd.Select(p => new object[] { p.Date, p.DIF }).ToArray(),
                 dea = macd.Select(p => new object[] { p.Date, p.DEA }).ToArray(),

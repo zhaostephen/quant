@@ -23,6 +23,16 @@ namespace Trade.Data
                 return v.Value;
             }
         }
+
+        public void Add(DateTime t, T value)
+        {
+            Add(new sValue<T>(t, value));
+        }
+
+        public Series<T> Range(DateTime fromInclusive)
+        {
+            return new Series<T>(this.Where(p => p.Date >= fromInclusive).ToArray());
+        }
     }
 
     public class sValue<T> where T : IComparable

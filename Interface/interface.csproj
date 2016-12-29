@@ -60,6 +60,7 @@
     <Compile Include="Indicator\EMA.cs" />
     <Compile Include="Indicator\JAX.cs" />
     <Compile Include="Indicator\KDJ.cs" />
+    <Compile Include="Indicator\CHG.cs" />
     <Compile Include="Indicator\MA.cs" />
     <Compile Include="Indicator\MACD.cs" />
     <Compile Include="Indicator\PEAK.cs" />

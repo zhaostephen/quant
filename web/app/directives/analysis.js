@@ -37,7 +37,7 @@
 
                 var colors = [];
                 for (var i = 0; i < result.data.length; ++i) {
-                    if (result.data[i][4] >= result.data[i][1])
+                    if (result.data[i][5]>=0)
                         colors.push("red");
                     else
                         colors.push("forestgreen");
@@ -104,36 +104,43 @@
                 .css({ fontWeight: 'bold', fontSize: "xx-small", color: color });
         }
 
-        function drawindicators(result)
+        function drawindicators(result,index)
         {
-            var open = result.data[result.data.length - 1][1];
-            var high = result.data[result.data.length - 1][2];
-            var low = result.data[result.data.length - 1][3];
-            var close = result.data[result.data.length - 1][4];
-            var volume = result.volume[result.volume.length - 1][1];
-            var ma5 = result.ma5[result.ma5.length - 1][1];
-            var ma120 = result.ma120[result.ma120.length - 1][1];
-            var macd = result.macd[result.macd.length - 1][1];
-            var dea = result.dea[result.dea.length - 1][1];
-            var dif = result.dif[result.dif.length - 1][1];
-            var macdvol = result.macdvol[result.macdvol.length - 1][1];
-            var deavol = result.deavol[result.deavol.length - 1][1];
-            var difvol = result.difvol[result.difvol.length - 1][1];
+            if (angular.isUndefined(index))
+                index = result.data.length - 1;
+
+            var date = result.data[index][0];
+            var open = result.data[index][1];
+            var high = result.data[index][2];
+            var low = result.data[index][3];
+            var close = result.data[index][4];
+            var chg = result.data[index][5];
+            var volume = result.volume[index][1];
+            var ma5 = result.ma5[index][1];
+            var ma120 = result.ma120[index][1];
+            var macd = result.macd[index][1];
+            var dea = result.dea[index][1];
+            var dif = result.dif[index][1];
+            var macdvol = result.macdvol[index][1];
+            var deavol = result.deavol[index][1];
+            var difvol = result.difvol[index][1];
 
             var chart = Highcharts.charts[0];
             var height = chart.options.chart.height - 90 - 54 - 46;
 
             textMAElement = drawtext(
                 textMAElement,
-                "现价:" + close + " 开盘:" + open + " 最高:" + high + " 最低:" + low + " MA5:" + ma5 + " MA120:" + ma120,
+                Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', date).replace(" 00:00:00", "") +
+                " 涨跌:" + chg + "%" + " 现价:" + close + " 开盘:" + open + " 最高:" + high + " 最低:" + low + " MA5:" + ma5 +
+                " MA120:" + ma120,
                  90,
-                 close >= open ? "red" : "green");
+                 chg ? "red" : "green");
 
             volumeElement = drawtext(
                 volumeElement,
                  "成交量:" + volume,
                  height * 0.55 + 90,
-                 close >= open ? "red" : "green");
+                 chg ? "red" : "green");
 
             macdElement = drawtext(
                   macdElement,
@@ -366,16 +373,19 @@
                             tooltip: {
                                 headerFormat: "",
                                 pointFormatter: function () {
+                                    drawindicators(result, this.index);
+                                    var chg = result.data[this.index][5];
+
                                     var s = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x).replace(" 00:00:00", "") + "<br />";
-                                    s += '  开盘:<b>' + this.open
-                                    + '</b>  最高:<b>' + this.high
-                                    + '</b>  最低:<b>' + this.low
-                                    + '</b>  收盘:<b>' + this.close
-                                    + '</b>';
-                                    var cls = this.close >= this.open ? "red" : "green";
-                                    return "<span class='" + cls + "'>" + s + "</span><br/>";
+                                    s += '涨跌:' + chg + "%"
+                                    + ' 开盘:' + this.open
+                                    + ' 最高:' + this.high
+                                    + ' 最低:' + this.low
+                                    + ' 收盘:' + this.close;
+                                    var cls = chg >= 0 ? "red" : "green";
+                                    return "<span style='color:" + cls + "'>" + s + "</span><br/>";
                                 },
-                                useHTML: true,
+                                useHTML: false,
                                 shared: true
                             },
                         }, {
@@ -408,7 +418,7 @@
                                 enabled: false
                             },
                             data: result.volume,
-                            tooltip: { valueDecimals: 2, pointFormatter: function () { return "<br/>成交量:<b>" + Highcharts.numberFormat(this.y / 100 / 10000, 0).replace(" ", "") + "</b>  "; } },
+                            tooltip: { valueDecimals: 2, pointFormatter: function () { return "<br/>成交量(手):<b>" + Highcharts.numberFormat(this.y, 0).replace(" ", "") + "</b>  "; } },
                             yAxis: 1
                         }, {
                             type: 'column',
