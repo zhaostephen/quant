@@ -55,6 +55,7 @@
     <Compile Include="Data\macd.cs" />
     <Compile Include="Data\Series.cs" />
     <Compile Include="Indicator\ADJUST.cs" />
+    <Compile Include="Indicator\BOTTOM.cs" />
     <Compile Include="Indicator\CCI.cs" />
     <Compile Include="Indicator\DMA.cs" />
     <Compile Include="Indicator\EMA.cs" />

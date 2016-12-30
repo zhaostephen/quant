@@ -60,6 +60,7 @@
                     setUtc("ma30");
                     setUtc("ma60");
                     setUtc("ma120");
+                    setUtc("bottom");
 
                     keyhighdates = [];
                     keylowdates = [];
@@ -71,6 +72,15 @@
                         else {
                             keylowdates.push(utc(keyprices[i].Date));
                         }
+                    }
+
+                    var bottom = [];
+                    for (var i = 0; i < result.bottom.length; ++i) {
+                        bottom.push({
+                            x: result.bottom[i][0],
+                            title: "B",
+                            text:"B"
+                        });
                     }
 
                     $scope.result = {
@@ -89,7 +99,8 @@
                         ma120: result.ma120,
                         keyhighdates: keyhighdates,
                         keylowdates: keylowdates,
-                        colors: colors
+                        colors: colors,
+                        bottom: bottom
                     };
                     callback($scope.result);
                 });
@@ -181,6 +192,7 @@
                 chart.series[7].setData(result.macdvol);
                 chart.series[8].setData(result.difvol);
                 chart.series[9].setData(result.deavol);
+                chart.series[10].setData(result.bottom);
                 chart.setTitle({
                     text: result.name
                 });
@@ -373,6 +385,7 @@
                 }],
                 series: [
                     {
+                        id: 'dataseries',
                         name: "价格",
                         dataGrouping: {
                             enabled: false
@@ -483,6 +496,15 @@
                         },
                         tooltip: { valueDecimals: 2, pointFormatter: function () { return "DEA2:<b>" + Highcharts.numberFormat(this.y, 2) + "</b>  "; } },
                         yAxis: 3
+                    }, {
+                        type: 'flags',
+                        onSeries: 'dataseries',
+                        shape: 'circlepin',
+                        title: "<span style='color:red'>B<span>",
+                        color: "red",
+                        useHTML:"true",
+                        width: 5,
+                        y:-30
                     }
                 ]
             });

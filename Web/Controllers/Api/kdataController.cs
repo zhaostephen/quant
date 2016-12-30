@@ -10,6 +10,7 @@ using Interace.Attribution;
 using Trade.Cfg;
 using Trade.Indicator;
 using Trade.Data;
+using Interface.Indicator;
 
 namespace Web.Controllers.Api
 {
@@ -29,6 +30,8 @@ namespace Web.Controllers.Api
             var ma60 = new MA(kdata.close(), 60).Range(since);
             var ma120 = new MA(kdata.close(), 120).Range(since);
             var chg = new CHG(kdata.close()).Range(since);
+             var bottom = new BOTTOM(kdata).Range(since);
+            
             return new chart {
                 data = k.Select(p => new object[] { p.date, p.open, p.high, p.low, p.close, chg[p.date] }).ToArray(),
                 volume = k.Select(p => new object[] { p.date, p.volume/ 100 }).ToArray(),
@@ -44,6 +47,7 @@ namespace Web.Controllers.Api
                 ma120 = ma120.Select(p => new object[] { p.Date, p.Value }).ToArray(),
                 code = kdata.Code,
                 name = basic.name,
+                bottom = bottom.Select(p => new object[] { p.Date, p.Value }).ToArray(),
                 keyprices = keyprice(k, id, ktype)
             };
         }
@@ -79,6 +83,7 @@ namespace Web.Controllers.Api
         public object[][] ma30 { get; set; }
         public object[][] ma60 { get; set; }
         public object[][] ma120 { get; set; }
+        public object[][] bottom { get; set; }
         public string code { get; set; }
         public string name { get; set; }
     }

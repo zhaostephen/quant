@@ -9,7 +9,7 @@ namespace Trade.Indicator
     public enum PEAK_TYPE { low, high }
     public class PEAK : Series<double>
     {
-        public PEAK(kdata data, PEAK_TYPE type, int distance = 5, int M = 3)
+        public PEAK(kdata data, PEAK_TYPE type, int distance = 5, bool reconfirm = true)
         {
             switch (type)
             {
@@ -21,7 +21,7 @@ namespace Trade.Indicator
                             crosstype.gold,
                             type,
                             distance,
-                            M);
+                            reconfirm);
                         break;
                     }
                 case PEAK_TYPE.high:
@@ -32,7 +32,7 @@ namespace Trade.Indicator
                             crosstype.dead,
                             type,
                             distance,
-                            M);
+                            reconfirm);
                         break;
                     }
                 default:
@@ -40,7 +40,7 @@ namespace Trade.Indicator
             }
         }
 
-        public PEAK(kdata data, Func<kdatapoint,double> f, PEAK_TYPE type, int distance = 5, int M = 3)
+        public PEAK(kdata data, Func<kdatapoint,double> f, PEAK_TYPE type, int distance = 5, bool reconfirm = true)
         {
             switch (type)
             {
@@ -52,7 +52,7 @@ namespace Trade.Indicator
                             crosstype.gold,
                             type,
                             distance,
-                            M);
+                            reconfirm);
                         break;
                     }
                 case PEAK_TYPE.high:
@@ -63,7 +63,7 @@ namespace Trade.Indicator
                             crosstype.dead,
                             type,
                             distance,
-                            M);
+                            reconfirm);
                         break;
                     }
                 default:
@@ -78,7 +78,7 @@ namespace Trade.Indicator
             crosstype confirmcross,
             PEAK_TYPE type,
             int distance,
-            int M)
+            bool reconfirm)
         {
             var count = k.Count;
             for (var i = distance + 1; i < count - distance; ++i)
@@ -95,10 +95,11 @@ namespace Trade.Indicator
                 }
             }
 
-            confirm(k, confirmcross, type, M);
+            if(reconfirm)
+                confirm(k, confirmcross, type);
         }
 
-        void confirm(kdata k,crosstype confirmcross, PEAK_TYPE type, int M)
+        void confirm(kdata k,crosstype confirmcross, PEAK_TYPE type)
         {
             var crosses = new MACD(k.close()).cross();
             var list = new List<sValue<double>>();
@@ -106,33 +107,39 @@ namespace Trade.Indicator
             foreach(var peak in this)
             {
                 var cross = crosses.FirstOrDefault(p => p.value.Date >= peak.Date);
-                if (cross != null && cross.type == confirmcross)
+                if (cross != null)
                 {
-                    if (lastcrossdate == cross.value.Date)
+                    if (cross.type != confirmcross)
+                        cross = crosses.FirstOrDefault(p => p.value.Date > peak.Date);
+
+                    if (cross.type == confirmcross)
                     {
-                        switch (type)
+                        if (lastcrossdate == cross.value.Date)
                         {
-                            case PEAK_TYPE.high:
-                                if (peak.Value > list[list.Count - 1].Value)
-                                {
-                                    list.RemoveAt(list.Count - 1);
-                                    list.Add(peak);
-                                }
-                                break;
-                            case PEAK_TYPE.low:
-                                if (peak.Value < list[list.Count - 1].Value)
-                                {
-                                    list.RemoveAt(list.Count - 1);
-                                    list.Add(peak);
-                                }
-                                break;
+                            switch (type)
+                            {
+                                case PEAK_TYPE.high:
+                                    if (peak.Value > list[list.Count - 1].Value)
+                                    {
+                                        list.RemoveAt(list.Count - 1);
+                                        list.Add(peak);
+                                    }
+                                    break;
+                                case PEAK_TYPE.low:
+                                    if (peak.Value < list[list.Count - 1].Value)
+                                    {
+                                        list.RemoveAt(list.Count - 1);
+                                        list.Add(peak);
+                                    }
+                                    break;
+                            }
                         }
+                        else
+                        {
+                            list.Add(peak);
+                        }
+                        lastcrossdate = cross.value.Date;
                     }
-                    else
-                    {
-                        list.Add(peak);
-                    }
-                    lastcrossdate = cross.value.Date;
                 }
             }
 

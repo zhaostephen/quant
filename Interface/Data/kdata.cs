@@ -18,6 +18,11 @@ namespace Trade.Data
                 AddRange(d);
         }
 
+        public kdata range(DateTime fromInclusive)
+        {
+            return new kdata(Code, this.Where(p => p.date >= fromInclusive).ToArray());
+        }
+
         public Series<double> close()
         {
             return series(p => p.close);
