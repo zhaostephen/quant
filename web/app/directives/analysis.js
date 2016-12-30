@@ -26,7 +26,6 @@
             currentperiod = period;
             $http.get(root + 'api/kdata/' + code + "?ktype=" + period).then(function (res) {
                 var result = res.data;
-                console.log(result);
                 var utc = function (d) {
                     var date = new Date(d);
                     return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() - 8, date.getMinutes());
@@ -136,13 +135,13 @@
                 " 涨跌:" + chg + "%" + " 现价:" + close + " 开盘:" + open + " 最高:" + high + " 最低:" + low + " MA5:" + ma5 +
                 " MA120:" + ma120,
                  90,
-                 chg ? "red" : "green");
+                 chg>=0 ? "red" : "green");
 
             volumeElement = drawtext(
                 volumeElement,
                  "成交量:" + volume,
                  height * 0.55 + 90,
-                 chg ? "red" : "green");
+                 chg >= 0 ? "red" : "green");
 
             macdElement = drawtext(
                   macdElement,
