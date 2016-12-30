@@ -24,7 +24,9 @@
             period = period || "D";
             currentcode = code;
             currentperiod = period;
-            $.getJSON(root + 'api/kdata/' + code + "?ktype=" + period, function (result) {
+            $http.get(root + 'api/kdata/' + code + "?ktype=" + period).then(function (res) {
+                var result = res.data;
+                console.log(result);
                 var utc = function (d) {
                     var date = new Date(d);
                     return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() - 8, date.getMinutes());
