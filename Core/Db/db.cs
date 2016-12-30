@@ -174,16 +174,11 @@ namespace Trade.Db
                     case "60":
                         {
                             var perunit = int.Parse(ktype);
-
                             var kcurrent = p.Last().date;
-                            var afeernoon = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 13, 30, 0);
-                            var eod = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 15, 30, 0);
-                            
-                            var sod = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 9, 30, 0);
-                            var noon = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 11, 30, 0);
-                            if (kcurrent < eod)
+                            var kt = ktoday(code);
+                            var eodtoday = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 15, 30, 0);
+                            if(kcurrent < eodtoday)
                             {
-                                var kt = ktoday(code);
                                 if (kt.Any())
                                 {
                                     var s = kt
@@ -193,7 +188,13 @@ namespace Trade.Db
                                         {
                                             var ts = ((DateTime)t.ts);
 
-                                            var datetime = ts < sod 
+                                            var afeernoon = new DateTime(ts.Year, ts.Month, ts.Day, 13, 30, 0);
+                                            var eod = new DateTime(ts.Year, ts.Month, ts.Day, 15, 30, 0);
+
+                                            var sod = new DateTime(ts.Year, ts.Month, ts.Day, 9, 30, 0);
+                                            var noon = new DateTime(ts.Year, ts.Month, ts.Day, 11, 30, 0);
+
+                                            var datetime = ts < sod
                                                             ? ts.NearestKMinutes(sod, perunit, noon)
                                                             : ts.NearestKMinutes(afeernoon, perunit, eod);
 
@@ -204,18 +205,19 @@ namespace Trade.Db
                                                 close = (double)t.trade,
                                                 high = (double)t.high,
                                                 low = (double)t.low,
-                                                volume = (double)t.volume/100d
+                                                volume = (double)t.volume / 100d
                                             };
                                         })
                                         .ToArray();
 
+                                    s = s.Concat(p).ToArray();
                                     var dict = new SortedDictionary<DateTime, kdatapoint>();
                                     foreach (var i in s)
                                     {
                                         dict[i.date] = i;
                                     }
 
-                                    p = p.Concat(dict.Values).ToArray();
+                                    p = dict.Values;
                                 }
                             }
                         }
@@ -234,9 +236,10 @@ namespace Trade.Db
                                     var t = kt.OrderByDescending(p1 => p1.ts).First();
                                     if (((DateTime)t.ts) > kcurrent)
                                     {
+                                        var dt = (DateTime)t.ts;
                                         var kp = new kdatapoint()
                                         {
-                                            date = DateTime.Today,
+                                            date = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0),
                                             open = (double)t.open,
                                             close = (double)t.trade,
                                             high = (double)t.high,

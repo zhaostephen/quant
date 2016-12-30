@@ -45,7 +45,8 @@ namespace Trade.Indicator
 
         public macd[] cross_gold()
         {
-            return cross(gold: (i, next) => i.MACD < 0 && next.MACD >= 0)
+            return cross(gold: (i, next) => (i.MACD < 0 && next.MACD >= 0) ||
+                                            (i.MACD == 0 && next.MACD > 0))
                 .Select(p=>p.value)
                 .ToArray();
         }
