@@ -33,26 +33,27 @@ namespace Interface.Indicator
                     c.Value >= a.Value && 
                     d.Value > b.Value)
                 {
-                    var next = macd.Where(p => p.Date > d.Date).ToArray();
-                    for(var k = 2; k < next.Length; ++k)
-                    {
-                        if (next[k].DIF < 0 &&
-                            next[k - 1].DIF < 0 &&
-                            next[k - 2].DIF < 0 &&
-                            next[k].DIF > next[k - 1].DIF &&
-                            next[k].DIF > next[k - 2].DIF)
-                        {
-                            var v = data.FirstOrDefault(p=>p.date == next[k].Date);
-                            if (v != null)
-                            {
-                                if (!this.Any(p => p.Date == next[k].Date))
-                                {
-                                    Add(next[k].Date, v.high);
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    //var next = macd.Where(p => p.Date > d.Date).ToArray();
+                    //for(var k = 2; k < next.Length; ++k)
+                    //{
+                    //    if (next[k].DIF < 0 &&
+                    //        next[k - 1].DIF < 0 &&
+                    //        next[k - 2].DIF < 0 &&
+                    //        next[k].DIF > next[k - 1].DIF &&
+                    //        next[k].DIF > next[k - 2].DIF)
+                    //    {
+                    //        var v = data.FirstOrDefault(p=>p.date == next[k].Date);
+                    //        if (v != null)
+                    //        {
+                    //            if (!this.Any(p => p.Date == next[k].Date))
+                    //            {
+                    //                Add(next[k].Date, v.high);
+                    //            }
+                    //        }
+                    //        break;
+                    //    }
+                    //}
+                    Add(d.Date, 0);
                 }
             }
         }
