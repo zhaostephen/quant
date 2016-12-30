@@ -36,11 +36,11 @@ namespace Interface.Indicator
                     var next = macd.Where(p => p.Date > d.Date).ToArray();
                     for(var k = 2; k < next.Length; ++k)
                     {
-                        if(next[k].DIF < 0 && 
-                            next[k-1].DIF < 0 &&
-                            next[k - 2].DIF < 0 && 
-                            next[k].DIF > next[k-1].DIF && 
-                            next[k].DIF > next[k-2].DIF)
+                        if (next[k].DIF < 0 &&
+                            next[k - 1].DIF < 0 &&
+                            next[k - 2].DIF < 0 &&
+                            next[k].DIF > next[k - 1].DIF &&
+                            next[k].DIF > next[k - 2].DIF)
                         {
                             var v = data.FirstOrDefault(p=>p.date == next[k].Date);
                             if (v != null)
