@@ -106,6 +106,7 @@
         }
         function drawindicators(index) {
             var result = $scope.result;
+            if (!result || result.length == 0) return;
             if (angular.isUndefined(index))
                 index = result.data.length - 1;
 
@@ -381,6 +382,11 @@
                             pointFormatter: tooltipFormatter,
                             useHTML: false,
                             shared: true
+                        },
+                        events: {
+                            mouseOut: function () {
+                                drawindicators();
+                            }
                         }
                     }, {
                         type: 'line',
