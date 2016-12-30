@@ -154,7 +154,7 @@ namespace Trade.Db
             {
                 p = kupdate(p, code, ktype);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.Error("kupdate " + code + " | " + ktype, e);
             }
@@ -247,6 +247,14 @@ namespace Trade.Db
                                             volume = (double)t.volume/100d
                                         };
                                         p = p.Concat(new[] { kp }).ToArray();
+
+                                        var dict = new SortedDictionary<DateTime, kdatapoint>();
+                                        foreach (var i in p)
+                                        {
+                                            dict[i.date] = i;
+                                        }
+
+                                        p = dict.Values;
                                     }
                                 }
                             }
