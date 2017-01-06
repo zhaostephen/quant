@@ -123,26 +123,33 @@ namespace Trade.Db
 
         public basics basics(string code)
         {
-            return basics()
-                .FirstOrDefault(p => string.Equals(p.code, code, StringComparison.InvariantCultureIgnoreCase));
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<basics>("select * from basics where code=@code",new { code = code })
+                    .FirstOrDefault();
+            }
         }
 
         public IEnumerable<basics> basics(IEnumerable<string> codes)
         {
-            var set = basics();
-
-            var q = from f in set
-                    join c in codes on f.code equals c
-                    select f;
-
-            return q.ToArray();
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<basics>("select * from basics where code IN '@codes'", new { codes = codes });
+            }
         }
 
         public IEnumerable<basicname> basicnames()
         {
-            return basics()
-                .Select(p => new basicname { name = p.name, code = p.code, assettype = p.assettype, nameabbr = p.nameabbr })
-                .ToArray();
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<basicname>("select code,name,nameabbr,assettype from basics");
+            }
         }
 
         public kdata kdata(string code, string ktype)
