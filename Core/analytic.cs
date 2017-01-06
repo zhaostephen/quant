@@ -56,11 +56,29 @@ namespace Trade
             var q = (from k in keyprices
                      join t in todayquotes on k.Code equals t.code
                      where k.Flag == KeyPrice.Flags.lower 
-                        && Math.Abs((t.low / k.Price - 1) * 100d) <= 0.5
+                        && Math.Abs((t.low / k.Price - 1) * 100d) <= 1.0
                         && t.changepercent>=0.01 && t.changepercent <= 0.5
                         && Math.Abs((k.Date - DateTime.Today).TotalDays) >= 21
                      select new { k, t }
-                    ).Select(_ =>
+                    )
+                    .ToArray()
+                    .Where(p=>
+                    {
+                        var code = (string)p.t.code;
+                        var k = db.kdata(code, "D");
+                        if (k == null) return false;
+
+                        var low = (double)p.t.low;
+                        var N = 8;
+                        for (var i = k.Count - 1; i > k.Count - N; ++i)
+                        {
+                            if (k[i].low < low)
+                                return false;
+                        }
+
+                        return true;
+                    })
+                    .Select(_ =>
                     {
                         var k = _.k;
                         var t = _.t;
