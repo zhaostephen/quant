@@ -1,1 +1,1 @@
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe Quant.sln /t:rebuild /p:Configuration=Release
+"C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" Quant.sln /t:rebuild /p:Configuration=Release

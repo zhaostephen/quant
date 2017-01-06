@@ -9,29 +9,29 @@ namespace Trade.Data
     public class basics
     {
         public string code { get; set; }
-        public string name{ get; set; }
+        public string name { get; set; }
         public string nameabbr { get; set; }
-        public string industry{ get; set; }
-        public string area{ get; set; }
-        public string pe{ get; set; }
-        public string outstanding{ get; set; }
-        public string totals{ get; set; }
-        public string totalAssets{ get; set; }
-        public string liquidAssets{ get; set; }
-        public string fixedAssets{ get; set; }
-        public string reserved{ get; set; }
-        public string reservedPerShare{ get; set; }
-        public string esp{ get; set; }
-        public string bvps{ get; set; }
-        public string pb{ get; set; }
-        public string timeToMarket{ get; set; }
-        public string undp{ get; set; }
-        public string perundp{ get; set; }
-        public string rev{ get; set; }
-        public string profit{ get; set; }
-        public string gpr{ get; set; }
-        public string npr{ get; set; }
-        public string holders{ get; set; }
+        public string industry { get; set; }
+        public string area { get; set; }
+        public string pe { get; set; }
+        public string outstanding { get; set; }
+        public string totals { get; set; }
+        public string totalAssets { get; set; }
+        public string liquidAssets { get; set; }
+        public string fixedAssets { get; set; }
+        public string reserved { get; set; }
+        public string reservedPerShare { get; set; }
+        public string esp { get; set; }
+        public string bvps { get; set; }
+        public string pb { get; set; }
+        public string timeToMarket { get; set; }
+        public string undp { get; set; }
+        public string perundp { get; set; }
+        public string rev { get; set; }
+        public string profit { get; set; }
+        public string gpr { get; set; }
+        public string npr { get; set; }
+        public string holders { get; set; }
 
         public bool st { get; set; }
         public bool suspended { get; set; }
@@ -39,6 +39,35 @@ namespace Trade.Data
         public string assettype { get; set; }
         public string indexes { get; set; }
         public string sectors { get; set; }
+
+        public basics()
+        {
+            nameabbr = "-";
+            industry = "-";
+            area = "-";
+            pe = "0";
+            outstanding = "0";
+            totals = "0";
+            totalAssets = "0";
+            liquidAssets = "0";
+            fixedAssets = "0";
+            reserved = "0";
+            reservedPerShare = "0";
+            esp = "0";
+            bvps = "0";
+            pb = "0";
+            timeToMarket = "0";
+            undp = "0";
+            perundp = "0";
+            rev = "0";
+            profit = "0";
+            gpr = "0";
+            npr = "0";
+            holders = "0";
+            assettype = "stock";
+            indexes = "-";
+            sectors = "";
+        }
 
         public string mainindex()
         {
@@ -57,13 +86,13 @@ namespace Trade.Data
         public void addindex(params string[] i)
         {
             indexes = indexes ?? string.Empty;
-            indexes = string.Join("|",new[] {indexes}.Concat(i).Where(p => !string.IsNullOrEmpty(p)).ToArray());
+            indexes = string.Join("|", new[] { indexes }.Concat(i).Where(p => !string.IsNullOrEmpty(p)).Distinct().ToArray());
         }
 
         public void addsector(params string[] s)
         {
             sectors = sectors ?? string.Empty;
-            sectors = string.Join("|", new[] { sectors }.Concat(s).Where(p=>!string.IsNullOrEmpty(p)).ToArray());
+            sectors = string.Join("|", new[] { sectors }.Concat(s).Where(p => !string.IsNullOrEmpty(p)).Distinct().ToArray());
         }
     }
 

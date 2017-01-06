@@ -336,22 +336,37 @@ namespace Trade.Db
 
         public void save(IEnumerable<basics> data)
         {
-            var file = Configuration.data.basics.file("basics.csv");
-            var p = data.ToArray().ToCsv();
-            File.WriteAllText(file, p, Configuration.encoding.gbk);
-        }
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
 
-        public void save(IEnumerable<basicname> data)
-        {
-            var file = Configuration.data.basics.file("basicnames.csv");
-            var p = data.ToArray().ToCsv();
-            File.WriteAllText(file, p, Configuration.encoding.gbk);
+                var upserts = data
+                    .GroupBy(p=>p.code)
+                    .Select(p=>p.First())
+                    .SelectMany(d => new[]
+                {
+                    "DELETE FROM basics WHERE code='" +d.code+"'",
+
+                    "INSERT INTO basics (code,name,nameabbr,industry,area,pe,outstanding,totals,totalAssets,liquidAssets,fixedAssets,reserved,reservedPerShare,esp,bvps,pb,timeToMarket,undp,perundp,rev,profit,gpr,npr,holders,st,suspended,`terminated`,assettype,`indexes`,sectors) " +
+                    $"VALUES ('{d.code}','{d.name}','{d.nameabbr}','{d.industry}','{d.area}',{d.pe},{d.outstanding},{d.totals},{d.totalAssets},{d.liquidAssets},{d.fixedAssets},{d.reserved},{d.reservedPerShare},{d.esp},{d.bvps},{d.pb},{d.timeToMarket},{d.undp},{d.perundp},{d.rev},{d.profit},{d.gpr},{d.npr},{d.holders},'{d.st}','{d.suspended}','{d.terminated}','{d.assettype}','{d.indexes}','{d.sectors}') "
+                })
+                .ToArray();
+
+                if (upserts.Any())
+                    conn.Execute(string.Join(";", upserts));
+            }
         }
 
         public IEnumerable<basics> basics()
         {
-            var file = Configuration.data.basics.file("basics.csv");
-            return file.ReadCsv<basics>(Configuration.encoding.gbk);
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<basics>("select * from basics")
+                    .Distinct()
+                    .ToArray();
+            }
         }
 
         public IEnumerable<basics> stock_basics()
@@ -373,6 +388,18 @@ namespace Trade.Db
                 conn.Open();
                 return conn
                     .Query<dynamic>("select * from area_classified")
+                    .Distinct()
+                    .ToArray();
+            }
+        }
+
+        public IEnumerable<dynamic> custom_classified()
+        {
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<dynamic>("select * from custom_classified")
                     .Distinct()
                     .ToArray();
             }

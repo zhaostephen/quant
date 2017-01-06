@@ -50,6 +50,10 @@
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Pinyin4net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\pinyin4net.1.0.0\lib\net40\Pinyin4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ServiceStack.Text, Version=4.5.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.Text.4.5.4\lib\net45\ServiceStack.Text.dll</HintPath>
       <Private>True</Private>
@@ -68,6 +72,7 @@
     <Compile Include="analytic.cs" />
     <Compile Include="backtest\backtesting.cs" />
     <Compile Include="backtest\pnl.cs" />
+    <Compile Include="datasvc.cs" />
     <Compile Include="Db\db.cs" />
     <Compile Include="Mixin\DateTimeMixin.cs" />
     <Compile Include="Mixin\DictMixin.cs" />
