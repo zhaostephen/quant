@@ -72,14 +72,14 @@ namespace Trade.Data
         public string mainindex()
         {
             if(assettype == assettypes.stock)
-                return !string.IsNullOrEmpty(indexes) ? indexes.Split('|').First() : string.Empty;
+                return !string.IsNullOrEmpty(indexes) ? indexes.Split('|').Where(valid).First() : string.Empty;
 
             return string.Empty;
         }
         public string[] getsectors()
         {
             if (assettype == assettypes.stock)
-                return !string.IsNullOrEmpty(sectors) ? sectors.Split('|').Where(valid).ToArray() : new string[0];
+                return !string.IsNullOrEmpty(sectors) ? sectors.Split('|').Where(valid).Distinct().ToArray() : new string[0];
 
             return new string[0];
         }
