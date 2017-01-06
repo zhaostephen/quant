@@ -71,7 +71,10 @@ namespace Trade.Data
 
         public string mainindex()
         {
-            return !string.IsNullOrEmpty(indexes) ? indexes.Split('|').First() : string.Empty;
+            if(assettype == assettypes.stock)
+                return !string.IsNullOrEmpty(indexes) ? indexes.Split('|').First() : string.Empty;
+
+            return string.Empty;
         }
         public bool belongtoindex(string index)
         {
