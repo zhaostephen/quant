@@ -13,9 +13,9 @@
         <span>|</span><span style="font-weight:bold; font-size:x-small">状态判断:</span><span style="font-weight:bold; color:red">{{analytic.state ? analytic.state : '-' }}</span>
         <span>|</span><span style="font-weight:bold; font-size:x-small">推荐仓位:</span><span style="font-weight:bold; color:red">{{analytic.position | number:0 }}%</span>
         <span>|</span><span style="font-weight:bold; font-size:x-small">推荐策略:</span><span style="font-weight:bold; color:red">{{analytic.strategy ? analytic.strategy : '-' }}</span>
-        <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(底):</span><span style="font-weight:bold; color:red">{{analytic.deviation_up ? analytic.deviation_up : '-' }}</span>
-        <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(顶):</span><span style="font-weight:bold; color:red">{{analytic.deviation_down ? analytic.deviation_down : '-' }}</span>
-        <span>|</span><span style="font-weight:bold; font-size:x-small">均线:</span><span style="font-weight:bold; color:red">{{analytic.ma ? analytic.ma : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(底):</span><span style="font-weight:bold; text-decoration:underline; color:red">{{analytic.deviation_up ? analytic.deviation_up : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(顶):</span><span style="font-weight:bold; text-decoration:underline; color:forestgreen">{{analytic.deviation_down ? analytic.deviation_down : '-' }}</span>
+        <span>|</span><span style="font-weight:bold; font-size:x-small">均线:</span><span ng-style="{fontWeight:'bold',textDecoration:'underline', color:analytic.ma.indexOf('↑')?'red':'forestgreen'}">{{analytic.ma ? analytic.ma : '-' }}</span>
     </div>
     <div></div>
 </div>

@@ -64,13 +64,15 @@ namespace Web.Controllers.Api
                 if (ma5 >= ma30 && ma30 >= ma55 && ma55 >= ma120)
                     ma.Add("多头");
                 if (cur.close < ma5)
-                    ma.Add("破5日线");
-                if (cur.close < ma30)
-                    ma.Add("破30日生命线");
-                if (cur.close < ma55)
-                    ma.Add("破55日生命线");
+                    ma.Add("↓↓5日线");
+                //if (cur.close < ma30)
+                //    ma.Add("破30日生命线");
+                //if (cur.close < ma55)
+                //    ma.Add("破55日生命线");
                 if (cur.close < ma120)
-                    ma.Add("破半年线");
+                    ma.Add("↓↓半年线");
+                else
+                    ma.Add("半年线↑↑");
                 if (ma.Any())
                     result.ma = string.Join(",",ma);
 

@@ -56,9 +56,9 @@ namespace Trade
             var q = (from k in keyprices
                      join t in todayquotes on k.Code equals t.code
                      where k.Flag == KeyPrice.Flags.lower 
-                        && Math.Abs((t.low / k.Price - 1) * 100d) <= 1.0
-                        && t.changepercent>=0.01 && t.changepercent <= 0.5
-                        && Math.Abs((k.Date - DateTime.Today).TotalDays) >= 21
+                        && Math.Abs((t.low / k.Price - 1) * 100d) <= 0.8
+                        && t.changepercent>=0.01 && t.changepercent <= 1.0
+                        && Math.Abs((k.Date - DateTime.Today).TotalDays) >= 8
                      select new { k, t }
                     )
                     .ToArray()
@@ -70,7 +70,7 @@ namespace Trade
 
                         var low = (double)p.t.low;
                         var N = 8;
-                        for (var i = k.Count - 1; i > k.Count - N; ++i)
+                        for (var i = k.Count - 1; i > k.Count - N; --i)
                         {
                             if (k[i].low < low)
                                 return false;
