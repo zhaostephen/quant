@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Trade.Data;
 using Trade.Indicator;
+using Trade.Mixin;
 
 namespace Trade.commands
 {
@@ -65,24 +66,24 @@ namespace Trade.commands
                                 code = code,
                                 date = date,
                                 ktype = ktype,
-                                close = kdata.Last().close,
-                                open = kdata.Last().open,
-                                high = kdata.Last().high,
-                                low = kdata.Last().low,
-                                volume = kdata.Last().volume,
-                                chg = chg.Last().Value,
-                                ma5 = ma5.Last().Value,
-                                ma10 = ma10.Last().Value,
-                                ma20 = ma20.Last().Value,
-                                ma30 = ma30.Last().Value,
-                                ma60 = ma60.Last().Value,
-                                ma120 = ma120.Last().Value,
-                                dea = macd.Last().DEA,
-                                macd = macd.Last().MACD,
-                                dif = macd.Last().DIF,
-                                deavol = macdvol.Last().DEA,
-                                macdvol = macdvol.Last().MACD,
-                                difvol = macdvol.Last().DIF
+                                close = kdata.Last().close.ZeroNaN(),
+                                open = kdata.Last().open.ZeroNaN(),
+                                high = kdata.Last().high.ZeroNaN(),
+                                low = kdata.Last().low.ZeroNaN(),
+                                volume = kdata.Last().volume.ZeroNaN(),
+                                chg = chg.Last().Value.ZeroNaN(),
+                                ma5 = ma5.Last().Value.ZeroNaN(),
+                                ma10 = ma10.Last().Value.ZeroNaN(),
+                                ma20 = ma20.Last().Value.ZeroNaN(),
+                                ma30 = ma30.Last().Value.ZeroNaN(),
+                                ma60 = ma60.Last().Value.ZeroNaN(),
+                                ma120 = ma120.Last().Value.ZeroNaN(),
+                                dea = macd.Last().DEA.ZeroNaN(),
+                                macd = macd.Last().MACD.ZeroNaN(),
+                                dif = macd.Last().DIF.ZeroNaN(),
+                                deavol = macdvol.Last().DEA.ZeroNaN(),
+                                macdvol = macdvol.Last().MACD.ZeroNaN(),
+                                difvol = macdvol.Last().DIF.ZeroNaN()
                             };
 
                             db.save(new[] { ka });

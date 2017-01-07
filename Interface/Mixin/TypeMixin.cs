@@ -8,6 +8,14 @@ namespace Trade.Mixin
 {
     public static class TypeMixin
     {
+        public static double ZeroNaN(this double @this)
+        {
+            if (double.IsNaN(@this))
+                return 0d;
+
+            return @this;
+        }
+
         public static DateTime TradingDay(this DateTime @this, int daysAdd = 0)
         {
             if (daysAdd == 0)
