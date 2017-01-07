@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Trade.Cfg;
 using Trade.Data;
 using Trade.Mixin;
+using Interface.Data;
 
 namespace Trade.Db
 {
@@ -100,6 +101,24 @@ namespace Trade.Db
                     .Select(p => string.Format(@"INSERT IGNORE INTO keyprice (code,date,price,flag,ktype,auto) 
                                                 VALUES ('{0}','{1:yyyy-MM-dd HH:mm:ss}',{2},'{3}','{4}',{5})",
                                 p.Code, p.Date, p.Price, p.Flag, ktype, p.Auto ? "true" : "false"))
+                    .ToArray();
+
+                if (upserts.Any())
+                    conn.Execute(string.Join(";", upserts));
+            }
+        }
+
+        public void save(IEnumerable<kanalytic> o)
+        {
+            if (!o.Any()) return;
+
+            using (var conn = new MySqlConnection(Configuration.analyticdb))
+            {
+                conn.Open();
+
+                var upserts = o
+                    .Select(p => @"INSERT IGNORE INTO k (code,date,ktype,close,open,high,low,volume,ma5,ma10,ma20,ma30,ma60,ma120,dea,macd,dif,deavol,macdvol,difvol) "+
+                                $" VALUES ('{p.code}','{p.date:yyyy-MM-dd HH:mm:ss}','{p.ktype}',{p.close},{p.open},{p.high},{p.low},{p.volume},{p.ma5},{p.ma10},{p.ma20},{p.ma30},{p.ma60},{p.ma120},{p.dea},{p.macd},{p.dif},{p.deavol},{p.macdvol},{p.difvol})")
                     .ToArray();
 
                 if (upserts.Any())

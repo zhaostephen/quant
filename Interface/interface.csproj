@@ -51,6 +51,7 @@
     <Compile Include="Data\basics.cs" />
     <Compile Include="Data\cross.cs" />
     <Compile Include="Data\jax.cs" />
+    <Compile Include="Data\kanalytic.cs" />
     <Compile Include="Data\kdata.cs" />
     <Compile Include="Data\macd.cs" />
     <Compile Include="Data\Series.cs" />
