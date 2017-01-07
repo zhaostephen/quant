@@ -28,6 +28,7 @@ namespace Interface.Data
         public double macdvol { get; set; }
         public double difvol { get; set; }
         public double deavol { get; set; }
+        public double chg { get; set; }
         public DateTime ts { get; set; }
     }
 }

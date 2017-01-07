@@ -117,12 +117,40 @@ namespace Trade.Db
                 conn.Open();
 
                 var upserts = o
-                    .Select(p => @"INSERT IGNORE INTO k (code,date,ktype,close,open,high,low,volume,ma5,ma10,ma20,ma30,ma60,ma120,dea,macd,dif,deavol,macdvol,difvol) "+
-                                $" VALUES ('{p.code}','{p.date:yyyy-MM-dd HH:mm:ss}','{p.ktype}',{p.close},{p.open},{p.high},{p.low},{p.volume},{p.ma5},{p.ma10},{p.ma20},{p.ma30},{p.ma60},{p.ma120},{p.dea},{p.macd},{p.dif},{p.deavol},{p.macdvol},{p.difvol})")
+                    .Select(p => @"INSERT IGNORE INTO k (code,date,ktype,close,open,high,low,volume,chg,ma5,ma10,ma20,ma30,ma60,ma120,dea,macd,dif,deavol,macdvol,difvol) "+
+                                $" VALUES ('{p.code}','{p.date:yyyy-MM-dd HH:mm:ss}','{p.ktype}',{p.close},{p.open},{p.high},{p.low},{p.volume},{p.chg},{p.ma5},{p.ma10},{p.ma20},{p.ma30},{p.ma60},{p.ma120},{p.dea},{p.macd},{p.dif},{p.deavol},{p.macdvol},{p.difvol})")
                     .ToArray();
 
                 if (upserts.Any())
                     conn.Execute(string.Join(";", upserts));
+            }
+        }
+
+        public kanalytic kanalytic(string code, string ktype)
+        {
+            using (var conn = new MySqlConnection(Configuration.analyticdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<kanalytic>("select * from k where code=@code and ktype=@ktype", new { code = code, ktype = ktype })
+                    .OrderByDescending(p => p.ts)
+                    .FirstOrDefault();
+            }
+        }
+
+        public IEnumerable<kanalytic> kanalytic(IEnumerable<string> codes, string ktype)
+        {
+            if (codes == null || !codes.Any()) return new kanalytic[0];
+
+            using (var conn = new MySqlConnection(Configuration.analyticdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<kanalytic>("select * from k where ktype=@ktype and code IN @codes", new { ktype = ktype, codes = codes })
+                    .GroupBy(p => p.code)
+                    .Select(p => p.OrderByDescending(p1 => p1.ts).FirstOrDefault())
+                    .Where(p => p != null)
+                    .ToArray();
             }
         }
 

@@ -70,6 +70,7 @@ namespace Trade.commands
                                 high = kdata.Last().high,
                                 low = kdata.Last().low,
                                 volume = kdata.Last().volume,
+                                chg = chg.Last().Value,
                                 ma5 = ma5.Last().Value,
                                 ma10 = ma10.Last().Value,
                                 ma20 = ma20.Last().Value,
