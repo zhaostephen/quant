@@ -16,11 +16,18 @@
         <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(底):</span><span style="font-weight:bold; text-decoration:underline; color:red">{{analytic.deviation_up ? analytic.deviation_up : '-' }}</span>
         <span>|</span><span style="font-weight:bold; font-size:x-small">MACD背离(顶):</span><span style="font-weight:bold; text-decoration:underline; color:forestgreen">{{analytic.deviation_down ? analytic.deviation_down : '-' }}</span>
         <span>|</span><span style="font-weight:bold; font-size:x-small">均线:</span><span ng-style="{fontWeight:'bold',textDecoration:'underline', color:analytic.ma.indexOf('↑')?'red':'forestgreen'}">{{analytic.ma ? analytic.ma : '-' }}</span>
+        
         <span ng-show="analytic.sectors.length>0">|</span>
         <span style="font-weight:bold; font-size:x-small" ng-show="analytic.sectors.length>0">所属板块:</span>
-            <span ng-repeat="sector in analytic.sectors">
-                <a target="_blank" href="analysis?code={{sector}}">{{sector}}</a>
-            </span>
+        <span ng-repeat="sector in analytic.sectors">
+            <a target="_blank" href="analysis?code={{sector}}">{{sector}}</a>
+        </span>
+
+        <span ng-show="analytic.indexes.length>0">|</span>
+        <span style="font-weight:bold; font-size:x-small" ng-show="analytic.indexes.length>0">关联指数:</span>
+        <span ng-repeat="index in analytic.indexes">
+            <a target="_blank" href="analysis?code={{index.code}}">{{index.name}}</a>
+        </span>
     </div>
     <div></div>
 </div>

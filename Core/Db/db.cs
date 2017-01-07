@@ -134,11 +134,13 @@ namespace Trade.Db
 
         public IEnumerable<basics> basics(IEnumerable<string> codes)
         {
+            if (codes == null || !codes.Any()) return new basics[0];
+
             using (var conn = new MySqlConnection(Configuration.basicsdb))
             {
                 conn.Open();
                 return conn
-                    .Query<basics>("select * from basics where code IN '@codes'", new { codes = codes });
+                    .Query<basics>("select * from basics where code IN @codes", new { codes = codes });
             }
         }
 
@@ -149,6 +151,18 @@ namespace Trade.Db
                 conn.Open();
                 return conn
                     .Query<basicname>("select code,name,nameabbr,assettype from basics");
+            }
+        }
+
+        public IEnumerable<basicname> basicnames(IEnumerable<string> codes)
+        {
+            if (codes == null || !codes.Any()) return new basicname[0];
+
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<basicname>("select code,name,nameabbr,assettype from basics where code IN @codes", new { codes = codes });
             }
         }
 
