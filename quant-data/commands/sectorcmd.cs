@@ -97,6 +97,7 @@ namespace Trade.commands
                     dict[p.date].close += p.close;
                     dict[p.date].high += p.high;
                     dict[p.date].low += p.low;
+                    dict[p.date].volume += p.volume;
                 }
             }
 
