@@ -90,6 +90,9 @@
     <None Include="classified-sql.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="custom_classified\证金持股.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="kdata-today-sql.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -124,9 +127,7 @@
       <Name>interface</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="custom_classified\证金持股.txt" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="..\cli\cli.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
