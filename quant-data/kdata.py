@@ -5,18 +5,6 @@ import sys
 import os
 import pandas as pd
 
-def getCodes():
-    stocks = None
-    try:
-        stocks = ts.get_area_classified()
-    except:
-        file = storage.getPath('basics/basics.csv')
-        print("get codes from file ", file)
-        stocks = pd.read_csv(file, encoding="gbk")
-    if(stocks is None):
-        return []
-    return stocks['code']
-
 def kdata(code, ktype):
     file = "kdata/" + ktype +"/" + code + ".csv";
     #if(not storage.fileExists(file)):
@@ -34,8 +22,7 @@ def make(code):
     kdata(code, "60")
 
 print("get codes")
-codes = ['sh','sz','hs300','sz50','zxb','cyb']
-codes.extend(getCodes())
+codes = storage.getCodes()
 count = len(codes)
 i = 0
 for code in codes:

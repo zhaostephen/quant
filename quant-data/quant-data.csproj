@@ -105,9 +105,6 @@
     <None Include="statement-sql.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="statement.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="storage.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

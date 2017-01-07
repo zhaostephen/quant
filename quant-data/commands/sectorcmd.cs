@@ -85,7 +85,7 @@ namespace Trade.commands
                 return new kdata(code);
             }
 
-            var dict = new Dictionary<DateTime, kdatapoint>();
+            var dict = new SortedDictionary<DateTime, kdatapoint>();
 
             foreach (var kdata in d)
             {
