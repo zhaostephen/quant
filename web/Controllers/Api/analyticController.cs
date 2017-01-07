@@ -25,6 +25,7 @@ namespace Web.Controllers.Api
             var basic = new Trade.Db.db().basics(id);
 
             result.sectors = basic.getsectors();
+            result.indexes = basic.getindexes();
             result.code = basic.code;
             result.name = basic.name;
             result.PE = basic.pe;
@@ -136,5 +137,6 @@ namespace Web.Controllers.Api
         public string PE { get; set; }
         public string buyorsell { get; set; }
         public string[] sectors { get; set; }
+        public string[] indexes { get; set; }
     }
 }

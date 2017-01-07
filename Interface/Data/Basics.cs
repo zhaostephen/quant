@@ -76,6 +76,13 @@ namespace Trade.Data
 
             return string.Empty;
         }
+        public string[] getindexes()
+        {
+            if (assettype == assettypes.stock)
+                return !string.IsNullOrEmpty(indexes) ? indexes.Split('|').Where(valid).Distinct().ToArray() : new string[0];
+
+            return new string[0];
+        }
         public string[] getsectors()
         {
             if (assettype == assettypes.stock)
