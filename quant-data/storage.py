@@ -32,14 +32,7 @@ def ensure_dir(f):
 def getCodes():
     stocks = None
     codes = ['sh','sz','hs300','sz50','zxb','cyb']
-    try:
-        stocks = ts.get_area_classified()
-    except:
-        file = getPath('basics/basics.csv')
-        print("get codes from file ", file)
-        stocks = pd.read_csv(file, encoding="gbk")
-    if(stocks is None):
-        return codes
+    stocks = ts.get_area_classified()
     codes.extend(stocks['code'])
     return codes
 
@@ -49,7 +42,7 @@ def save_sql(data, file, mode='replace', dtype=None,index=False):
     
     splits = file.split('/', 1)
     db = splits[0]
-    table = splits[1].replace(".csv","")
+    table = splits[1]
 
     engine = create_engine('mysql://quant:Woaiquant123@10.66.111.191/' + db + '?charset=utf8')
 

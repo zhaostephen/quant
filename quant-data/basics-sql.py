@@ -2,4 +2,4 @@
 import storage as storage
 import sqlalchemy as sqlalchemy
 
-storage.save_sql(ts.get_stock_basics(),"basics/stock_basics.csv",dtype={'code': sqlalchemy.types.VARCHAR(64)})
+storage.save_sql(ts.get_stock_basics(),"basics/stock_basics",dtype={'code': sqlalchemy.types.VARCHAR(64)})

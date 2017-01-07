@@ -102,6 +102,9 @@
     <None Include="kdata.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="kdata-today-index.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="statement-sql.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
