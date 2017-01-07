@@ -45,19 +45,19 @@ def get_report_data(year,season):
     print("get_profit_data")
     save(ts.get_profit_data(year,season),"basics/profit_data",year,season)
 
-    filename = "operation_data"+"_"+csv
+    filename = "operation_data"
     print("get_operation_data")
     save(ts.get_operation_data(year,season),"basics/operation_data",year,season)
 
-    filename = "growth_data"+"_"+csv
+    filename = "growth_data"
     print("get_growth_data")
     save(ts.get_growth_data(year,season),"basics/growth_data",year,season)
 
-    filename = "get_debtpaying_data"+"_"+csv
+    filename = "get_debtpaying_data"
     print("get_debtpaying_data")
     save(ts.get_debtpaying_data(year,season),"basics/debtpaying_data",year,season)
 
-    filename = "get_debtpaying_data"+"_"+csv
+    filename = "get_debtpaying_data"
     print("get_cashflow_data")
     save(ts.get_cashflow_data(year,season),"basics/cashflow_data",year,season)
 
