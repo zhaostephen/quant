@@ -29,8 +29,6 @@ namespace Trade.Cfg
             public static readonly string PATH = ConfigurationManager.AppSettings["quant"];
             public static readonly DateTime bearcrossbull = new DateTime(2015, 5, 12);
             public static readonly string kdata = PATH + @"\kdata";
-            public static readonly string basics = PATH + @"\basics";
-            public static readonly string selection = PATH + @"\selection";
             public static readonly string trade = PATH + @"\trade";
         }
 

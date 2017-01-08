@@ -15,8 +15,8 @@ namespace Trade.backtest
         public backtesting(string code, Series<double> prices,IEnumerable<Interace.Quant.Trade> trades)
         {
             var q = (from p in prices
-                    join t in trades on p.Date equals t.Date
-                    select new { date = p.Date, quantity = 1000, price = p.Value, Dir = t.Dir }).ToArray();
+                    join t in trades on p.Date equals t.date
+                    select new { date = p.Date, quantity = 1000, price = p.Value, Dir = t.dir }).ToArray();
 
             var market = 0d;
             var available = 1000;

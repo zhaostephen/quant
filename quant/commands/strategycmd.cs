@@ -83,9 +83,9 @@ namespace Quant.commands
                     }
 
                     var trades = account.Trades
-                        .Where(p => p.Stock == stock.Code)
+                        .Where(p => p.code == stock.Code)
                         //.Where(p=>p.Date >= new DateTime(2016,9,1))
-                        .OrderBy(p=>p.Date)
+                        .OrderBy(p=>p.date)
                         .ToArray();
 
                     var backtest = new backtesting(stock.Code, k.close(), trades);

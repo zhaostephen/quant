@@ -11,7 +11,7 @@ namespace Quant.strategies.orders
 
         public void order(Interace.Quant.Trade trade)
         {
-            new db().save(trade.Portflio, new[] { trade });
+            new db().save(trade.portflio, trade);
         }
     }
 }

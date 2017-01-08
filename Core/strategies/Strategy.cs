@@ -1,6 +1,7 @@
 ﻿using Interace.Quant;
 using log4net;
 using System;
+using Trade.Db;
 using Trade.Utility;
 
 namespace Quant.strategies
@@ -26,6 +27,12 @@ namespace Quant.strategies
         protected void PostTrade(Account account, Interace.Quant.Trade trade)
         {
             account.Trades.Add(trade);
+
+            if(new db().tradeexists(trade.portflio, trade))
+            {
+                log.WarnFormat("Ignre! trade already ordered | {-0}", trade);
+                return;
+            }
 
             foreach (var order in account.orders)
             {

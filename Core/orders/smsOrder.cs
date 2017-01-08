@@ -31,10 +31,10 @@ namespace Quant.strategies.orders
         public void order(Interace.Quant.Trade trade)
         {
             var message = string.Format("{0:yyyy-MM-dd HH:mm:ss} | {1} {2}({3})",
-                trade.Date,
-                trade.Dir,
-                trade.Stock,
-                trade.Portflio);
+                trade.date,
+                trade.dir,
+                trade.code,
+                trade.portflio);
             var smsurl = smsUrl(message);
             var hr = (HttpWebRequest)WebRequest.Create(smsurl);
             hr.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";

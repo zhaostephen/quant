@@ -373,13 +373,6 @@ namespace Trade.Db
             return basics.Select(p => p.code).Distinct().ToArray();
         }
 
-        public Interace.Quant.Trade[] trades(string porflio)
-        {
-            var path = Configuration.data.trade.EnsurePathCreated();
-            var file = Path.Combine(path, porflio + ".csv");
-            return file.ReadCsv<Interace.Quant.Trade>().ToArray();
-        }
-
         public string[] sectors()
         {
             return basics()
@@ -593,22 +586,45 @@ namespace Trade.Db
             }
         }
 
-        public void save(string porflio, IEnumerable<Interace.Quant.Trade> trades)
+        public void save(string portflio, Interace.Quant.Trade trade)
         {
-            if (!trades.Any()) return;
-
-            var path = Configuration.data.trade.EnsurePathCreated();
-            var file = Path.Combine(path, porflio + ".csv");
-            var csv = trades.ToCsv();
-            if (File.Exists(file))
+            using (var conn = new MySqlConnection(Configuration.quantdb))
             {
-                csv = string.Join(Environment.NewLine,
-                    csv.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray());
+                conn.Open();
+
+                var upsert = "INSERT IGNORE orders (portflio,code,date,dir,quantity,comments) " +
+                       $"VALUES ('{trade.portflio}','{trade.code}','{trade.date:yyyy-MM-dd HH:mm:ss}','{trade.dir}',{trade.quantity},'{trade.comments ?? "-"}')";
+
+                conn.Execute(upsert);
             }
-            File.AppendAllText(
-                file,
-                csv,
-                Encoding.UTF8);
+        }
+
+        public bool tradeexists(string portflio, Interace.Quant.Trade trade)
+        {
+            using (var conn = new MySqlConnection(Configuration.quantdb))
+            {
+                conn.Open();
+
+                return conn
+                    .Query<Interace.Quant.Trade>(
+                        "select * from orders where portflio=@portflio and code=@code and date=@date",
+                        new { portflio= portflio, code= trade.code, date= trade.date.ToString("yyyy-MM-dd HH:mm:ss") })
+                    .Any();
+            }
+        }
+
+        public Interace.Quant.Trade[] trades(string portflio)
+        {
+            using (var conn = new MySqlConnection(Configuration.quantdb))
+            {
+                conn.Open();
+
+                return conn
+                    .Query<Interace.Quant.Trade>(
+                        "select * from orders where portflio=@portflio",
+                        new { portflio = portflio })
+                    .ToArray();
+            }
         }
     }
 }
