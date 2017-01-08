@@ -10,7 +10,7 @@ namespace Trade.Mixin
     {
         public static double ZeroNaN(this double @this)
         {
-            if (double.IsNaN(@this))
+            if (double.IsNaN(@this) || @this == double.MinValue || @this == double.MaxValue || double.IsInfinity(@this))
                 return 0d;
 
             return @this;
