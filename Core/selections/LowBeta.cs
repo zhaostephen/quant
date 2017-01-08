@@ -5,6 +5,7 @@ using log4net;
 using Trade.Factors;
 using Interace.Quant;
 using Interface.Quant;
+using Trade.Db;
 
 namespace Trade.selections
 {
@@ -24,7 +25,7 @@ namespace Trade.selections
 
         public override universe Pass(IEnumerable<string> stocks)
         {
-            var client = new Trade.Db.db();
+            var client = new kdatadb();
 
             log.Info("query market data");
             var data = stocks
@@ -35,7 +36,7 @@ namespace Trade.selections
             log.InfoFormat("total {0}", data.Count());
 
             log.Info("query fundamentals");
-            var basics = client.basics(data.Select(p => p.Code).Distinct().ToArray());
+            var basics = new db().basics(data.Select(p => p.Code).Distinct().ToArray());
 
             var stat = data
                             .Select(series => new factorset(series.Code)

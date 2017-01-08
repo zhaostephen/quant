@@ -8,6 +8,7 @@ using Interface.Quant;
 using Trade.Indicator;
 using Trade.Data;
 using Interace.Attribution;
+using Trade.Db;
 
 namespace Trade.selections
 {
@@ -17,7 +18,7 @@ namespace Trade.selections
 
         public override universe Pass(IEnumerable<string> stocks)
         {
-            var client = new Db.db();
+            var client = new kdatadb();
 
             log.Info("query k60");
             var k60 = stocks

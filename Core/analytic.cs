@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trade.Db;
 using Trade.Indicator;
 
 namespace Trade
@@ -13,8 +14,7 @@ namespace Trade
     {
         public static KeyPrice[] keyprice(string code, string ktype)
         {
-            var db = new Db.db();
-            var d = db.kdata(code, ktype);
+            var d = new kdatadb().kdata(code, ktype);
             var peak_h = new PEAK(d, PEAK_TYPE.high);
             var peak_l = new PEAK(d, PEAK_TYPE.low);
             //var peak_h_volume = new PEAK(d, k => k.volume, PEAK_TYPE.high);
@@ -43,7 +43,7 @@ namespace Trade
             var db = new Db.db();
 
             var keyprices = db.keyprices("D");
-            var todayquotes = db.ktoday();
+            var todayquotes = new kdatadb().ktoday();
 
             keyprices = keyprices
                 .OrderBy(p => p.Code)
@@ -65,7 +65,7 @@ namespace Trade
                     .Where(p=>
                     {
                         var code = (string)p.t.code;
-                        var k = db.kdata(code, "D");
+                        var k = new kdatadb().kdata(code, "D");
                         if (k == null) return false;
 
                         var low = (double)p.t.low;

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Trade.Data;
+using Trade.Db;
 using Trade.Indicator;
 using Trade.Mixin;
 
@@ -45,7 +46,7 @@ namespace Trade.commands
                 {
                     try
                     {
-                        var kdata = new Db.db().kdata(code, ktype);
+                        var kdata = new kdatadb().kdata(code, ktype);
                         if (kdata != null && kdata.Any())
                         {
                             var date = kdata.Last().date;

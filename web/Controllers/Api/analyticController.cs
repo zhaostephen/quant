@@ -11,6 +11,7 @@ using Trade.Cfg;
 using Interface.Indicator;
 using Trade.Data;
 using Trade.Indicator;
+using Trade.Db;
 
 namespace Web.Controllers.Api
 {
@@ -21,7 +22,7 @@ namespace Web.Controllers.Api
         {
             var result = new analytic();
 
-            var k = new Trade.Db.db().kdata(id, ktype);
+            var k = new kdatadb().kdata(id, ktype);
             var basic = new Trade.Db.db().basics(id);
 
             result.sectors = basic.getsectors();
@@ -91,7 +92,7 @@ namespace Web.Controllers.Api
             var mainindex = basic.mainindex();
             if (!string.IsNullOrEmpty(mainindex))
             {
-                var dindex = new Trade.Db.db().kdata(mainindex, ktype);
+                var dindex = new kdatadb().kdata(mainindex, ktype);
                 result.beta = new BETA(
                     new kdata(id, k.Where(p => p.date >= Trade.Cfg.Configuration.data.bearcrossbull).ToArray()),
                     new kdata(id, dindex.Where(p => p.date >= Trade.Cfg.Configuration.data.bearcrossbull).ToArray())).beta;
@@ -105,7 +106,7 @@ namespace Web.Controllers.Api
             var ktypes = new[] { "D","60","30","15","5" };
             foreach (var ktype in ktypes)
             {
-                var k = new Trade.Db.db().kdata(code, ktype);
+                var k = new kdatadb().kdata(code, ktype);
                 if (k == null || !k.Any()) continue;
 
                 var deviation = (deviation)new DEVIATION(k.close(), type);

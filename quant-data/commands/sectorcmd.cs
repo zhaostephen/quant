@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Trade.Data;
+using Trade.Db;
 
 namespace Trade.commands
 {
@@ -27,6 +28,7 @@ namespace Trade.commands
 
             var cache = new Dictionary<string, kdata>();
             var db = new Db.db();
+            var kdatadb = new kdatadb();
             var sectors = db.sectors();
             var i = 0;
             var count = sectors.Count();
@@ -42,13 +44,13 @@ namespace Trade.commands
                     continue;
                 }
 
-                db.save(sum(sector, kdata(db, cache, codes, "5")), "5");
-                db.save(sum(sector, kdata(db, cache, codes, "15")), "15");
-                db.save(sum(sector, kdata(db, cache, codes, "30")), "30");
-                db.save(sum(sector, kdata(db, cache, codes, "60")), "60");
-                db.save(sum(sector, kdata(db, cache, codes, "D")), "D");
-                db.save(sum(sector, kdata(db, cache, codes, "W")), "W");
-                db.save(sum(sector, kdata(db, cache, codes, "M")), "M");
+                new kdatadb().save(sum(sector, kdata(db, cache, codes, "5")), "5");
+                kdatadb.save(sum(sector, kdata(db, cache, codes, "15")), "15");
+                kdatadb.save(sum(sector, kdata(db, cache, codes, "30")), "30");
+                kdatadb.save(sum(sector, kdata(db, cache, codes, "60")), "60");
+                kdatadb.save(sum(sector, kdata(db, cache, codes, "D")), "D");
+                kdatadb.save(sum(sector, kdata(db, cache, codes, "W")), "W");
+                kdatadb.save(sum(sector, kdata(db, cache, codes, "M")), "M");
             }
 
             log.Info("**********DONE**********");
@@ -67,7 +69,7 @@ namespace Trade.commands
                     notincache.Add(code);
             }
 
-            var data = db.kdata(notincache, ktype);
+            var data = new kdatadb().kdata(notincache, ktype);
             foreach (var d in data)
             {
                 var key = d.Code + ktype;

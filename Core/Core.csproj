@@ -74,6 +74,7 @@
     <Compile Include="backtest\pnl.cs" />
     <Compile Include="datasvc.cs" />
     <Compile Include="Db\db.cs" />
+    <Compile Include="Db\kdatadb.cs" />
     <Compile Include="Mixin\DateTimeMixin.cs" />
     <Compile Include="Mixin\DictMixin.cs" />
     <Compile Include="Mixin\Logging.cs" />

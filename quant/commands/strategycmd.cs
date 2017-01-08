@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Trade;
 using Trade.backtest;
+using Trade.Db;
 
 namespace Quant.commands
 {
@@ -69,7 +70,7 @@ namespace Quant.commands
             if(param.backtest)
             {
                 log.Info("run back test");
-                var client = new Trade.Db.db();
+                var client = new kdatadb();
                 log.InfoFormat("total {0}", account.universe.Count);
                 var pnls = new List<pnl>();
                 foreach (var stock in account.universe.AsParallel())

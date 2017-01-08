@@ -11,6 +11,7 @@ using Trade.Cfg;
 using Trade.Indicator;
 using Trade.Data;
 using Interface.Indicator;
+using Trade.Db;
 
 namespace Web.Controllers.Api
 {
@@ -19,7 +20,7 @@ namespace Web.Controllers.Api
         [Route("api/kdata/{id}")]
         public chart Get(string id, string ktype)
         {
-            var kdata = new Trade.Db.db().kdata(id, ktype);
+            var kdata = new kdatadb().kdata(id, ktype);
             var basic = new Trade.Db.db().basics(id);
             var since = Trade.Cfg.Configuration.data.bearcrossbull;
             var k = kdata.Where(p => p.date >= since).ToArray();

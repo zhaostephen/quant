@@ -3,6 +3,7 @@ using Interace.Quant;
 using log4net;
 using System.Linq;
 using Trade.Indicator;
+using Trade.Db;
 
 namespace Quant.strategies
 {
@@ -16,7 +17,7 @@ namespace Quant.strategies
 
         public override void Run(Account account)
         {
-            var client = new Trade.Db.db();
+            var client = new kdatadb();
 
             log.InfoFormat("total {0}", account.universe.Count);
             foreach (var stock in account.universe.AsParallel())

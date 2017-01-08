@@ -8,6 +8,7 @@ using log4net;
 using Trade.Indicator;
 using Trade.Data;
 using Interface.Data;
+using Trade.Db;
 
 namespace Quant.strategies
 {
@@ -23,7 +24,7 @@ namespace Quant.strategies
             foreach (var stock in account.universe.AsParallel())
             {
                 log.InfoFormat("run {0}", stock.Code);
-                var k = client.kdata(stock.Code, "D");
+                var k = new kdatadb().kdata(stock.Code, "D");
                 if (k == null && !k.Any())
                 {
                     log.WarnFormat("empty data set for {0}", stock.Code);
