@@ -11,7 +11,7 @@
             <a href="" ng-click="select('cyb')">创业板指</a>|
             <a href="" ng-click="select('hs300')">沪深300</a>|
             <a href="" ng-click="select('sz50')">上证50</a>|
-            <a class="red" style="cursor:pointer" ng-repeat="s in hotsectors"  ng-click="select(s.code)">
+            <a class="red" style="cursor:pointer" ng-repeat="s in hotsectors" ng-click="select(s.code)">
                 {{s.name}}|
             </a>
         </span>
@@ -22,7 +22,12 @@
                k-data-text-field="'code'"
                k-data-source="basicnames"
                k-on-change="search()" />
-        <button class="btn btn-default" ng-click="search()" type="button" name="refresh" title="Refresh"><i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
+        <span style="font-size:small">
+            <a href="http://cwzx.shdjt.com/gpdmf10.asp?gpdm={{code}}" target="_blank">F10</a> |
+            <a ng-href="http://stock.jrj.com.cn/share,{{code}},jjcg.shtml" target="_blank">基金持股</a> |
+            <a href="http://www.shdjt.com/gpdm.asp?gpdm={{code}}" target="_blank">资金</a> |
+            <a href="http://cwzx.shdjt.com/gpdmgd.asp?gpdm={{code}}" target="_blank">股东</a>
+        </span>
         <br />
         <br />
         <analysis code="code" show-chart="true"></analysis>

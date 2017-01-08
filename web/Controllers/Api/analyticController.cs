@@ -25,6 +25,7 @@ namespace Web.Controllers.Api
             var k = new kdatadb().kdata(id, ktype);
             var basic = new db().basics(id);
 
+            result.istock = basic.assettype == assettypes.stock;
             result.sectors = basic.getsectors();
             result.indexes = new db().basicnames(basic.getindexes()).ToArray();
             result.stocks = basic.assettype == assettypes.sector 
@@ -142,5 +143,6 @@ namespace Web.Controllers.Api
         public string[] sectors { get; set; }
         public basicname[] indexes { get; set; }
         public basicname[] stocks { get; set; }
+        public bool istock { get; set; }
     }
 }

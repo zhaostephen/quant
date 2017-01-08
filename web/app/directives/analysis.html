@@ -28,6 +28,16 @@
         <span ng-repeat="index in analytic.indexes">
             <a target="_blank" href="analysis?code={{index.code}}">{{index.name}}</a>
         </span>
+        <span style="font-size:small" ng-show="analytic.istock">
+            <span>|</span>
+            <span style="font-weight:bold; font-size:x-small">其他:</span>
+            <a href="http://cwzx.shdjt.com/gpdmf10.asp?gpdm={{code}}" target="_blank">F10</a> |
+            <a ng-href="http://stock.jrj.com.cn/share,{{code}},jjcg.shtml" target="_blank">基金持股</a> |
+            <a href="http://www.shdjt.com/gpdm.asp?gpdm={{code}}" target="_blank">资金</a> |
+            <a href="http://qgqp.shdjt.com/gpdm.asp?gpdm={{code}}" target="_blank">点评</a> |
+            <a href="http://news.shdjt.com/newsgpdm.asp?gpdm={{code}}" target="_blank">新闻</a> |
+            <a href="http://cwzx.shdjt.com/gpdmgd.asp?gpdm={{code}}" target="_blank">股东</a>
+        </span>
     </div>
     <div></div>
     <div class="lead" style="font-size:medium" ng-show="analytic.stocks.length>0">

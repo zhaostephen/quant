@@ -49,13 +49,14 @@
                     },
                     { field: 'name', title: '名称', align: 'center', valign: 'middle', sortable: true },
                     { field: 'chg', title: '涨跌%', align: 'center', valign: 'middle', sortable: true, formatter: N(2, true) },
-                    { field: 'date', title: '关键日期', align: 'center', valign: 'middle', sortable: true, formatter: D() },
+                    { field: 'date', title: '日期', align: 'center', valign: 'middle', sortable: true, formatter: D() },
                     { field: 'high', title: '最高', align: 'center', valign: 'middle' },
                     { field: 'low', title: '最低', align: 'center', valign: 'middle' },
                     { field: 'open', title: '开盘', align: 'center', valign: 'middle' },
                     { field: 'close', title: '收盘', align: 'center', valign: 'middle' },
                     { field: 'volume', title: '成交量', align: 'center', valign: 'middle', sortable: true },
                     { field: 'pb', title: 'pb', align: 'center', valign: 'middle', sortable: true },
+                    { field: 'pe', title: 'pe', align: 'center', valign: 'middle', sortable: true },
                     { field: 'mktcap', title: '市值', align: 'center', valign: 'middle', sortable: true }
                 ]
             }
