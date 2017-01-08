@@ -11,7 +11,7 @@
             <a href="" ng-click="select('cyb')">创业板指</a>|
             <a href="" ng-click="select('hs300')">沪深300</a>|
             <a href="" ng-click="select('sz50')">上证50</a>|
-            <a class="red" ng-repeat="s in hotsectors"  ng-click="select(s.code)">
+            <a class="red" style="cursor:pointer" ng-repeat="s in hotsectors"  ng-click="select(s.code)">
                 {{s.name}}|
             </a>
         </span>
