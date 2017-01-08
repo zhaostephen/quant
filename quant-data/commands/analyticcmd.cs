@@ -35,7 +35,6 @@ namespace Trade.commands
             var codes = db.codes();
             var i = 0;
             var count = codes.Count();
-            var keypricedates = db.keypricedates();
             var ktypes = new[] { "5", "15", "30", "60", "D", "W", "M" };
             foreach (var code in codes.AsParallel())
             {
