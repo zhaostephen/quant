@@ -14,24 +14,15 @@ namespace Web.Controllers.Api
 {
     public class selectionController : ApiController
     {
-        [Route("api/selections/{id}")]
-        public object[] Get(string id)
+        [Route("api/selections/macd60")]
+        public object macd60(string id)
         {
-            var codenames = new Trade.Db.db().basics().GroupBy(p => p.code).ToDictionary(p => p.Key, p => p.First());
-            var universe = new Trade.Db.db().universe(id);
-            return universe.codes
-                .Select(p => new
-                {
-                    universe.name,
-                    code = p,
-                    stockname = codenames[p].name,
-                    pe = codenames[p].pe.ToDouble()
-                })
-                .OrderBy(p => p.pe)
-                .ToArray();
+            var r = Trade.analytic.macd60();
+            var rows = pagination(r);
+            return new { total = r.Count(), rows = rows };
         }
 
-        [Route("api/hitkeyprice")]
+        [Route("api/selections/hitkeyprice")]
         [HttpGet]
         public object hitkeyprice(string order = null, string sort = null, int? limit = null, int? offset = null)
         {

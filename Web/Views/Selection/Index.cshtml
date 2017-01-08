@@ -4,23 +4,7 @@
 }
 
 <div ng-controller="selectionCtrl">
-    <h4>量化选股(共{{universe.length}})</h4>
-    <table class="table">
-        <tr>
-            <th>no.</th>
-            <th>策略</th>
-            <th>代码</th>
-            <th>名称</th>
-            <th>PE</th>
-        </tr>
-        <tr ng-repeat="d in universe">
-            <td>{{$index+1}}</td>
-            <td>{{d.name}}</td>
-            <td>{{d.code}}</td>
-            <td>{{d.stockname}}</td>
-            <td>{{d.pe}}</td>
-        </tr>
-    </table>
+    <table bs-table-control="universe"></table>
 </div>
 
 

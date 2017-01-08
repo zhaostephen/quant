@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trade.Data;
 using Trade.Db;
 using Trade.Indicator;
 
@@ -55,14 +56,14 @@ namespace Trade
 
             var q = (from k in keyprices
                      join t in todayquotes on k.Code equals t.code
-                     where k.Flag == KeyPrice.Flags.lower 
+                     where k.Flag == KeyPrice.Flags.lower
                         && Math.Abs((t.low / k.Price - 1) * 100d) <= 0.8
-                        && t.changepercent>=0.01 && t.changepercent <= 1.0
+                        && t.changepercent >= 0.01 && t.changepercent <= 1.0
                         && Math.Abs((k.Date - DateTime.Today).TotalDays) >= 8
                      select new { k, t }
                     )
                     .ToArray()
-                    .Where(p=>
+                    .Where(p =>
                     {
                         var code = (string)p.t.code;
                         var k = new kdatadb().kdata(code, "D");
@@ -112,8 +113,73 @@ namespace Trade
                 .ThenByDescending(p => p.date)
                 .GroupBy(p => new { p.code })
                 .Select(p => p.First())
-                .OrderBy(p=>p.cross)
+                .OrderBy(p => p.cross)
                 .ThenByDescending(p => p.changepercent)
+                .ToArray();
+
+            return r;
+        }
+
+        public static dynamic[] macd60()
+        {
+            var kas = new db().kanalytics("60")
+                .Where(p => { return p.macd > 0 && p.dif <= 0.01; })
+                .ToArray();
+            if (!kas.Any()) return new dynamic[0];
+            kas = new db().kanalytic(kas.Select(p => p.code).Distinct().ToArray(), "15")
+                .Where(p => { return p.macd > 0 && p.dif <= 0.01; })
+                .ToArray();
+            if (!kas.Any()) return new dynamic[0];
+
+            kas = kas
+                .AsParallel()
+                .Where(p =>
+                {
+                    var k = new kdatadb().kdata(p.code, "15");
+                    if (k == null || !k.Any()) return false;
+
+                    var deviation = (deviation)new DEVIATION(k.close(), deviationtype.底背离);
+                    return deviation != null && deviation.d2.Date >= p.date;
+                })
+                .ToArray();
+
+            if (!kas.Any()) return new dynamic[0];
+
+            var codes = kas.Select(p => p.code).Distinct().ToArray();
+            var basics = new db().basics(codes);
+            var ka = new db().kanalytic(codes, "D");
+
+            var q = (from k in ka
+                     join t in basics on k.code equals t.code
+                     where t.assettype == assettypes.stock && !t.terminated && !t.suspended && !t.st
+                     select new { k, t }
+                    )
+                    .Select(_ =>
+                    {
+                        var k = _.k;
+                        var t = _.t;
+
+                        dynamic d = new ExpandoObject();
+                        d.date = k.date;
+                        d.pe = t.pe;
+                        d.code = t.code;
+                        d.name = t.name;
+                        d.high = k.high;
+                        d.low = k.low;
+                        d.open = k.open;
+                        d.close = k.close;
+                        d.volume = k.volume;
+                        d.chg = k.chg;
+                        d.pb = t.pb;
+                        d.pe = t.pe;
+                        return d;
+                    });
+
+            var r = q
+                .OrderBy(p => p.code)
+                .ThenByDescending(p => p.date)
+                .GroupBy(p => new { p.code })
+                .Select(p => p.First())
                 .ToArray();
 
             return r;

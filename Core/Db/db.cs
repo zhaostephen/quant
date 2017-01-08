@@ -114,6 +114,20 @@ namespace Trade.Db
             }
         }
 
+        public IEnumerable<kanalytic> kanalytics(string ktype)
+        {
+            using (var conn = new MySqlConnection(Configuration.analyticdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<kanalytic>("select * from k where ktype=@ktype", new { ktype = ktype })
+                    .GroupBy(p => p.code)
+                    .Select(p => p.OrderByDescending(p1 => p1.ts).FirstOrDefault())
+                    .Where(p => p != null)
+                    .ToArray();
+            }
+        }
+
         public IEnumerable<kanalytic> kanalytic(IEnumerable<string> codes, string ktype)
         {
             if (codes == null || !codes.Any()) return new kanalytic[0];

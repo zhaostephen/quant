@@ -38,7 +38,7 @@
                 showPaginationSwitch: true,
                 detailView: true,
                 detailFormatter : detailFormatter,
-                url: root + 'api/hitkeyprice',
+                url: root + 'api/selections/hitkeyprice',
                 columns:
                 [
                     {
