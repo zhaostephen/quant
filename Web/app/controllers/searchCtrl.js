@@ -28,6 +28,13 @@
                 }
             }
         });
+
+        $scope.hotsectors = [];
+        $http
+            .get(root + 'api/basics/hotsectors')
+            .then(function (res) {
+                $scope.hotsectors = res.data;
+            });
     }];
 
     angular.module('app').controller('searchCtrl', ctrl)

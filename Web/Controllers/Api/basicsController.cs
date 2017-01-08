@@ -29,15 +29,12 @@ namespace Web.Controllers.Api
                 .ToArray();
         }
 
-        [Route("api/basics/sectors")]
-        public string[] GetSectorCodes()
+        [Route("api/basics/hotsectors")]
+        [HttpGet]
+        public basicname[] hotsectors()
         {
-            return new Trade.Db.db()
-                .basicnames()
-                .Where(p => p.assettype == assettypes.sector)
-                .Select(p => p.code)
-                .Distinct()
-                .ToArray();
+            var codes = new Trade.Db.db().universe("hotsectors").codes;
+            return new Trade.Db.db().basicnames(codes).ToArray();
         }
     }
 }

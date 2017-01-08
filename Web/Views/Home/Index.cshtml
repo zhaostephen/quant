@@ -10,7 +10,10 @@
             <a href="" ng-click="select('zxb')">中小板指</a>|
             <a href="" ng-click="select('cyb')">创业板指</a>|
             <a href="" ng-click="select('hs300')">沪深300</a>|
-            <a href="" ng-click="select('sz50')">上证50</a>
+            <a href="" ng-click="select('sz50')">上证50</a>|
+            <a class="red" ng-repeat="s in hotsectors"  ng-click="select(s.code)">
+                {{s.name}}|
+            </a>
         </span>
         <input id="querycode"
                type="text"
