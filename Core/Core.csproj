@@ -83,15 +83,10 @@
     <Compile Include="selections\macd60.cs" />
     <Compile Include="selections\Selection.cs" />
     <Compile Include="selections\volume.cs" />
-    <Compile Include="strategies\KDJ15minStrategy.cs" />
-    <Compile Include="strategies\LowBeta.cs" />
-    <Compile Include="strategies\MA120.cs" />
     <Compile Include="strategies\macd15minstrategy.cs" />
-    <Compile Include="strategies\macdstrategy.cs" />
     <Compile Include="orders\dbOrder.cs" />
     <Compile Include="orders\smsOrder.cs" />
     <Compile Include="strategies\Strategy.cs" />
-    <Compile Include="strategies\volumestrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -53,17 +53,8 @@ namespace Quant.commands
             var account = new Account(portflio, pool, orders, param.backtest);
             switch (param.name.ToLower())
             {
-                case "kdj15min":
-                    new strategies.kdj15minstrategy().Run(account);
-                    break;
                 case "macd15min":
                     new strategies.macd15minstrategy().Run(account);
-                    break;
-                case "volume":
-                    new strategies.volumestrategy().Run(account);
-                    break;
-                case "macd":
-                    new strategies.macdstrategy().Run(account);
                     break;
             }
 
