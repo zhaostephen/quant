@@ -127,7 +127,7 @@ namespace Trade
                 .ToArray();
             if (!kas.Any()) return new dynamic[0];
             kas = new db().kanalytic(kas.Select(p => p.code).Distinct().ToArray(), "15")
-                .Where(p => { return p.macd > 0 && p.dif <= 0.01; })
+                .Where(p => { return p.macd > 0; })
                 .ToArray();
             if (!kas.Any()) return new dynamic[0];
 
@@ -139,7 +139,7 @@ namespace Trade
                     if (k == null || !k.Any()) return false;
 
                     var deviation = (deviation)new DEVIATION(k.close(), deviationtype.底背离);
-                    return deviation != null && deviation.d2.Date >= p.date;
+                    return deviation != null && deviation.d2.Date.Date >= p.date.Date;
                 })
                 .ToArray();
 

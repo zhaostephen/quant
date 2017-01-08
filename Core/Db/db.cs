@@ -203,6 +203,17 @@ namespace Trade.Db
             }
         }
 
+        public IEnumerable<basicname> basicnamesinsector(string sector)
+        {
+            var basics = this.basics().AsEnumerable();
+            return basics
+                .Where(p => string.IsNullOrEmpty(sector)
+                            || p.belongtoindex(sector)
+                            || p.belongtosector(sector))
+                .Select(p=>new basicname { code = p.code, name =p.name, assettype = p.assettype ,nameabbr = p.nameabbr })
+                .ToArray();
+        }
+
         public IEnumerable<string> codes(string secorOrIndex = null)
         {
             var basics = this.basics().AsEnumerable();

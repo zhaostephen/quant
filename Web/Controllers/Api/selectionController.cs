@@ -15,7 +15,8 @@ namespace Web.Controllers.Api
     public class selectionController : ApiController
     {
         [Route("api/selections/macd60")]
-        public object macd60(string id)
+        [HttpGet]
+        public object macd60(string order = null, string sort = null, int? limit = null, int? offset = null)
         {
             var r = Trade.analytic.macd60();
             var rows = pagination(r);

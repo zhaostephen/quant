@@ -23,10 +23,12 @@ namespace Web.Controllers.Api
             var result = new analytic();
 
             var k = new kdatadb().kdata(id, ktype);
-            var basic = new Trade.Db.db().basics(id);
+            var basic = new db().basics(id);
 
             result.sectors = basic.getsectors();
-            result.indexes = new Trade.Db.db().basicnames(basic.getindexes()).ToArray();
+            result.indexes = new db().basicnames(basic.getindexes()).ToArray();
+            result.stocks = basic.assettype == assettypes.sector 
+                            ? new db().basicnamesinsector(id).ToArray() : new basicname[0];
             result.code = basic.code;
             result.name = basic.name;
             result.PE = basic.pe;
@@ -139,5 +141,6 @@ namespace Web.Controllers.Api
         public string buyorsell { get; set; }
         public string[] sectors { get; set; }
         public basicname[] indexes { get; set; }
+        public basicname[] stocks { get; set; }
     }
 }
