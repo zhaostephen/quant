@@ -185,7 +185,7 @@ namespace Trade
                 var a = chinese.ToCharArray()
                     .Select(p =>
                     {
-                        if (char.IsLetter(p)) return p;
+                        //if (char.IsLetter(p)) return p;
 
                         var v = PinyinHelper.ToHanyuPinyinStringArray(p);
                         if (v == null || !v.Any() || !v.First().Any())
