@@ -40,6 +40,23 @@ namespace Trade.Db
             }
         }
 
+        public void save(IEnumerable<fenjibdata> s)
+        {
+            if (s == null || !s.Any()) return;
+
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+
+                var upserts = s
+                    .Select(p => "INSERT IGNORE INTO fenji_b_classified(fund_code,fund_name,stock_code,update_date,weight) VALUES " + 
+                                $"('{p.fund_code}','{p.fund_name}','{p.stock_code}','{p.update_date:yyyy-MM-dd HH:mm:ss}',{p.weight})")
+                    .ToArray();
+
+                conn.Execute(string.Join(";", upserts));
+            }
+        }
+
         public Dictionary<string, DateTime> keypricedates()
         {
             using (var conn = new MySqlConnection(Configuration.analyticdb))
@@ -155,6 +172,18 @@ namespace Trade.Db
                     .ToArray();
 
                 return new universe(name, codes);
+            }
+        }
+
+        public string[] fenjib()
+        {
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<string>("select code from fenji_b")
+                    .Distinct()
+                    .ToArray();
             }
         }
 

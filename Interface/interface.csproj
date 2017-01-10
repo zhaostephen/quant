@@ -50,6 +50,7 @@
     <Compile Include="Cfg\Configuration.cs" />
     <Compile Include="Data\basics.cs" />
     <Compile Include="Data\cross.cs" />
+    <Compile Include="Data\fenjib.cs" />
     <Compile Include="Data\jax.cs" />
     <Compile Include="Data\kanalytic.cs" />
     <Compile Include="Data\kdata.cs" />
