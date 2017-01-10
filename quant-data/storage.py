@@ -36,7 +36,7 @@ def getCodes():
     codes.extend(stocks['code'])
     return codes
 
-def save_sql(data, file, mode='replace', dtype=None,index=False):
+def save_sql(data, file, mode='replace', dtype=None,index=True):
     if data is None:
         return
     

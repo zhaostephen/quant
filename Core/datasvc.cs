@@ -34,6 +34,11 @@ namespace Trade
             var basiscs = stock_basics.ToList();
             foreach (var stockbasic in stock_basics)
             {
+                if (string.IsNullOrEmpty(stockbasic.code))
+                {
+                    log.WarnFormat("invalid code={0} | {1}", stockbasic.code, stockbasic.name);
+                    continue;
+                }
                 stockbasic.assettype = assettypes.stock;
                 stockbasic.nameabbr = pinyin(stockbasic.name);
 
@@ -64,7 +69,7 @@ namespace Trade
                 if (custom_classified.ContainsKey(stockbasic.code))
                     stockbasic.addsector(custom_classified[stockbasic.code]);
 
-                stockbasic.addsector(fenjib.Where(p => p.stock_code == stockbasic.code).Select(p => p.fund_code).ToArray());
+                stockbasic.addsector(fenjib.Where(p => p.stock_code == stockbasic.code).Select(p => p.fund_code).Distinct().ToArray());
             }
 
             basiscs.Add(new basics
@@ -175,18 +180,28 @@ namespace Trade
 
         private string pinyin(string chinese)
         {
-            var a = chinese.ToCharArray()
-                .Select(p =>
-                {
-                    var v = PinyinHelper.ToHanyuPinyinStringArray(p);
-                    if (v == null || !v.Any())
-                        return p;
+            try
+            {
+                var a = chinese.ToCharArray()
+                    .Select(p =>
+                    {
+                        if (char.IsLetter(p)) return p;
 
-                    return v.First().First();
-                })
-                .ToArray();
+                        var v = PinyinHelper.ToHanyuPinyinStringArray(p);
+                        if (v == null || !v.Any() || !v.First().Any())
+                            return p;
 
-            return string.Join("", a);
+                        return v.First().First();
+                    })
+                    .ToArray();
+
+                return string.Join("", a);
+            }
+            catch(Exception e)
+            {
+                log.WarnFormat("ex @ pinyin {0} | {1}", chinese, e.Message);
+                return chinese;
+            }
         }
 
         private void calc(Dictionary<basics, basics[]> dict)
