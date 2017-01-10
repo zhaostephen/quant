@@ -26,7 +26,7 @@ namespace Trade.commands
             log.Info("**********START**********");
 
             var db = new Db.db();
-            var codes = db.fenjib();
+            var codes = db.fenjib_fund_codes();
             var validcodes = db.basicnames().GroupBy(p => p.code).ToDictionary(p => p.Key, p => p.First().code);
             for(var i  = 0; i < codes.Count(); ++i)
             {

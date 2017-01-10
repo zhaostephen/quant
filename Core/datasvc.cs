@@ -29,6 +29,7 @@ namespace Trade
             var concept_classified = code_cnames(() => db.concept_classified());
             var industry_classified = code_cnames(() => db.industry_classified());
             var custom_classified = code_cnames(() => db.custom_classified());
+            var fenjib = db.fenjib_classified();
 
             var basiscs = stock_basics.ToList();
             foreach (var stockbasic in stock_basics)
@@ -62,6 +63,8 @@ namespace Trade
                     stockbasic.addsector(industry_classified[stockbasic.code]);
                 if (custom_classified.ContainsKey(stockbasic.code))
                     stockbasic.addsector(custom_classified[stockbasic.code]);
+
+                stockbasic.addsector(fenjib.Where(p => p.stock_code == stockbasic.code).Select(p => p.fund_code).ToArray());
             }
 
             basiscs.Add(new basics
@@ -136,6 +139,17 @@ namespace Trade
                     code = i,
                     name = i,
                     nameabbr = pinyin(i),
+                    assettype = assettypes.sector
+                });
+            }
+
+            foreach (var i in fenjib)
+            {
+                basiscs.Add(new basics
+                {
+                    code = i.fund_code,
+                    name = i.fund_name,
+                    nameabbr = pinyin(i.fund_name),
                     assettype = assettypes.sector
                 });
             }

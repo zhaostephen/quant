@@ -175,7 +175,7 @@ namespace Trade.Db
             }
         }
 
-        public string[] fenjib()
+        public string[] fenjib_fund_codes()
         {
             using (var conn = new MySqlConnection(Configuration.basicsdb))
             {
@@ -186,6 +186,18 @@ namespace Trade.Db
                     .ToArray();
             }
         }
+
+        public fenjibdata[] fenjib_classified()
+        {
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<fenjibdata>("select * from fenji_b_classified")
+                    .ToArray();
+            }
+        }
+
 
         public basics basics(string code)
         {

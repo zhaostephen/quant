@@ -114,6 +114,7 @@ namespace Trade.Data
 
         public void addsector(params string[] s)
         {
+            if (!s.Any()) return;
             sectors = sectors ?? string.Empty;
             sectors = string.Join("|", new[] { sectors }.Concat(s).Where(p => !string.IsNullOrEmpty(p)).Distinct().ToArray());
         }
