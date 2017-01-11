@@ -30,6 +30,7 @@ namespace Trade
             var industry_classified = code_cnames(() => db.industry_classified());
             var custom_classified = code_cnames(() => db.custom_classified());
             var fenjib = db.fenjib_classified();
+            var privatefunds = db.private_fund_classified();
 
             var basiscs = stock_basics.ToList();
             foreach (var stockbasic in stock_basics)
@@ -70,6 +71,7 @@ namespace Trade
                     stockbasic.addsector(custom_classified[stockbasic.code]);
 
                 stockbasic.addsector(fenjib.Where(p => p.stock_code == stockbasic.code).Select(p => p.fund_code).Distinct().ToArray());
+                stockbasic.addsector(privatefunds.Where(p => p.stock_code == stockbasic.code).Select(p => p.fund_name).Distinct().ToArray());
             }
 
             basiscs.Add(new basics
@@ -153,6 +155,17 @@ namespace Trade
                 basiscs.Add(new basics
                 {
                     code = i.fund_code,
+                    name = i.fund_name,
+                    nameabbr = pinyin(i.fund_name),
+                    assettype = assettypes.sector
+                });
+            }
+
+            foreach (var i in privatefunds)
+            {
+                basiscs.Add(new basics
+                {
+                    code = i.fund_name,
                     name = i.fund_name,
                     nameabbr = pinyin(i.fund_name),
                     assettype = assettypes.sector

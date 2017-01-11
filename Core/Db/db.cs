@@ -215,6 +215,16 @@ namespace Trade.Db
             }
         }
 
+        public privatefund[] private_fund_classified()
+        {
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+                return conn
+                    .Query<privatefund>("select * from private_fund_classified")
+                    .ToArray();
+            }
+        }
 
         public basics basics(string code)
         {

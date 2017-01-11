@@ -34,7 +34,7 @@ namespace Trade.commands
                 try
                 {
                     log.Info($"{i+1}/{funds.Length} get {fund}");
-                    Thread.Sleep(30 * 1000);
+                    Thread.Sleep(15 * 1000);
                     var s = private_fund_position.get(fund);
                     log.Info($"{i + 1}/{funds.Length} got {fund}, total {s.Length}");
                     db.save(s);
