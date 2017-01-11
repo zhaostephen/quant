@@ -554,10 +554,10 @@
 
                     $scope.sectorstocks = {
                         options: {
-                            height: 500,
+                            height: 800,
                             pagination: true,
-                            pageSize: 100,
-                            pageList: [100, 200, 'ALL'],
+                            pageSize: 200,
+                            pageList: [200, 400, 'ALL'],
                             showColumns: false,
                             showRefresh: false,
                             minimumCountColumns: 2,

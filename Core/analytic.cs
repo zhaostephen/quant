@@ -164,6 +164,7 @@ namespace Trade
                 .ThenByDescending(p => p.date)
                 .GroupBy(p => new { p.code })
                 .Select(p => p.First())
+                .OrderByDescending(p=>p.chg)
                 .ToArray();
 
             return r;
