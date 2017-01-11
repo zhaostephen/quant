@@ -56,6 +56,7 @@ namespace Trade.commands
 
         public static privatefund[] get(string code, bool fund = true)
         {
+            var fund_name = code;
             code = fund ? (fund_code_map_url.Value.ContainsKey(code) ? fund_code_map_url.Value[code] : string.Empty) : code;
             if (string.IsNullOrEmpty(code)) return new privatefund[0];
 
@@ -81,7 +82,7 @@ namespace Trade.commands
                 //d.chg = tds[5].InnerText.Trim();
                 d.holdtype = tds[6].InnerText.Trim();
                 d.updatedate = DateTime.Parse(tds[7].InnerText.Trim());
-                d.fund_name = tds[8].InnerText.Trim();
+                d.fund_name = fund_name;
                 var amt = 0d; double.TryParse(tds[9].InnerText.Trim(), out amt);
                 d.amount = amt;
                 //d.typea = tds[10].InnerText.Trim();
