@@ -42,8 +42,8 @@
     <div></div>
     <div class="lead" style="font-size:medium" ng-show="analytic.stocks.length>0">
         <span style="font-weight:bold; font-size:x-small" ng-show="analytic.stocks.length>0">相关个股({{analytic.stocks.length}}):</span>
-        <span ng-repeat="s in analytic.stocks">
-            <a target="_blank" href="analysis?code={{s.code}}">{{s.name}}</a> | 
-        </span>
+        <div>
+            <table bs-table-control="sectorstocks"></table>
+        </div>
     </div>
 </div>

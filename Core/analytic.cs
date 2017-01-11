@@ -120,6 +120,55 @@ namespace Trade
             return r;
         }
 
+        public static dynamic[] sectorstocks(string sector)
+        {
+            var db = new db();
+            var s = db.basics(sector);
+            if (s == null || s.assettype != assettypes.sector)
+                return new dynamic[0];
+
+            var codes = db.codes(sector);
+            if(!codes.Any()) return new dynamic[0];
+
+            var basics = db.basics(codes);
+            var ka = db.kanalytic(codes, "D");
+
+            var q = (from k in ka
+                     join t in basics on k.code equals t.code
+                     where t.assettype == assettypes.stock && !t.terminated && !t.suspended && !t.st
+                     select new { k, t }
+                    )
+                    .Select(_ =>
+                    {
+                        var k = _.k;
+                        var t = _.t;
+
+                        dynamic d = new ExpandoObject();
+                        d.date = k.date;
+                        d.pe = t.pe;
+                        d.code = t.code;
+                        d.name = t.name;
+                        d.high = k.high;
+                        d.low = k.low;
+                        d.open = k.open;
+                        d.close = k.close;
+                        d.volume = k.volume;
+                        d.chg = k.chg;
+                        d.pb = t.pb;
+                        d.pe = t.pe;
+                        return d;
+                    });
+
+            var r = q
+                .OrderBy(p => p.code)
+                .ThenByDescending(p => p.date)
+                .GroupBy(p => new { p.code })
+                .Select(p => p.First())
+                .ToArray();
+
+            return r;
+        }
+
         public static dynamic[] macd60()
         {
             var kas = new db().kanalytics("60")

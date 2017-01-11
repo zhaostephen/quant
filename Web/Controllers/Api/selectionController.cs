@@ -32,6 +32,15 @@ namespace Web.Controllers.Api
             return new { total = r.Count(), rows = rows };
         }
 
+        [Route("api/selections/sectorstocks")]
+        [HttpGet]
+        public object sectorstocks(string sector, string order = null, string sort = null, int? limit = null, int? offset = null)
+        {
+            var r = Trade.analytic.sectorstocks(sector);
+            var rows = pagination(r);
+            return new { total = r.Count(), rows = rows };
+        }
+
         dynamic[] pagination(dynamic[] r, string order = null, string sort = null, int? limit = null, int? offset = null)
         {
             if (r == null || !r.Any())
