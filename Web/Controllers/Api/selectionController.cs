@@ -19,7 +19,7 @@ namespace Web.Controllers.Api
         public object macd60(string order = null, string sort = null, int? limit = null, int? offset = null)
         {
             var r = Trade.analytic.macd60();
-            var rows = pagination(r);
+            var rows = pagination(r, order ?? "chg", sort, limit, offset);
             return new { total = r.Count(), rows = rows };
         }
 
@@ -28,7 +28,7 @@ namespace Web.Controllers.Api
         public object hitkeyprice(string order = null, string sort = null, int? limit = null, int? offset = null)
         {
             var r = Trade.analytic.hitkeyprices();
-            var rows = pagination(r);
+            var rows = pagination(r, order ?? "cross", sort, limit, offset);
             return new { total = r.Count(), rows = rows };
         }
 
@@ -37,7 +37,7 @@ namespace Web.Controllers.Api
         public object sectorstocks(string sector, string order = null, string sort = null, int? limit = null, int? offset = null)
         {
             var r = Trade.analytic.sectorstocks(sector);
-            var rows = pagination(r);
+            var rows = pagination(r, order?? "chg", sort, limit, offset);
             return new { total = r.Count(), rows = rows };
         }
 
