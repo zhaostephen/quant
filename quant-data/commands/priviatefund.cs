@@ -34,7 +34,7 @@ namespace Trade.commands
                 try
                 {
                     log.Info($"{i+1}/{funds.Length} get {fund}");
-                    Thread.Sleep(15 * 1000);
+                    Thread.Sleep(10 * 1000);
                     var s = private_fund_position.get(fund);
                     log.Info($"{i + 1}/{funds.Length} got {fund}, total {s.Length}");
                     db.save(s);
@@ -82,12 +82,15 @@ namespace Trade.commands
                 d.holdtype = tds[6].InnerText.Trim();
                 d.updatedate = DateTime.Parse(tds[7].InnerText.Trim());
                 d.fund_name = tds[8].InnerText.Trim();
-                d.amount = double.Parse(tds[9].InnerText.Trim());
+                var amt = 0d; double.TryParse(tds[9].InnerText.Trim(), out amt);
+                d.amount = amt;
                 //d.typea = tds[10].InnerText.Trim();
-                d.percentage = double.Parse(tds[11].InnerText.Trim());
+                var pct = 0d; double.TryParse(tds[11].InnerText.Trim(), out pct);
+                d.percentage = pct;
                 d.type = tds[12].InnerText.Trim();
                 d.changetype = tds[13].InnerText.Trim();
-                d.changeamount = double.Parse(tds[14].InnerText.Trim());
+                double.TryParse(tds[14].InnerText.Trim(), out amt);
+                d.changeamount = amt;
                 return d;
             })
             .Where(p => p != null)
