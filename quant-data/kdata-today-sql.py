@@ -11,6 +11,7 @@ try:
     data['ts'] = datetime.datetime.now()
     storage.save_sql(data,'kdata/ktoday',
                 mode='append',
+                index=False,
                 dtype={'code': sqlalchemy.types.VARCHAR(64),
                        'name': sqlalchemy.types.VARCHAR(128)})
 except:
