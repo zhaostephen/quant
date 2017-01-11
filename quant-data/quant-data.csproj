@@ -85,6 +85,7 @@
     <Compile Include="commands\analyticcmd.cs" />
     <Compile Include="commands\fenjib.cs" />
     <Compile Include="commands\keypricecmd.cs" />
+    <Compile Include="commands\priviatefund.cs" />
     <Compile Include="commands\sectorcmd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

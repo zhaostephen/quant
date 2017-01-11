@@ -40,6 +40,23 @@ namespace Trade.Db
             }
         }
 
+        public void save(IEnumerable<privatefund> s)
+        {
+            if (s == null || !s.Any()) return;
+
+            using (var conn = new MySqlConnection(Configuration.basicsdb))
+            {
+                conn.Open();
+
+                var upserts = s
+                    .Select(p => "INSERT IGNORE INTO private_fund_classified(fund_name,stock_code,holdtype,updatedate,amount,percentage,`type`,changetype,changeamount) VALUES " +
+                                $"('{p.fund_name}','{p.stock_code}','{p.holdtype}','{p.updatedate:yyyy-MM-dd}',{p.amount},{p.percentage},'{p.type}','{p.changetype}',{p.changeamount})")
+                    .ToArray();
+
+                conn.Execute(string.Join(";", upserts));
+            }
+        }
+
         public void save(IEnumerable<fenjibdata> s)
         {
             if (s == null || !s.Any()) return;
