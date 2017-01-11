@@ -71,7 +71,7 @@ namespace Trade
                     stockbasic.addsector(custom_classified[stockbasic.code]);
 
                 stockbasic.addsector(fenjib.Where(p => p.stock_code == stockbasic.code).Select(p => p.fund_code).Distinct().ToArray());
-                stockbasic.addsector(privatefunds.Where(p => p.stock_code == stockbasic.code).Select(p => p.fund_name).Distinct().ToArray());
+                //stockbasic.addsector(privatefunds.Where(p => p.stock_code == stockbasic.code).Select(p => p.fund_name).Distinct().ToArray());
             }
 
             basiscs.Add(new basics
@@ -161,16 +161,16 @@ namespace Trade
                 });
             }
 
-            foreach (var i in privatefunds)
-            {
-                basiscs.Add(new basics
-                {
-                    code = i.fund_name,
-                    name = i.fund_name,
-                    nameabbr = pinyin(i.fund_name),
-                    assettype = assettypes.sector
-                });
-            }
+            //foreach (var i in privatefunds)
+            //{
+            //    basiscs.Add(new basics
+            //    {
+            //        code = i.fund_name,
+            //        name = i.fund_name,
+            //        nameabbr = pinyin(i.fund_name),
+            //        assettype = assettypes.sector
+            //    });
+            //}
 
             var indexdict = basiscs
                 .Where(p => p.assettype == assettypes.index)
