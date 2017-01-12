@@ -2,9 +2,6 @@
     'use strict';
 
     angular.module('app').controller('sectorstocksCtrl', ['$scope', '$http', '$compile', '$filter', function ($scope, $http, $compile, $filter) {
-
-        console.log($scope.sector);
-
         function N(digits, chg) {
             return function (value, row, index) {
                 var s = $filter('number')(value, digits);
