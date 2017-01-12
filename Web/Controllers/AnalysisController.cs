@@ -24,8 +24,9 @@ namespace Web.Controllers
             return View();
         }
 
-        public ActionResult singlename()
+        public ActionResult singlename(string sector)
         {
+            ViewBag.sector = sector;
             return View();
         }
     }

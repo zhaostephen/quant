@@ -189,6 +189,8 @@
     <Content Include="app\controllers\selectionCtrl.js" />
     <Content Include="app\controllers\strategyCtrl.js" />
     <Content Include="app\controllers\searchCtrl.js" />
+    <Content Include="app\directives\sectorstocks.html" />
+    <Content Include="app\directives\sectorstocks.js" />
     <Content Include="app\directives\analysis.html" />
     <Content Include="app\directives\analysis.js" />
     <Content Include="Content\bootstrap-table.css" />
